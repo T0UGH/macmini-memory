@@ -233,6 +233,136 @@ openclaw-plugin-evolver/
 
 ---
 
+## 真实案例
+
+### 案例一：运维机器人自学磁盘清理（Ops-Evo）
+
+一个运维机器人 Ops-Evo，初始状态只有基础 shell 执行能力，收到任务：
+> "每天凌晨3点检查服务器磁盘，超过90%就清理 /tmp 并发飞书告警"
+
+#### 第一轮进化 — 产出基因 v1
+
+```json
+{
+  "type": "Gene",
+  "id": "gene_disk_check_v1",
+  "category": "repair",
+  "signals_match": ["disk_usage_high", "storage_alert", "tmp_cleanup"],
+  "preconditions": ["server has /tmp directory", "feishu webhook configured"],
+  "strategy": [
+    "用 df -h 检查磁盘使用率",
+    "超过 90% 阈值时清理 /tmp",
+    "通过飞书 webhook 发送告警通知",
+    "记录清理前后的磁盘变化"
+  ],
+  "constraints": {
+    "max_files": 3,
+    "forbidden_paths": ["/var/log", "/home"]
+  },
+  "validation": ["df -h | grep -v tmpfs"]
+}
+```
+
+#### 执行成功 — 产出胶囊
+
+```json
+{
+  "type": "Capsule",
+  "id": "capsule_ops_disk_check_01",
+  "trigger": ["disk_usage_high", "storage_alert"],
+  "gene": "gene_disk_check_v1",
+  "summary": "清理 /tmp 释放 12GB 空间，磁盘从 93% 降到 71%",
+  "confidence": 0.9,
+  "blast_radius": { "files": 2, "lines": 35 },
+  "outcome": { "status": "success", "score": 0.9 },
+  "success_streak": 1,
+  "env_fingerprint": {
+    "platform": "linux",
+    "arch": "x64",
+    "os_release": "Ubuntu 22.04"
+  }
+}
+```
+
+#### 第二轮进化 — 基因自我升级到 v2
+
+第二天，Evolver 发现光清 /tmp 不够，自动升级：
+
+```json
+{
+  "type": "Gene",
+  "id": "gene_disk_check_v2",
+  "category": "optimize",
+  "signals_match": ["disk_usage_high", "storage_alert", "docker_bloat"],
+  "strategy": [
+    "用 df -h 检查磁盘使用率",
+    "超过 90% 先清理 /tmp",
+    "执行 docker system prune 清理无用镜像",
+    "检查并轮转过大的日志文件",
+    "通过飞书 webhook 发送详细报告"
+  ]
+}
+```
+
+**v1 → v2**：自动学会了 Docker 清理和日志轮转，全程无人写代码。一周后，Ops-Evo 已"自学"了 Docker 清理、日志轮转等高级运维技能。
+
+---
+
+### 案例二：项目自带的 Windows Shell 兼容修复
+
+项目 `assets/gep/capsules.json` 中记录了一个真实胶囊：
+
+```json
+{
+  "type": "Capsule",
+  "id": "capsule_1770477654236",
+  "trigger": [
+    "log_error",
+    "windows_shell_incompatible",
+    "perf_bottleneck"
+  ],
+  "gene": "gene_gep_repair_from_errors",
+  "summary": "gene_gep_repair_from_errors 命中信号，变更 1 文件 / 2 行",
+  "confidence": 0.85,
+  "blast_radius": { "files": 1, "lines": 2 },
+  "outcome": { "status": "success", "score": 0.85 },
+  "success_streak": 1,
+  "env_fingerprint": {
+    "node_version": "v22.22.0",
+    "platform": "linux",
+    "evolver_version": "1.7.0"
+  },
+  "a2a": { "eligible_to_broadcast": false }
+}
+```
+
+注意 `eligible_to_broadcast: false` — 因为 `success_streak` 才 1 次，没达到广播门槛（需连续成功 2 次）。
+
+---
+
+### 案例三：跨领域知识共享
+
+一个**游戏设计师**上传了关于「用强上下文前缀做命名空间隔离」的经验胶囊到 EvoMap。一个**后端工程师**的 Agent 遇到命名冲突问题时搜到了这个胶囊。Agent 没有照搬游戏词汇，而是理解了底层原理——用前缀做命名空间隔离——后端代码一次编译通过。
+
+**游戏设计师在不知情的情况下，帮后端工程师修了个 bug。**
+
+这就是 EvoMap 的核心价值：知识不按领域隔离，按**模式**匹配。
+
+---
+
+### 概念对照总结
+
+| 概念 | 类比 | 在案例中 |
+|------|------|----------|
+| **Gene（基因）** | 医学教科书的治疗方案 | `gene_disk_check_v1`：磁盘满了怎么清理 |
+| **Capsule（胶囊）** | 治愈后的病历记录 | `capsule_ops_disk_check_01`：清了12GB，成功了 |
+| **Mutation（突变）** | 医生开的处方单 | repair 类、改 2 个文件 35 行、低风险 |
+| **EvolutionEvent** | 完整的就诊记录 | 时间、用了什么基因、突变结果、成功/失败 |
+| **PersonalityState** | 医生的风格偏好 | 严谨度 0.7、风险容忍度 0.4 |
+| **A2A 广播** | 把病历发到医学期刊 | 连续成功 2 次 + 置信度 ≥ 0.7 才能发表 |
+
+---
+
 ## 安全注意事项
 
 1. **不要开启 `EVOLVE_ALLOW_SELF_MODIFY=true`** — 官方原话："catastrophic"，会导致级联故障
