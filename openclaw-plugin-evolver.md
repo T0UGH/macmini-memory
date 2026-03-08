@@ -383,12 +383,98 @@ openclaw-plugin-evolver/
 
 ---
 
+## 在 Claude Code 上的类似方案
+
+Evolver 是为 OpenClaw 设计的，不能直接用在 Claude Code 上。但 Claude Code 生态已经有类似的实现：
+
+### Claudeception — Claude Code 版 Evolver
+
+GitHub: https://github.com/blader/Claudeception
+
+一个 Meta-Skill（生产技能的技能）：Claude Code 解决完问题后，自动把踩坑经验提炼成新的 Skill，下次遇到类似问题直接复用。
+
+**安装：**
+
+```bash
+# 全局安装（所有项目共享）
+git clone https://github.com/blader/Claudeception.git ~/.claude/skills/claudeception
+
+# 项目级安装（团队共享，可提交到 git）
+git clone https://github.com/blader/Claudeception.git .claude/skills/claudeception
+```
+
+**工作原理：**
+
+```
+你修了个复杂 bug → Claude 识别到有价值的经验
+                          ↓
+              自动提炼成 SKILL.md 保存到 skills 目录
+                          ↓
+              下次遇到类似问题 → 自动激活这个 skill
+```
+
+配合 Hook 可以全自动触发：
+
+```json
+{
+  "hooks": {
+    "UserPromptSubmit": [{
+      "hooks": [{
+        "type": "command",
+        "command": "~/.claude/hooks/claudeception-activator.sh"
+      }]
+    }]
+  }
+}
+```
+
+### everything-claude-code 的 Instinct 系统
+
+用 Stop Hook 在会话结束时自动提取编码模式，存为 "Instinct"（本能），每个带置信度评分（0.3-0.9）。积累 3 个以上相关 Instinct 后，用 `/evolve` 命令聚合成正式 Skill。
+
+这更接近 Evolver 的思路：**胶囊（Instinct）积累 → 达到阈值 → 升级为基因（Skill）**。
+
+### 与 Evolver 的对比
+
+| | Evolver (OpenClaw) | Claudeception (Claude Code) |
+|---|---|---|
+| 知识单元 | Gene + Capsule (JSON) | Skill (SKILL.md) |
+| 触发方式 | 自动扫描日志 | Hook 自动 + 语义匹配 |
+| 提取条件 | 信号匹配 + 置信度 | "非显而易见"的发现 |
+| 共享机制 | EvoMap 网络 (A2A 协议) | Git 提交到项目仓库 |
+| 存储位置 | `assets/gep/` | `~/.claude/skills/` |
+| 进化方式 | 基因 v1→v2 自动升级 | 手动或 `/evolve` 聚合 |
+| 跨团队共享 | EvoMap Hub（全网） | 仅限 Git 仓库内团队 |
+
+### Claude Code 现有机制 vs Evolver 概念
+
+| Evolver 概念 | Claude Code 对应 | 差距 |
+|-------------|-----------------|------|
+| 基因（通用方案） | CLAUDE.md / Skills | 手动维护，不能自动产生 |
+| 胶囊（成功记录） | Auto Memory | 只记偏好，不记修复方案 |
+| 突变（具体操作） | 每次对话中的操作 | 不会结构化保存 |
+| A2A 共享 | 无 | 完全没有跨实例共享 |
+| 信号提取 | 无 | 不会自动分析历史错误 |
+
+### 目前缺失的能力
+
+Claude Code 生态目前没有人做**跨团队/跨项目的 A2A 共享网络**。知识共享仅限于：
+- Git 仓库内共享 CLAUDE.md / Skills（团队级）
+- 全局 skills 目录（个人级）
+
+没有类似 EvoMap 的公共知识交换网络。
+
+---
+
 ## 相关链接
 
 - GitHub: https://github.com/huaxianhu/openclaw-plugin-evolver
 - EvoMap 网络: https://evomap.ai
+- EvoMap/evolver (官方仓库): https://github.com/EvoMap/evolver
 - Capability Evolver (官方 Skill): https://github.com/openclaw/skills/blob/main/skills/autogame-17/capability-evolver/SKILL.md
 - EvoMap Skill: https://github.com/openclaw/skills/blob/main/skills/segasonicye/evomap/SKILL.md
+- Claudeception (Claude Code 版): https://github.com/blader/Claudeception
+- GEP 协议参考: https://opengep.com/
 
 ---
 
