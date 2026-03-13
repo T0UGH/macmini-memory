@@ -143,3 +143,21 @@ Layer 3: manual_compact — 模型主动调用 compress 工具
 - 教育项目，非生产可用
 - 无错误恢复、权限系统、安全审计等生产级特性
 - 团队模式 (s09-s12) 复杂度较高，实际应用有限
+
+---
+
+## 学习记录
+
+- **2026-03-13**: 12 课全部阅读完成（未做实践）
+- 每课核心收获:
+  - s01-s02: 核心循环极简，while tool_use + dispatch map 就够了
+  - s03: nag reminder 制造问责压力，强制顺序聚焦（同时只能一个 in_progress）
+  - s04: 子 agent 的价值在于上下文隔离——30 次工具调用浓缩为一段摘要
+  - s05: 两层注入是 skill 系统的精髓——system prompt 放目录，tool_result 放内容
+  - s06: micro_compact 最巧妙——静默替换旧 tool_result，用户无感
+  - s07: 从扁平清单到 DAG，blockedBy 让并行成为可能
+  - s08: 主循环单线程不变，只有子进程 I/O 被并行化
+  - s09: JSONL 邮箱的 append-only + drain-on-read 设计简洁高效
+  - s10: 一个 FSM (pending→approved/rejected) 两种用途（关机+审批）
+  - s11: 从中心化分配到去中心化自组织是关键转变
+  - s12: 控制面（任务）和执行面（worktree）双向绑定，磁盘状态是持久的
