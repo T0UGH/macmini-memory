@@ -8,9 +8,11 @@
 - 8-10 bullets max
 - Only the highest-signal items
 - One sentence each + why it matters
+- End with the GitHub report link for full details
 
 ## 1. Most Important
 ### 1) {{headline}}
+- Author: @{{author_handle}}
 - Source: {{account_or_keyword}}
 - Link: {{url}}
 - Summary: {{summary}}

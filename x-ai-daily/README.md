@@ -23,3 +23,9 @@ Each item should include:
 ## File naming
 - Daily report: `YYYY-MM-DD.md`
 - Optional config/reference files live beside this README.
+
+
+## Author + link rules
+- Full markdown items must include the original author handle when available.
+- Feishu summary should stay concise and include the GitHub report link at the end for full reading.
+- If the source tool cannot resolve an author handle, prefer a best-effort lookup before publishing.
