@@ -46,8 +46,8 @@
 - shareAI-lab/learn-claude-code
 
 ## G. Spec / workflow / protocol
-- superpowerlabs/superpowers
-- openspec/openspec
+- obra/superpowers
+- Fission-AI/OpenSpec
 - modelcontextprotocol/specification
 
 ## Signals to prioritize
