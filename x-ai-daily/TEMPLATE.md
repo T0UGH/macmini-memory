@@ -1,28 +1,29 @@
 # X AI Daily | {{date}}
 
-- Time window: last 48 hours
-- Timezone: Asia/Shanghai
-- Focus: all AI, with emphasis on Claude ecosystem, agents, and coding
+- 时间范围：最近 48 小时
+- 时区：Asia/Shanghai
+- 关注重点：全量 AI 动态，重点偏向 Claude 生态、agents、coding
+- 输出要求：默认中文，不要写成纯英文成品
 
-## TL;DR for Feishu
-- 8-10 bullets max
-- Only the highest-signal items
-- One sentence each + why it matters
-- End with the GitHub report link for full details
+## 飞书摘要（TL;DR）
+- 最多 8-10 条
+- 只保留最高信号内容
+- 每条用中文写清楚：发生了什么 + 为什么重要
+- 结尾附 GitHub / memory 仓库里的完整报告链接
 
-## 1. Most Important
+## 1. 最重要
 ### 1) {{headline}}
-- Author: @{{author_handle}}
-- Source: {{account_or_keyword}}
-- Link: {{url}}
-- Summary: {{summary}}
-- Why it matters: {{why}}
-- Scores:
-  - Importance: X/10
-  - Technical Depth: X/10
-  - Practical Value: X/10
-  - Relevance to user: X/10
-  - Programmer Survival Index: X/10
+- 作者：@{{author_handle}}
+- 来源：{{account_or_keyword}}
+- 链接：{{url}}
+- 摘要：{{summary}}
+- 为什么重要：{{why}}
+- 评分：
+  - 重要性：X/10
+  - 技术深度：X/10
+  - 实用价值：X/10
+  - 与用户相关性：X/10
+  - Programmer Survival Index：X/10
 
 ## 2. Agent / Coding
 - ...
@@ -30,13 +31,13 @@
 ## 3. Models / Product
 - ...
 
-## 4. Big-Brain Opinions
+## 4. 观点 / 判断
 - ...
 
-## 5. Worth Opening
-- [title](url) — one-line reason
+## 5. 值得点开
+- [title](url) — 一句话说明为什么值得看
 
-## 6. Meta Summary
-- Biggest trend today:
-- What deserves action:
-- What is mostly noise:
+## 6. 总结
+- 今天最大的趋势：
+- 哪些值得行动：
+- 哪些基本是噪音：

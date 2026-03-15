@@ -11,6 +11,9 @@ Daily X/Twitter AI intelligence reports.
 - Focus: all AI news, with emphasis on Claude ecosystem, agents, and coding
 - Method: watchlist accounts + keyword tracking
 - Git policy: auto commit + push
+- Output language: Chinese-first
+- Do not produce a pure English deliverable
+- English can appear only for names, handles, product names, and brief quoted source text when necessary
 
 ## Scoring dimensions
 Each item should include:
