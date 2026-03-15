@@ -7,30 +7,18 @@ from pathlib import Path
 from datetime import datetime, timezone, timedelta
 
 ROOT = Path('/Users/haha/.openclaw/workspace/github-daily')
+CONFIG = json.loads((ROOT / 'config.json').read_text())
 STATE_DIR = ROOT / 'state'
 OUT_DIR = ROOT / 'runs'
 STATE_DIR.mkdir(parents=True, exist_ok=True)
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-CORE_RELEASE_REPOS = [
-    'anthropics/claude-code',
-    'openclaw/openclaw',
-    'sst/opencode',
-    'zed-industries/zed',
-]
-PLUGIN_REPO = 'anthropics/claude-plugins-official'
-PLUGIN_STATE = STATE_DIR / 'claude_plugins_marketplace.json'
-
-DISCOVERY_QUERIES = [
-    'coding agent',
-    'agentic coding',
-    'terminal coding agent',
-    'repo memory agent',
-    'subagent coding',
-    'worktree coding agent',
-    'MCP server coding',
-    'ACP coding agent',
-]
+CORE_RELEASE_REPOS = CONFIG['core_release_repos']
+PLUGIN_REPO = CONFIG['plugin_repo']
+PLUGIN_STATE = ROOT / CONFIG['plugin_state_file']
+DISCOVERY_QUERIES = CONFIG['discovery_queries']
+MIN_STARS = CONFIG['min_stars']
+DISCOVERY_COUNT = CONFIG['discovery_count']
 
 
 def run(cmd):
@@ -250,8 +238,9 @@ def plugin_desc_cn(text):
 
 
 def search_repos(query, limit=5):
+    enriched_query = f"{query} fork:false archived:false"
     code, out, err = run_maybe([
-        'gh', 'search', 'repos', query,
+        'gh', 'search', 'repos', enriched_query,
         '--sort', 'updated', '--order', 'desc', '--limit', str(limit),
         '--json', 'fullName,description,url,updatedAt,stargazersCount'
     ])
@@ -263,24 +252,66 @@ def search_repos(query, limit=5):
         return []
 
 
+def discovery_score(item):
+    name = item['fullName'].lower()
+    desc = (item.get('description') or '').lower()
+    text = f"{name} {desc}"
+    stars = int(item.get('stargazersCount') or 0)
+
+    score = 0
+
+    high_signal = CONFIG['discovery_high_signal_keywords']
+    low_signal = CONFIG['discovery_low_signal_keywords']
+
+    for k in high_signal:
+        if k in text:
+            score += 5
+    for k in low_signal:
+        if k in text:
+            score -= 6
+
+    if stars >= 500:
+        score += 12
+    elif stars >= 100:
+        score += 8
+    elif stars >= 50:
+        score += 5
+    elif stars == 0:
+        score -= 4
+    else:
+        score -= 6
+
+    if not desc:
+        score -= 4
+    if len(desc) < 20:
+        score -= 2
+
+    if any(k in text for k in ['claude code', 'openclaw']):
+        score += 6
+
+    return score
+
+
 def discover(limit=10):
     seen = set(r.lower() for r in CORE_RELEASE_REPOS + [PLUGIN_REPO])
-    picks = []
+    pool = []
     for q in DISCOVERY_QUERIES:
-        for item in search_repos(q, limit=8):
+        for item in search_repos(q, limit=12):
             name = item['fullName']
             low = name.lower()
             text = ((item.get('description') or '') + ' ' + name).lower()
             if low in seen:
                 continue
-            if not any(k in text for k in ['agent', 'coding', 'code', 'mcp', 'acp', 'worktree', 'repo', 'terminal', 'plugin']):
+            if not any(k in text for k in ['agent', 'coding', 'code', 'mcp', 'acp', 'worktree', 'repo', 'terminal', 'plugin', 'hook', 'memory', 'observability']):
                 continue
-            seen.add(low)
             item['matchedQuery'] = q
-            picks.append(item)
-            if len(picks) >= limit:
-                return picks
-    return picks[:limit]
+            item['_score'] = discovery_score(item)
+            seen.add(low)
+            pool.append(item)
+
+    pool = [x for x in pool if x['_score'] >= 4 and int(x.get('stargazersCount') or 0) >= MIN_STARS]
+    pool.sort(key=lambda x: (x['_score'], int(x.get('stargazersCount') or 0)), reverse=True)
+    return pool[:limit]
 
 
 def repo_desc_cn(text):
@@ -290,6 +321,14 @@ def repo_desc_cn(text):
         return '解决 coding agent 在多次会话之间容易“失忆”的问题。'
     if 'desktop notifications' in low:
         return '给 LLM coding agent 提供桌面通知能力。'
+    if 'hook event tracking' in low or 'observability' in low:
+        return '面向 Claude Code agent 的可观测性工具，可跟踪 hook 事件并观察多个 agent 的运行情况。'
+    if 'manager for podman containers' in low:
+        return '给 AI coding agent 管理 podman 容器的工具。'
+    if 'visual studio code' in low and 'coding agent' in low:
+        return '一个面向 Visual Studio Code 的 coding agent。'
+    if 'claude code agents offer specialized ai agents' in low:
+        return '一组面向 Claude Code 的专用 agents，覆盖代码、架构、本地化和自动化等任务。'
     if 'orchestrator for coding agents' in low and 'humans in the loop' in low:
         return '一个面向 coding agent 的编排器，强调人在回路中的协作。'
     if 'autonomous claude code agent runner' in low:
@@ -339,11 +378,17 @@ def main():
     plugin_diff = diff_marketplace(previous_market, current_market)
     PLUGIN_STATE.write_text(json.dumps(current_market, ensure_ascii=False, indent=2))
 
-    discovery = discover(limit=10)
+    discovery = discover(limit=DISCOVERY_COUNT)
 
     result = {
         'generatedAt': now,
-        'language': 'zh-CN',
+        'language': CONFIG['language'],
+        'config': {
+            'min_stars': MIN_STARS,
+            'discovery_count': DISCOVERY_COUNT,
+            'core_release_repos': CORE_RELEASE_REPOS,
+            'plugin_repo': PLUGIN_REPO,
+        },
         'core': core,
         'plugins': plugin_diff,
         'discovery': discovery,
@@ -385,7 +430,7 @@ def main():
             lines.append(f"- {item['name']}：{item.get('from')} -> {item.get('to')}；{plugin_desc_cn(item.get('description',''))}")
         lines.append('')
 
-    lines += ['## 新仓候选（10 个）', '']
+    lines += [f"## 新仓候选（{DISCOVERY_COUNT} 个）", '']
     for idx, item in enumerate(discovery, start=1):
         lines.append(f"### {idx}. {item['fullName']}")
         lines.append(f"- 简介：{repo_desc_cn(item.get('description',''))}")
