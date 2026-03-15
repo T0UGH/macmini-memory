@@ -345,6 +345,24 @@ def repo_desc_cn(text):
         return '一个面向企业场景的多 Agent coding 工作台。'
     if 'ubuntu vps' in low and 'multi-agent ai development environment' in low:
         return '把一台 Ubuntu VPS 快速搭成多 Agent AI 开发环境，包含会话管理、安全工具和协作基础设施。'
+    if 'multi-agent coordination platform' in low and 'mcp/acp/a2a' in low:
+        return '一个多 Agent 协调平台：把用户意图解析成结构化规格，再通过 MCP / ACP / A2A 协议把任务路由给 Claude Code、OpenCode、Gemini 等工具。'
+    if 'agent client protocol' in low and 'obsidian' in low:
+        return '把 Claude Code、Codex、Gemini CLI 等 AI agent 通过 ACP 接进 Obsidian。'
+    if 'unified agent orchestration hub' in low and 'yaml' in low:
+        return '一个统一的 agent 编排中枢：可以用 YAML 管理多种 AI agent，并通过 ACP / OpenCode Server 等标准协议对外暴露。'
+    if 'turn gemini cli into a multi-agent platform' in low:
+        return '把 Gemini CLI 扩成多 Agent 平台，带专用子代理、并行分发和分阶段编排。'
+    if 'git worktrees, terminals, and diffs' in low:
+        return '一个原生桌面应用，用来承载 agentic coding 工作流，重点围绕 git worktree、终端和 diff。'
+    if 'git-native ai agent framework' in low:
+        return '一个 git 原生的 AI agent 框架：身份、规则、记忆、工具和 skills 都作为版本化文件存放在仓库里。'
+    if 'lightweight coding agent that runs in your terminal' in low:
+        return '一个运行在终端里的轻量级 coding agent。'
+    if 'acp adapter' in low:
+        return '一个给 pi coding agent 用的 ACP 适配器。'
+    if 'open-source coding agent in the terminal' in low:
+        return '一个开源的终端 coding agent。'
     if not s:
         return '暂无简介，需点进仓库进一步看。'
     return s if re.search(r'[。！？]$', s) else s + '。'
