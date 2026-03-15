@@ -1,0 +1,144 @@
+{
+  "generatedAt": "2026-03-15_12-13-46",
+  "language": "zh-CN",
+  "core": [
+    {
+      "repo": "anthropics/claude-code",
+      "tag": "v2.1.76",
+      "publishedAt": "2026-03-14 09:23",
+      "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.76",
+      "highlights": [
+        "新增 MCP 交互式补充输入能力：MCP 服务可以在任务进行中通过表单或网页让用户补充结构化信息。",
+        "新增 `Elicitation` / `ElicitationResult` hooks：可以在结果回传前拦截或改写这一步交互。",
+        "新增 `-n / --name` 参数：启动会话时可以直接设置显示名称。",
+        "`claude --worktree` 新增 `worktree.sparsePaths`：在大型 monorepo 里可以只检出需要的目录，减小 worktree 体积。",
+        "新增 `PostCompact` hook：上下文压缩完成后会触发新的后置 hook。"
+      ]
+    },
+    {
+      "repo": "openclaw/openclaw",
+      "tag": "v2026.3.13-1",
+      "publishedAt": "2026-03-15 02:04",
+      "url": "https://github.com/openclaw/openclaw/releases/tag/v2026.3.13-1",
+      "highlights": [
+        "这次发布主要是在修复上一版损坏的 tag / release 路径，属于发布链路补丁。",
+        "npm 版本号仍然是 `2026.3.13`，`-1` 只体现在 Git tag 和 GitHub Release 上。",
+        "修复 compaction 的后置校验：压缩后会按完整会话 token 数来做 sanity check。",
+        "修复 Telegram 媒体传输相关的安全策略问题，和 SSRF 防护链路有关。"
+      ]
+    },
+    {
+      "repo": "sst/opencode",
+      "tag": "v1.2.26",
+      "publishedAt": "2026-03-14 00:33",
+      "url": "https://github.com/anomalyco/opencode/releases/tag/v1.2.26",
+      "highlights": [
+        "补上 effect-to-zod 的 schema conversion 基础能力，偏底层类型/结构转换。",
+        "为 Bun 安装场景补了配置序列化处理，减少安装链路里的环境问题。",
+        "应用侧新增文本附件支持，输入材料的形态更丰富了。",
+        "会话历史改成分页加载，重点是提升服务端性能。",
+        "修复在已有项目里执行 `git init` 后会话丢失的问题。"
+      ]
+    },
+    {
+      "repo": "zed-industries/zed",
+      "tag": "v0.227.1",
+      "publishedAt": "2026-03-11 23:41",
+      "url": "https://github.com/zed-industries/zed/releases/tag/v0.227.1",
+      "highlights": [
+        "Zed Agent 新增 `spawn_agent`：可以并行调度子代理，提升多任务处理和上下文管理能力。",
+        "OpenAI provider 新增对 GPT-5.3-Codex 自带 Key 模式的支持。",
+        "Zed 新增 Vercel AI Gateway 作为 LLM 提供商。",
+        "在 agent 对话里，可以直接从 diff 跳回对应文件，减少来回切换。",
+        "Agent 线程体验继续加强：草稿提示词、思考模式等状态的持久化更完整了。"
+      ]
+    }
+  ],
+  "plugins": {
+    "added": [],
+    "removed": [],
+    "changed": []
+  },
+  "discovery": [
+    {
+      "description": "Autonomous Claude Code agent runner with adversarial TDD verification",
+      "fullName": "logpie/otto",
+      "stargazersCount": 0,
+      "updatedAt": "2026-03-15T04:13:18Z",
+      "url": "https://github.com/logpie/otto",
+      "matchedQuery": "coding agent"
+    },
+    {
+      "description": "Claude Code Agents offer specialized AI agents for code, localization, architecture, and automation. Build review and tailor agents for tasks with trust 🐙",
+      "fullName": "Cake-sweet/agents",
+      "stargazersCount": 4,
+      "updatedAt": "2026-03-15T04:13:09Z",
+      "url": "https://github.com/Cake-sweet/agents",
+      "matchedQuery": "coding agent"
+    },
+    {
+      "description": "Orchestrator for coding agents with humans in the loop",
+      "fullName": "backflow-labs/backflow",
+      "stargazersCount": 0,
+      "updatedAt": "2026-03-15T04:12:50Z",
+      "url": "https://github.com/backflow-labs/backflow",
+      "matchedQuery": "coding agent"
+    },
+    {
+      "description": "Real-time observability for Claude Code agents with hook event tracking. Monitor multiple agents and visualize data seamlessly. 🌐🚀",
+      "fullName": "toomas-tt/claude-code-hooks-multi-agent-observability",
+      "stargazersCount": 5,
+      "updatedAt": "2026-03-15T04:12:41Z",
+      "url": "https://github.com/toomas-tt/claude-code-hooks-multi-agent-observability",
+      "matchedQuery": "coding agent"
+    },
+    {
+      "description": "Manager for podman containers for AI coding agents",
+      "fullName": "terok-ai/terok",
+      "stargazersCount": 4,
+      "updatedAt": "2026-03-15T04:11:35Z",
+      "url": "https://github.com/terok-ai/terok",
+      "matchedQuery": "coding agent"
+    },
+    {
+      "description": "A collection of reusable skills for AI coding agents, mainly for Claude Code.",
+      "fullName": "trancong12102/agentskills",
+      "stargazersCount": 3,
+      "updatedAt": "2026-03-15T04:10:33Z",
+      "url": "https://github.com/trancong12102/agentskills",
+      "matchedQuery": "coding agent"
+    },
+    {
+      "description": "Perplexity AI-powered coding agent for Visual Studio Code",
+      "fullName": "yuki-20/PerplexiCode",
+      "stargazersCount": 0,
+      "updatedAt": "2026-03-15T04:10:04Z",
+      "url": "https://github.com/yuki-20/PerplexiCode",
+      "matchedQuery": "coding agent"
+    },
+    {
+      "description": "An Agentic Orchestration Platform for repeatable, isolated, and observable coding agent workflows",
+      "fullName": "Traves-Theberge/Orchestra",
+      "stargazersCount": 14,
+      "updatedAt": "2026-03-15T04:09:34Z",
+      "url": "https://github.com/Traves-Theberge/Orchestra",
+      "matchedQuery": "coding agent"
+    },
+    {
+      "description": "",
+      "fullName": "gloryof/practice-agentic-coding",
+      "stargazersCount": 0,
+      "updatedAt": "2026-03-15T04:12:03Z",
+      "url": "https://github.com/gloryof/practice-agentic-coding",
+      "matchedQuery": "agentic coding"
+    },
+    {
+      "description": "Agentic coding assistant CLI app, implemented as a Rust + Ratatui application.",
+      "fullName": "aistar-au/vexcoder",
+      "stargazersCount": 0,
+      "updatedAt": "2026-03-15T04:06:56Z",
+      "url": "https://github.com/aistar-au/vexcoder",
+      "matchedQuery": "agentic coding"
+    }
+  ]
+}

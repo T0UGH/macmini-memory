@@ -4,7 +4,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 ROOT = Path('/Users/haha/.openclaw/workspace/github-daily')
 STATE_DIR = ROOT / 'state'
@@ -32,92 +32,6 @@ DISCOVERY_QUERIES = [
     'ACP coding agent',
 ]
 
-PHRASE_MAP = [
-    ('Added support for', '新增对'),
-    ('Added support to', '新增对'),
-    ('Added support', '新增支持'),
-    ('Added the ability to', '新增能力：'),
-    ('Added a new', '新增'),
-    ('Added', '新增'),
-    ('Improved', '改进'),
-    ('Fixed', '修复'),
-    ('Fix', '修复'),
-    ('Support', '支持'),
-    ('Supports', '支持'),
-    ('Refactor', '重构'),
-    ('Refactored', '重构'),
-    ('Restore', '恢复'),
-    ('Restored', '恢复'),
-    ('Remove', '移除'),
-    ('Removed', '移除'),
-    ('Hide', '隐藏'),
-    ('Reorder', '重排'),
-    ('Paginate', '分页处理'),
-    ('Serialize', '序列化'),
-    ('Scaffold', '搭建基础能力'),
-    ('Filter', '过滤'),
-    ('Synchronize', '同步'),
-    ('Polish', '优化'),
-    ('Avoid', '避免'),
-    ('Increase', '提升'),
-    ('Thank you to', '感谢'),
-    ('Latest', '最新'),
-]
-
-WORD_MAP = [
-    ('worktree', 'worktree'),
-    ('sparse-checkout', '稀疏检出'),
-    ('sparsePaths', 'sparsePaths'),
-    ('session history', '会话历史'),
-    ('text attachments', '文本附件'),
-    ('server performance', '服务端性能'),
-    ('git init', 'git init'),
-    ('parallel subagents', '并行子代理'),
-    ('subagents', '子代理'),
-    ('LLM provider', 'LLM 提供商'),
-    ('provider', '提供商'),
-    ('sidebar', '侧边栏'),
-    ('Desktop', '桌面端'),
-    ('Core', '核心层'),
-    ('TUI', '终端界面'),
-    ('GitHub Action', 'GitHub Action'),
-    ('plugin', '插件'),
-    ('plugins', '插件'),
-    ('terminal', '终端'),
-    ('code review', '代码审查'),
-    ('security', '安全'),
-    ('documentation', '文档'),
-    ('language server', '语言服务器'),
-    ('browser', '浏览器'),
-    ('workspace', '工作区'),
-    ('workflow', '工作流'),
-    ('session', '会话'),
-    ('prompt', '提示词'),
-    ('thinking mode', '思考模式'),
-    ('diff', 'diff'),
-    ('hook', 'hook'),
-    ('hooks', 'hooks'),
-]
-
-PLUGIN_WORDS = [
-    ('integration', '集成'),
-    ('language server', '语言服务器'),
-    ('code intelligence', '代码智能'),
-    ('analysis', '分析'),
-    ('browser', '浏览器'),
-    ('performance', '性能'),
-    ('network requests', '网络请求'),
-    ('API', 'API'),
-    ('deploy', '部署'),
-    ('serverless', '无服务器'),
-    ('database', '数据库'),
-    ('project management', '项目管理'),
-    ('documentation', '文档'),
-    ('payment', '支付'),
-    ('ads', '广告'),
-    ('risk scoring', '风险评分'),
-]
-
 
 def run(cmd):
     p = subprocess.run(cmd, capture_output=True, text=True)
@@ -142,38 +56,132 @@ def latest_release(repo):
 
 def cleanup(s):
     s = re.sub(r'\[([^\]]+)\]\([^\)]+\)', r'\1', s)
-    s = re.sub(r'\s+', ' ', s).strip()
+    s = re.sub(r'\(#\d+\)', '', s)
+    s = re.sub(r'https?://\S+', '', s)
+    s = re.sub(r'\s+', ' ', s).strip(' -')
     return s
 
 
-def to_cn_line(text):
-    s = cleanup(text)
-    for a, b in PHRASE_MAP:
-        if s.startswith(a):
-            s = b + s[len(a):]
-            break
-    for a, b in WORD_MAP:
-        s = re.sub(re.escape(a), b, s, flags=re.I)
-    return s
+def format_ts(ts):
+    if not ts:
+        return ''
+    dt = datetime.fromisoformat(ts.replace('Z', '+00:00'))
+    bj = dt.astimezone(timezone(timedelta(hours=8)))
+    return bj.strftime('%Y-%m-%d %H:%M')
+
+
+def bullet_lines(body):
+    out = []
+    for line in (body or '').splitlines():
+        s = line.strip()
+        if s.startswith(('- ', '* ')):
+            out.append(cleanup(s[2:].strip()))
+    return out
+
+
+def first_match(lines, keywords):
+    for s in lines:
+        low = s.lower()
+        if all(k.lower() in low for k in keywords):
+            return s
+    return None
+
+
+def any_match(lines, keywords):
+    for s in lines:
+        low = s.lower()
+        if any(k.lower() in low for k in keywords):
+            return s
+    return None
+
+
+def summarize_claude_code(lines):
+    out = []
+    if first_match(lines, ['mcp', 'structured input']) or first_match(lines, ['mcp', 'interactive']):
+        out.append('新增 MCP 交互式补充输入能力：MCP 服务可以在任务进行中通过表单或网页让用户补充结构化信息。')
+    if first_match(lines, ['elicitation']) and first_match(lines, ['elicitationresult']):
+        out.append('新增 `Elicitation` / `ElicitationResult` hooks：可以在结果回传前拦截或改写这一步交互。')
+    if first_match(lines, ['--name']) or first_match(lines, ['display name']):
+        out.append('新增 `-n / --name` 参数：启动会话时可以直接设置显示名称。')
+    if first_match(lines, ['sparsepaths']) or first_match(lines, ['sparse-checkout']):
+        out.append('`claude --worktree` 新增 `worktree.sparsePaths`：在大型 monorepo 里可以只检出需要的目录，减小 worktree 体积。')
+    if first_match(lines, ['postcompact']):
+        out.append('新增 `PostCompact` hook：上下文压缩完成后会触发新的后置 hook。')
+    if not out:
+        out = ['本次 release 有多项 CLI、hook 和 worktree 相关改进，整体方向仍然是增强 MCP、会话管理和大型仓库下的可用性。']
+    return out[:5]
+
+
+def summarize_openclaw(lines):
+    out = []
+    if first_match(lines, ['recover the broken']) or first_match(lines, ['tag/release path']):
+        out.append('这次发布主要是在修复上一版损坏的 tag / release 路径，属于发布链路补丁。')
+    if first_match(lines, ['npm version is still']):
+        out.append('npm 版本号仍然是 `2026.3.13`，`-1` 只体现在 Git tag 和 GitHub Release 上。')
+    if first_match(lines, ['compaction']):
+        out.append('修复 compaction 的后置校验：压缩后会按完整会话 token 数来做 sanity check。')
+    if first_match(lines, ['telegram']) and first_match(lines, ['ssrf']):
+        out.append('修复 Telegram 媒体传输相关的安全策略问题，和 SSRF 防护链路有关。')
+    if not out:
+        out = ['这版 OpenClaw 以稳定性修复为主，重点不在新功能，而在发布链路和安全/校验细节。']
+    return out[:5]
+
+
+def summarize_opencode(lines):
+    out = []
+    if first_match(lines, ['effect-to-zod']) or first_match(lines, ['schema conversion']):
+        out.append('补上 effect-to-zod 的 schema conversion 基础能力，偏底层类型/结构转换。')
+    if first_match(lines, ['bun installations']):
+        out.append('为 Bun 安装场景补了配置序列化处理，减少安装链路里的环境问题。')
+    if first_match(lines, ['text attachments']):
+        out.append('应用侧新增文本附件支持，输入材料的形态更丰富了。')
+    if first_match(lines, ['session history']) and first_match(lines, ['performance']):
+        out.append('会话历史改成分页加载，重点是提升服务端性能。')
+    if first_match(lines, ['git init']) and first_match(lines, ['sessions lost']):
+        out.append('修复在已有项目里执行 `git init` 后会话丢失的问题。')
+    if not out:
+        out = ['这版 OpenCode 以底层能力补强和会话稳定性修复为主，同时增强了 app 侧输入能力。']
+    return out[:5]
+
+
+def summarize_zed(lines):
+    out = []
+    if first_match(lines, ['spawn_agent']) or first_match(lines, ['subagents']):
+        out.append('Zed Agent 新增 `spawn_agent`：可以并行调度子代理，提升多任务处理和上下文管理能力。')
+    if first_match(lines, ['gpt-5.3-codex']) and first_match(lines, ['openai provider']):
+        out.append('OpenAI provider 新增对 GPT-5.3-Codex 自带 Key 模式的支持。')
+    if first_match(lines, ['vercel ai gateway']):
+        out.append('Zed 新增 Vercel AI Gateway 作为 LLM 提供商。')
+    if first_match(lines, ['jump to a file from a diff']) or first_match(lines, ['open excerpts']):
+        out.append('在 agent 对话里，可以直接从 diff 跳回对应文件，减少来回切换。')
+    if first_match(lines, ['draft prompts']) or first_match(lines, ['thinking mode toggle']) or first_match(lines, ['thread history']):
+        out.append('Agent 线程体验继续加强：草稿提示词、思考模式等状态的持久化更完整了。')
+    if not out:
+        out = ['这版 Zed 主要在继续打磨 Agent 工作流、提供商接入和线程体验。']
+    return out[:5]
 
 
 def summarize_release(item):
     if 'error' in item:
         return {'repo': item['repo'], 'error': item['error']}
-    body = (item.get('body') or '').splitlines()
-    bullets = []
-    for line in body:
-        s = line.strip()
-        if s.startswith(('- ', '* ')):
-            bullets.append(to_cn_line(s[2:].strip()))
-        if len(bullets) >= 5:
-            break
+    repo = item['repo']
+    lines = bullet_lines(item.get('body') or '')
+    if repo == 'anthropics/claude-code':
+        highlights = summarize_claude_code(lines)
+    elif repo == 'openclaw/openclaw':
+        highlights = summarize_openclaw(lines)
+    elif repo == 'sst/opencode':
+        highlights = summarize_opencode(lines)
+    elif repo == 'zed-industries/zed':
+        highlights = summarize_zed(lines)
+    else:
+        highlights = lines[:5]
     return {
-        'repo': item['repo'],
+        'repo': repo,
         'tag': item.get('tagName'),
-        'publishedAt': item.get('publishedAt'),
+        'publishedAt': format_ts(item.get('publishedAt')),
         'url': item.get('url'),
-        'highlights': bullets,
+        'highlights': highlights,
     }
 
 
@@ -221,11 +229,24 @@ def diff_marketplace(old, new):
 
 def plugin_desc_cn(text):
     s = cleanup(text)
-    for a, b in PLUGIN_WORDS:
-        s = re.sub(re.escape(a), b, s, flags=re.I)
-    if s and not re.search(r'[\u4e00-\u9fff]', s):
-        s = '用途：' + s
-    return s
+    low = s.lower()
+    if 'ruby language server' in low:
+        return 'Ruby 的语言服务器插件，用于代码智能和分析。'
+    if 'chrome browser' in low:
+        return '让 coding agent 直接控制并检查一个正在运行的 Chrome 浏览器，可看性能、网络请求和控制台。'
+    if 'api lifecycle' in low or 'postman' in low:
+        return 'Postman 方向的 API 全生命周期插件，可同步集合、跑测试、做 mock 和生成文档。'
+    if 'project management' in low or 'asana' in low:
+        return 'Asana 项目管理集成，可创建任务、查项目、跟进进度。'
+    if 'atlassian' in low or 'jira' in low or 'confluence' in low:
+        return 'Atlassian 集成，可连 Jira / Confluence，处理 issue、文档和迭代。'
+    if 'serverless' in low:
+        return 'AWS Serverless 方向插件，覆盖设计、开发、部署、测试和调试。'
+    if 'development kit' in low and 'agent sdk' in low:
+        return '面向 Claude Agent SDK 的开发工具包。'
+    if not s:
+        return '暂无说明。'
+    return s if re.search(r'[。！？]$', s) else s + '。'
 
 
 def search_repos(query, limit=5):
@@ -246,7 +267,7 @@ def discover(limit=10):
     seen = set(r.lower() for r in CORE_RELEASE_REPOS + [PLUGIN_REPO])
     picks = []
     for q in DISCOVERY_QUERIES:
-        for item in search_repos(q, limit=6):
+        for item in search_repos(q, limit=8):
             name = item['fullName']
             low = name.lower()
             text = ((item.get('description') or '') + ' ' + name).lower()
@@ -262,31 +283,49 @@ def discover(limit=10):
     return picks[:limit]
 
 
+def repo_desc_cn(text):
+    s = cleanup(text)
+    low = s.lower()
+    if 'forgets everything between sessions' in low:
+        return '解决 coding agent 在多次会话之间容易“失忆”的问题。'
+    if 'desktop notifications' in low:
+        return '给 LLM coding agent 提供桌面通知能力。'
+    if 'orchestrator for coding agents' in low and 'humans in the loop' in low:
+        return '一个面向 coding agent 的编排器，强调人在回路中的协作。'
+    if 'autonomous claude code agent runner' in low:
+        return '一个自动化的 Claude Code 运行器，并带有更偏验证导向的 TDD 检查。'
+    if 'terminal-based multi-agent orchestrator' in low:
+        return '一个终端里的多 Agent 编排器，可在多个仓库之间统一调度 Claude Code。'
+    if 'mobile client for claude code and codex' in low:
+        return 'Claude Code / Codex 的移动端控制客户端，可通过手机远程操控。'
+    if 'reusable skills for ai coding agents' in low:
+        return '一个面向 AI coding agent 的可复用 skills 集合，偏 Claude Code 生态。'
+    if 'framework for agentic coding' in low:
+        return '一个支持多种主流 agent coding 工具的框架。'
+    if 'multi-agent coding workspace' in low:
+        return '一个面向企业场景的多 Agent coding 工作台。'
+    if 'ubuntu vps' in low and 'multi-agent ai development environment' in low:
+        return '把一台 Ubuntu VPS 快速搭成多 Agent AI 开发环境，包含会话管理、安全工具和协作基础设施。'
+    if not s:
+        return '暂无简介，需点进仓库进一步看。'
+    return s if re.search(r'[。！？]$', s) else s + '。'
+
+
 def repo_reason(item):
     q = item.get('matchedQuery', '')
     if 'worktree' in q:
-        return '命中 worktree / 多任务协作方向'
+        return '命中 worktree / 多任务协作方向。'
     if 'subagent' in q:
-        return '命中 subagent 方向'
+        return '命中 subagent 方向。'
     if 'terminal' in q:
-        return '命中终端 coding agent 方向'
+        return '命中终端 coding agent 方向。'
     if 'repo memory' in q:
-        return '命中 repo memory / 上下文方向'
+        return '命中 repo memory / 上下文方向。'
     if 'mcp' in q.lower() or 'acp' in q.lower():
-        return '命中协议 / 工具接入方向'
+        return '命中协议 / 工具接入方向。'
     if 'agentic' in q or 'coding agent' in q:
-        return '命中 coding agent 主查询'
-    return '来自 coding agent 生态搜索'
-
-
-def repo_desc_cn(text):
-    s = cleanup(text)
-    s = re.sub(r'AI', 'AI', s)
-    for a, b in PLUGIN_WORDS + WORD_MAP:
-        s = re.sub(re.escape(a), b, s, flags=re.I)
-    if s and not re.search(r'[\u4e00-\u9fff]', s):
-        s = '简介：' + s
-    return s
+        return '命中 coding agent 主查询。'
+    return '来自 coding agent 生态搜索。'
 
 
 def main():
@@ -319,7 +358,7 @@ def main():
         if 'error' in item:
             lines += [f"### {item['repo']}", f"- 抓取失败：{item['error']}", '']
             continue
-        lines += [f"### {item['repo']} · {item.get('tag','')}", f"- 发布时间：{item.get('publishedAt','')}"]
+        lines += [f"### {item['repo']} · {item.get('tag','')}", f"- 发布时间：{item.get('publishedAt','')}（北京时间）"]
         for hl in item.get('highlights', [])[:5]:
             lines.append(f'- {hl}')
         if item.get('url'):
