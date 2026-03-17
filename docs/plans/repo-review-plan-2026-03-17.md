@@ -1,107 +1,161 @@
-# 仓库浏览计划（起始于 2026-03-17）
+# Awesome Claude Code 精选仓库浏览顺序（起始于 2026-03-17）
 
-目标：控制信息摄入强度，每天只看 2-3 个仓库，但持续覆盖 Claude Code / OpenClaw / agents / coding workflow 生态。
+目标：把 `hesreallyhim/awesome-claude-code` 里真正有价值、适合贵平当前关注方向的仓库按顺序看完。
 
-## 执行规则
-- 每天最多看 2-3 个仓库，不追求看完，只追求抓重点。
-- 每天的组合尽量保持：
-  1. **一个核心基础设施仓库**（Claude Code / OpenClaw / OpenCode / GitNexus / Serena 这类）
-  2. **一个工作流或方法论仓库**（skills / hooks / commands / orchestrator）
-  3. **一个发现型仓库**（awesome list / 新项目 / 候选实验项目，可选）
-- 每次只回答 4 个问题：
-  - 它解决什么问题？
-  - 它的核心机制是什么？
-  - 它对贵平当前工作流有没有直接价值？
-  - 要不要继续跟踪 / clone / 写进日报候选？
-- 看完后，把结论补到 `docs/research-log/YYYY-MM-DD.md`。
+约束：
+- 每天最多看 2-3 个仓库
+- 只排 `awesome-claude-code` 里筛出来的“有用仓库”
+- 顺序优先服务于：Claude Code / OpenClaw / agent workflow / hooks 安全 / 可观测性 / session continuity
+
+## 排序原则
+先看“直接影响生产力和工作流”的，再看“增强项”和“外围生态”：
+1. **先看核心方法论/技能库**：直接影响你如何组织 agent 工作
+2. **再看安全与质量控制**：决定 agent 能不能放心接入日常流程
+3. **再看观测与记忆**：决定 agent 用久了会不会失控或失忆
+4. **最后看编排和外围体验层**：决定效率上限，而不是最先要解决的问题
 
 ---
 
-## 第 1 周安排
+## 第一阶段：先看最有复用价值的技能/工作流仓库
 
-### Day 1（2026-03-17，今天）
-1. `abhigyanpatwari/GitNexus`
-   - 目的：理解 code graph / Graph RAG / MCP 增强的真实价值。
-2. `hesreallyhim/awesome-claude-code`
-   - 目的：把它当生态入口，看 trends，不当普通收藏夹。
-3. `mgechev/skillgrade`
-   - 目的：判断“skill 的测试/评分”是不是值得借鉴到 OpenClaw 或技能体系。
+### Day 1
+1. `obra/superpowers`
+   - 为什么先看：成熟、工程味强，适合作为“Claude Code 能力包”的基准样本。
+2. `EveryInc/compound-engineering-plugin`
+   - 为什么看：把错误沉淀为流程改进，这和贵平偏好的“把反复要求变成规则”高度一致。
+3. `affaan-m/everything-claude-code`
+   - 为什么看：覆盖面广，适合快速建立 Claude Code 生态能力地图。
 
-### Day 2（2026-03-18）
-1. `anthropics/claude-code`
-   - 目的：继续盯最高优先级核心产品变化。
-2. `openclaw/openclaw`
-   - 目的：盯你自己日常使用的 agent runtime / workflow 层变化。
-3. `oraios/serena`
-   - 目的：看代码理解/符号级导航这条线如何和 Claude Code 形成互补。
+### Day 2
+1. `K-Dense-AI/claude-scientific-skills`
+   - 为什么看：高质量技能仓库代表样本，适合学习 skill 组织方式。
+2. `trailofbits/skills`
+   - 为什么看：专业安全技能库，适合提炼“高可信 skill”的标准。
+3. `akin-ozer/cc-devops-skills`
+   - 为什么看：偏 DevOps/部署实战，和真实工程落地贴得更近。
 
-### Day 3（2026-03-19）
-1. `sst/opencode`
-   - 目的：比较 OpenCode 路线和 Claude Code / OpenClaw 的差异。
-2. `penso/arbor`
-   - 目的：看 agent 工作流/编排工具是否有实操价值。
-3. `tintinweb/pi-subagents`
-   - 目的：看 subagents 这条线有没有轻量实用做法。
+### Day 3
+1. `undeadlist/claude-code-agents`
+   - 为什么看：E2E workflow + subagents，接近日常工程实操。
+2. `NeoLabHQ/context-engineering-kit`
+   - 为什么看：上下文工程是 agent 实用性的核心杠杆。
+3. `glittercowboy/taches-cc-resources`
+   - 为什么看：偏“元技能”和 workflow 组织，利于抽象出可迁移套路。
 
-### Day 4（2026-03-20）
-1. `zed-industries/zed`
-   - 目的：观察 Zed agent 侧的交互与能力更新。
-2. `obra/superpowers`
-   - 目的：看成熟技能包如何组织工程常见能力。
-3. `K-Dense-AI/claude-scientific-skills`
-   - 目的：看高质量 skill 仓库的写法和覆盖面。
+---
 
-### Day 5（2026-03-21）
-1. `trailofbits/skills`
-   - 目的：安全技能仓库，适合提炼“专业技能库”的标准。
-2. `vaporif/parry`
-   - 目的：关注 hook 层 prompt injection / 安全防护。
-3. `ldayton/Dippy`
-   - 目的：关注 auto-approve safe commands 这条非常关键的体验/安全平衡线。
+## 第二阶段：重点看 hooks / 安全 / 质量防线
 
-### Day 6（2026-03-22）
-1. `ryoppippi/ccusage`
-   - 目的：看 Claude Code usage 可观测性方案。
-2. `tombii/better-ccflare`
-   - 目的：看 usage dashboard 的增强路线。
+### Day 4
+1. `vaporif/parry`
+   - 为什么先看：prompt injection / secrets / exfiltration 防护很关键。
+2. `ldayton/Dippy`
+   - 为什么看：auto-approve safe commands 是实际使用中非常痛的点。
+3. `nizos/tdd-guard`
+   - 为什么看：用 hooks 约束开发纪律，属于“把流程固化成机制”的典型。
+
+### Day 5
+1. `bartolli/claude-code-typescript-hooks`
+   - 为什么看：质量 hooks 的工程化样本，偏实用。
+2. `GowayLee/cchooks`
+   - 为什么看：如果以后你要自己定制 hooks，这类 SDK 值得理解。
+3. `aannoo/claude-hook-comms`
+   - 为什么看：虽然还不稳定，但代表 hooks 往 agent communication 发展的方向。
+
+---
+
+## 第三阶段：看 session continuity / 使用可观测 / 记忆能力
+
+### Day 6
+1. `pchalasani/claude-code-tools`
+   - 为什么先看：session continuity、cross-agent handoff、恢复上下文，和你的长期使用痛点直接相关。
+2. `ZENG3LD/claude-session-restore`
+   - 为什么看：看它怎么恢复旧会话与上下文。
 3. `zippoxer/recall`
-   - 目的：看 session continuity / 检索这条线，和你的记忆需求有直接关系。
+   - 为什么看：会话检索能力与你现在要做的“研究流水账”是同一路问题。
 
-### Day 7（2026-03-23）
-1. `sudocode-ai/sudocode`
-   - 目的：看 repo 内 orchestrator 的轻量方案。
-2. `dtormoen/tsk`
-   - 目的：看 sandboxed agent task manager 的工程落地方式。
-3. `andyMik90/Auto-Claude`
-   - 目的：看多 agent SDLC 编排是不是实用还是过度包装。
+### Day 7
+1. `ryoppippi/ccusage`
+   - 为什么看：Claude Code 使用数据的基础观测层。
+2. `tombii/better-ccflare`
+   - 为什么看：更完整的 usage dashboard，适合评估重度使用价值。
+3. `kunwar-shah/claudex`
+   - 为什么看：历史会话浏览 + 搜索，偏“长期使用体验”层。
 
 ---
 
-## 第二梯队候选（后续轮换）
-- `affaan-m/everything-claude-code`
-- `EveryInc/compound-engineering-plugin`
-- `dyoshikawa/rulesync`
-- `nulone/claude-rules-doctor`
-- `GWUDCAP/cc-sessions`
-- `eckardt/cchistory`
-- `pchalasani/claude-code-tools`
-- `FlineDev/ContextKit`
-- `claude-did-this/claude-hub`
-- `ruvnet/claude-code-flow`
-- `parruda/claude-swarm`
-- `slopus/happy`
+## 第四阶段：看 orchestrator / 多 agent / 沙箱执行
 
-## 我建议的节奏
-- **工作日**：优先“核心基础设施 + 工作流/安全”
-- **周末**：优先“发现型仓库 + 方法论仓库”
-- **每周日**：回顾本周看过的仓库，挑 3 个进入长期观察名单
+### Day 8
+1. `sudocode-ai/sudocode`
+   - 为什么先看：repo 内轻量 orchestration，可能比重型框架更实用。
+2. `dtormoen/tsk`
+   - 为什么看：sandboxed task manager，比较贴近工程安全落地。
+3. `AndyMik90/Auto-Claude`
+   - 为什么看：多 agent SDLC 的代表样本，适合判断“是真实用还是包装过度”。
 
-## 长期观察名单（当前建议）
-- `anthropics/claude-code`
-- `openclaw/openclaw`
-- `hesreallyhim/awesome-claude-code`
-- `abhigyanpatwari/GitNexus`
-- `oraios/serena`
-- `trailofbits/skills`
-- `vaporif/parry`
-- `ldayton/Dippy`
+### Day 9
+1. `parruda/claude-swarm`
+   - 为什么看：多 Claude Code swarm 方向。
+2. `smtg-ai/claude-squad`
+   - 为什么看：多工作区并行管理，可能更贴近日常使用。
+3. `slopus/happy`
+   - 为什么看：从手机/桌面控制多 Claude，会涉及实际协作体验。
+
+### Day 10
+1. `dagger/container-use`
+   - 为什么看：容器化 agent 环境很重要，关系到权限与隔离。
+2. `icanhasjonas/run-claude-docker`
+   - 为什么看：偏直接可用的 docker 运行方案。
+3. `OverseedAI/viwo`
+   - 为什么看：围绕危险权限与 worktree 隔离的现实解法。
+
+---
+
+## 第五阶段：最后看外围增强层
+
+### Day 11
+1. `dyoshikawa/rulesync`
+   - 为什么看：多 agent 配置迁移与统一，适合后期治理。
+2. `nulone/claude-rules-doctor`
+   - 为什么看：规则失效检查，解决“规则写了但没生效”的问题。
+3. `foxj77/claudectx`
+   - 为什么看：配置切换层，偏效率增强。
+
+### Day 12
+1. `Haleclipse/CCometixLine`
+   - 为什么看：状态线与可视化增强样本。
+2. `hagan/claudia-statusline`
+   - 为什么看：另一类高质量状态线实现。
+3. `sirmalloc/ccstatusline`
+   - 为什么看：做对比，判断状态线这条线是否值得深跟。
+
+### Day 13
+1. `greggh/claude-code.nvim`
+   - 为什么看：看生态如何进入编辑器工作流。
+2. `manzaltu/claude-code-ide.el`
+   - 为什么看：更重的 IDE 集成样本。
+3. `Haleclipse/Claudix`
+   - 为什么看：VSCode 侧体验探索，可作为生态成熟度信号。
+
+---
+
+## 如果你只有精力看 10 个仓库（精简版 Top 10）
+1. `obra/superpowers`
+2. `EveryInc/compound-engineering-plugin`
+3. `K-Dense-AI/claude-scientific-skills`
+4. `trailofbits/skills`
+5. `vaporif/parry`
+6. `ldayton/Dippy`
+7. `pchalasani/claude-code-tools`
+8. `zippoxer/recall`
+9. `sudocode-ai/sudocode`
+10. `dagger/container-use`
+
+## 建议阅读动作
+每个仓库只做这几步：
+1. 看 README
+2. 看目录结构
+3. 看最近 release/commits（如果有）
+4. 回答：能不能直接迁移到你的工作流
+5. 记到 `docs/research-log/YYYY-MM-DD.md`
