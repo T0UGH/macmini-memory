@@ -1,4 +1,4 @@
-## 图 7｜evalstate/fast-agent
+## evalstate/fast-agent
 **fast-agent**
 
 Stars：3708

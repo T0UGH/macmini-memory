@@ -1,4 +1,4 @@
-## 图 2｜openclaw/openclaw
+## openclaw/openclaw
 **OpenClaw v2026.3.13-1**
 
 发布时间：2026-03-15 02:04

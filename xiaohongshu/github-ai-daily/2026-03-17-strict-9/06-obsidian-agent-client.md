@@ -1,4 +1,4 @@
-## 图 6｜RAIT-09/obsidian-agent-client
+## RAIT-09/obsidian-agent-client
 **obsidian-agent-client**
 
 Stars：1218

@@ -1,4 +1,4 @@
-## 图 3｜sst/opencode
+## sst/opencode
 **OpenCode v1.2.27**
 
 发布时间：2026-03-16 10:34

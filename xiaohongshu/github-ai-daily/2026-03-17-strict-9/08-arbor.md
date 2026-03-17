@@ -1,4 +1,4 @@
-## 图 8｜penso/arbor
+## penso/arbor
 **arbor**
 
 Stars：361

@@ -1,4 +1,4 @@
-## 图 4｜openai/codex
+## openai/codex
 **Codex rust-v0.115.0**
 
 发布时间：2026-03-17 03:37

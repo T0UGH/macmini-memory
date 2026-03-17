@@ -1,4 +1,4 @@
-## 图 9｜open-gitagent/gitclaw
+## open-gitagent/gitclaw
 **gitclaw**
 
 Stars：146

@@ -1,6 +1,6 @@
 # GitHub AI Daily 卡片文案｜2026-03-17｜严格按日报文件生成
 
-## 图 1｜anthropics/claude-code
+## anthropics/claude-code
 **Claude Code v2.1.77**
 
 发布时间：2026-03-17 08:28
@@ -18,7 +18,7 @@ Claude Code 已经进入“长期稳定工作代理”的打磨阶段。
 
 ---
 
-## 图 2｜openclaw/openclaw
+## openclaw/openclaw
 **OpenClaw v2026.3.13-1**
 
 发布时间：2026-03-15 02:04
@@ -36,7 +36,7 @@ OpenClaw 真正值得盯的，还是系统底层稳定性和安全收口能力�
 
 ---
 
-## 图 3｜sst/opencode
+## sst/opencode
 **OpenCode v1.2.27**
 
 发布时间：2026-03-16 10:34
@@ -55,7 +55,7 @@ OpenCode 也在往“更稳的长期使用”走，而不是只追求功能列�
 
 ---
 
-## 图 4｜openai/codex
+## openai/codex
 **Codex rust-v0.115.0**
 
 发布时间：2026-03-17 03:37
@@ -74,7 +74,7 @@ Codex 的方向不是“更像聊天”，而是“更像可编排、可嵌入�
 
 ---
 
-## 图 5｜phodal/routa
+## phodal/routa
 **routa**
 
 Stars：152
@@ -93,7 +93,7 @@ Stars：152
 
 ---
 
-## 图 6｜RAIT-09/obsidian-agent-client
+## RAIT-09/obsidian-agent-client
 **obsidian-agent-client**
 
 Stars：1218
@@ -112,7 +112,7 @@ Stars：1218
 
 ---
 
-## 图 7｜evalstate/fast-agent
+## evalstate/fast-agent
 **fast-agent**
 
 Stars：3708
@@ -131,7 +131,7 @@ Stars：3708
 
 ---
 
-## 图 8｜penso/arbor
+## penso/arbor
 **arbor**
 
 Stars：361
@@ -150,7 +150,7 @@ agent 一旦进入持续执行阶段，工作台形态本身就会变成竞争�
 
 ---
 
-## 图 9｜open-gitagent/gitclaw
+## open-gitagent/gitclaw
 **gitclaw**
 
 Stars：146

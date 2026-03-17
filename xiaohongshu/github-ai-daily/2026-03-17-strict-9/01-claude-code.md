@@ -1,4 +1,4 @@
-## 图 1｜anthropics/claude-code
+## anthropics/claude-code
 **Claude Code v2.1.77**
 
 发布时间：2026-03-17 08:28
