@@ -123,7 +123,7 @@ async function main() {
 
   const tmpHtml = path.join(path.dirname(output), `.${path.basename(output)}.tmp.html`);
   fs.writeFileSync(tmpHtml, html, 'utf8');
-  execFileSync('playwright', ['screenshot', '--device=Desktop Chrome HiDPI', `file://${tmpHtml}`, output], { stdio: 'inherit' });
+  execFileSync('playwright', ['screenshot', '--device=Desktop Chrome HiDPI', '--full-page', `file://${tmpHtml}`, output], { stdio: 'inherit' });
   fs.unlinkSync(tmpHtml);
   console.log(output);
 }
