@@ -200,8 +200,6 @@ def generate_card_markdown(repo: dict) -> str:
         lines.append(summary)
         lines.append('')
 
-    lines.append('---')
-    lines.append('')
     return '\n'.join(lines)
 
 
