@@ -16,6 +16,16 @@
 
 ---
 
+## 特别优先：AB Method
+
+贵平明确表示目前最感兴趣的是 `ayoubben18/ab-method`，因此无论原排序如何，**AB Method 提升为当前第一优先阅读仓库**。
+
+### 立即看
+1. `ayoubben18/ab-method`
+   - 关注点：它如何把复杂任务拆成 mission / workflow / subagents；哪些部分是真能迁移到日常工程流程里的。
+
+---
+
 ## 第一阶段：先看最有复用价值的技能/工作流仓库
 
 ### Day 1
