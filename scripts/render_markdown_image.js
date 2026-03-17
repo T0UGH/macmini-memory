@@ -124,7 +124,7 @@ async function main() {
 
   const tmpHtml = path.join(path.dirname(output), `.${path.basename(output)}.tmp.html`);
   fs.writeFileSync(tmpHtml, html, 'utf8');
-  const args = mode === 'xhs' ? ['screenshot', '--viewport-size', '1179,2556', '--full-page', `file://${tmpHtml}`, output] : ['screenshot', '--device=Desktop Chrome HiDPI', '--full-page', `file://${tmpHtml}`, output];
+  const args = mode === 'xhs' ? ['screenshot', '--viewport-size', '1179,1200', '--full-page', `file://${tmpHtml}`, output] : ['screenshot', '--device=Desktop Chrome HiDPI', '--full-page', `file://${tmpHtml}`, output];
   execFileSync('playwright', args, { stdio: 'inherit' });
   fs.unlinkSync(tmpHtml);
   console.log(output);
