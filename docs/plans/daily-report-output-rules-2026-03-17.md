@@ -86,3 +86,10 @@ GitHub 完整版不能只保留“方向摘要”，必须对核心仓库增加�
 
 ### 校验 4：内容来源
 - GitHub 卡片中的更新内容必须来自 release/changelog 原文，而不是空泛概括
+
+
+## 七、GitHub 小红书版新增版式规则（2026-03-17 晚）
+- 不要封面页；第一页直接从 `Claude Code` 卡片开始。
+- 不要 `Zed` 单独卡片，默认从 GitHub 小红书外发版中移除。
+- GitHub 小红书版默认顺序：Claude Code → OpenClaw → OpenCode → 候选仓库/继续跟进名单。
+- 长期跟进仓库名单里：加入 `Codex`，去掉 `Zed`。
