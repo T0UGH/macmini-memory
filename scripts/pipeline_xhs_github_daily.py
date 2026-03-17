@@ -322,6 +322,25 @@ def publish(date_str: str, title: str, content: str, variant: str = 'square-9',
 
 
 # ---------------------------------------------------------------------------
+# Helpers: default publish metadata
+# ---------------------------------------------------------------------------
+
+def default_title(date_str: str) -> str:
+    dt = datetime.strptime(date_str, '%Y-%m-%d')
+    return f"github-ai日报 {dt.strftime('%y%m%d')}版"
+
+
+def default_content(date_str: str, repos_count: int) -> str:
+    dt = datetime.strptime(date_str, '%Y-%m-%d')
+    ymd = dt.strftime('%y%m%d')
+    return (
+        f"GitHub AI 日报 {ymd} 版。\n"
+        f"这次整理了 {repos_count} 张图，按一仓一图展开，重点看 Claude Code、OpenClaw、Codex、OpenCode，以及值得继续跟踪的新项目。\n"
+        "内容尽量把原文里真正发生了什么讲清楚，方便直接翻看。"
+    )
+
+
+# ---------------------------------------------------------------------------
 # Step 5: Git commit
 # ---------------------------------------------------------------------------
 
@@ -423,12 +442,12 @@ def main() -> int:
 
     # ---- Step 4: Publish ----
     if not args.skip_publish:
-        if not args.title or not args.content:
-            print('ERROR: --title and --content are required for publishing.', file=sys.stderr)
-            return 1
+        title = args.title or default_title(date_str)
+        content = args.content or default_content(date_str, len(pngs))
 
         print(f'[4/4] Publishing to Xiaohongshu ...')
-        publish(date_str, args.title, args.content, variant,
+        print(f'  Title: {title}')
+        publish(date_str, title, content, variant,
                 tags=args.tags, dry_run=args.dry_run)
     else:
         print('[4/4] Skipping publish (--skip-publish).')
