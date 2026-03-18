@@ -40,32 +40,22 @@ PUBLISH_SCRIPT = ROOT / 'scripts' / 'publish_xiaohongshu_x_daily.py'
 def parse_daily_markdown(md_text: str) -> list[dict]:
     """Parse x-ai-daily/<date>.md into ordered news items.
 
-    Returns a list of dicts with keys:
-      - num: int (original numbering)
-      - title: str (heading text without number prefix)
-      - author: str
-      - source: str
-      - link: str
-      - summary: str (摘要)
-      - why_important: str (为什么重要)
-      - scores: dict[str, int] (5 scoring dimensions)
-      - avg_score: float
+    Supports both the old structure (摘要 / 为什么重要) and the new
+    evidence-rich structure (原文要点 / 原话摘录 / 我的判断 / 建议动作).
     """
     items: list[dict] = []
     current: Optional[dict] = None
-    current_field: Optional[str] = None  # track multi-line field
+    current_field: Optional[str] = None
 
     for line in md_text.splitlines():
         stripped = line.strip()
 
-        # Skip everything before first ### item and after section 5/6
         if re.match(r'^##\s+(5\.\s+值得点开|6\.\s+总结|Caveats)', stripped):
             if current:
                 items.append(current)
                 current = None
             break
 
-        # Detect item heading: ### N) Title
         h3 = re.match(r'^###\s+(\d+)\)\s+(.+)$', stripped)
         if h3:
             if current:
@@ -77,7 +67,11 @@ def parse_daily_markdown(md_text: str) -> list[dict]:
                 'source': '',
                 'link': '',
                 'summary': '',
+                'key_points': [],
+                'quote': '',
+                'judgment': '',
                 'why_important': '',
+                'action': '',
                 'scores': {},
                 'avg_score': 0.0,
             }
@@ -87,7 +81,6 @@ def parse_daily_markdown(md_text: str) -> list[dict]:
         if current is None:
             continue
 
-        # Parse bullet fields
         bullet = re.match(r'^-\s+(.+)$', stripped)
         if bullet:
             text = bullet.group(1)
@@ -104,13 +97,23 @@ def parse_daily_markdown(md_text: str) -> list[dict]:
             elif text.startswith('摘要：'):
                 current['summary'] = text.replace('摘要：', '').strip()
                 current_field = 'summary'
+            elif text.startswith('原文要点：'):
+                current_field = 'key_points'
+            elif text.startswith('原话摘录：'):
+                current['quote'] = text.replace('原话摘录：', '').strip().strip('"')
+                current_field = 'quote'
+            elif text.startswith('我的判断：'):
+                current['judgment'] = text.replace('我的判断：', '').strip()
+                current_field = 'judgment'
             elif text.startswith('为什么重要：'):
                 current['why_important'] = text.replace('为什么重要：', '').strip()
                 current_field = 'why_important'
+            elif text.startswith('建议动作：'):
+                current['action'] = text.replace('建议动作：', '').strip()
+                current_field = 'action'
             elif text.startswith('评分：'):
                 current_field = 'scores'
             elif current_field == 'scores':
-                # Score line: "重要性：9/10"
                 score_m = re.match(r'^(.+?)：\s*(\d+)/10', text)
                 if score_m:
                     current['scores'][score_m.group(1).strip()] = int(score_m.group(2))
@@ -118,7 +121,11 @@ def parse_daily_markdown(md_text: str) -> list[dict]:
                 current_field = None
             continue
 
-        # Indented score lines (under 评分：)
+        nested_bullet = re.match(r'^[ \t]+-\s+(.+)$', line)
+        if nested_bullet and current_field == 'key_points':
+            current['key_points'].append(nested_bullet.group(1).strip())
+            continue
+
         if current_field == 'scores':
             score_m = re.match(r'^-\s*(.+?)：\s*(\d+)/10', stripped)
             if not score_m:
@@ -130,7 +137,6 @@ def parse_daily_markdown(md_text: str) -> list[dict]:
     if current:
         items.append(current)
 
-    # Compute average scores
     for item in items:
         if item['scores']:
             item['avg_score'] = sum(item['scores'].values()) / len(item['scores'])
@@ -161,39 +167,51 @@ def score_to_stars(avg: float) -> str:
 def generate_card_markdown(item: dict) -> str:
     """Generate a single Xiaohongshu card markdown for an item.
 
-    Style: 原文内容占大头, 评价缩短, 纯中文, 必看指数替代评分.
+    New preference: facts first, then judgment. If key_points exist, use them
+    as the main body instead of repeating a high-level summary.
     """
     lines: list[str] = []
 
-    # Title: just the topic, no numbering
     lines.append(f"## {item['title']}")
     lines.append('')
 
-    # Main body: summary content (占大头)
-    if item['summary']:
+    if item.get('key_points'):
+        lines.append('### 原文说了什么')
+        for point in item['key_points'][:4]:
+            lines.append(f'- {point}')
+        lines.append('')
+    elif item.get('summary'):
         lines.append(item['summary'])
         lines.append('')
 
-    # Why important section (shortened)
+    if item.get('quote'):
+        quote = item['quote'].strip()
+        lines.append(f'> {quote}')
+        lines.append('')
+
+    if item.get('judgment'):
+        lines.append('### 我的判断')
+        lines.append(item['judgment'])
+        lines.append('')
+
     lines.append('### 为什么值得看')
     if item['why_important']:
-        # Shorten: take the core message, limit length
         why = item['why_important']
-        # If too long, take first two sentences
         sentences = re.split(r'(?<=[。！？；])', why)
         if len(sentences) > 2 and len(why) > 120:
             why = ''.join(sentences[:2])
         lines.append(why)
     lines.append('')
 
-    # 必看指数
+    if item.get('action'):
+        lines.append(f"**建议动作：{item['action']}**")
+        lines.append('')
+
     stars = score_to_stars(item['avg_score'])
     lines.append(f'**必看指数：{stars}**')
     lines.append('')
 
-    # One-sentence conclusion
     lines.append('### 一句话结论')
-    # Generate from summary or why_important
     conclusion = _extract_conclusion(item)
     lines.append(f'**{conclusion}**')
     lines.append('')
@@ -203,7 +221,17 @@ def generate_card_markdown(item: dict) -> str:
 
 def _extract_conclusion(item: dict) -> str:
     """Extract or derive a one-sentence conclusion."""
-    # Use the last sentence of why_important as conclusion
+    if item.get('action'):
+        text = item['action'].strip()
+        if text:
+            return text if text.endswith(('。', '！', '？')) else text + '。'
+
+    if item.get('judgment'):
+        sentences = re.split(r'(?<=[。！？])', item['judgment'])
+        sentences = [s.strip() for s in sentences if s.strip()]
+        if sentences:
+            return sentences[0]
+
     why = item['why_important']
     if why:
         sentences = re.split(r'(?<=[。！？])', why)
@@ -214,7 +242,6 @@ def _extract_conclusion(item: dict) -> str:
                 last += '。'
             return last
 
-    # Fallback to summary's last sentence
     if item['summary']:
         sentences = re.split(r'(?<=[。！？])', item['summary'])
         sentences = [s.strip() for s in sentences if s.strip()]

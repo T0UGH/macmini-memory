@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 
-ROOT = Path('/Users/haha/.openclaw/workspace/github-daily')
+ROOT = Path('/Users/haha/workspace/memory/github-ai-daily')
 CONFIG = json.loads((ROOT / 'config.json').read_text())
 STATE_DIR = ROOT / 'state'
 OUT_DIR = ROOT / 'runs'
@@ -34,7 +34,10 @@ def run_maybe(cmd):
 
 
 def latest_release(repo):
-    code, out, err = run_maybe(['gh', 'release', 'view', '-R', repo, '--json', 'name,tagName,publishedAt,url,body,isPrerelease'])
+    code, out, err = run_maybe([
+        'gh', 'release', 'view', '-R', repo,
+        '--json', 'name,tagName,publishedAt,url,body,isPrerelease'
+    ])
     if code != 0:
         return {'repo': repo, 'error': err.strip() or out.strip()}
     data = json.loads(out)
@@ -43,6 +46,7 @@ def latest_release(repo):
 
 
 def cleanup(s):
+    s = re.sub(r'`([^`]+)`', r'\1', s)
     s = re.sub(r'\[([^\]]+)\]\([^\)]+\)', r'\1', s)
     s = re.sub(r'\(#\d+\)', '', s)
     s = re.sub(r'https?://\S+', '', s)
@@ -60,10 +64,12 @@ def format_ts(ts):
 
 def bullet_lines(body):
     out = []
-    for line in (body or '').splitlines():
-        s = line.strip()
+    for raw in (body or '').splitlines():
+        s = raw.strip()
         if s.startswith(('- ', '* ')):
-            out.append(cleanup(s[2:].strip()))
+            text = cleanup(s[2:].strip())
+            if text:
+                out.append(text)
     return out
 
 
@@ -83,93 +89,232 @@ def any_match(lines, keywords):
     return None
 
 
+def limit_lines(lines, n):
+    seen = []
+    for line in lines:
+        if line and line not in seen:
+            seen.append(line)
+    return seen[:n]
+
+
 def summarize_claude_code(lines):
-    out = []
-    if first_match(lines, ['mcp', 'structured input']) or first_match(lines, ['mcp', 'interactive']):
-        out.append('新增 MCP 交互式补充输入能力：MCP 服务可以在任务进行中通过表单或网页让用户补充结构化信息。')
-    if first_match(lines, ['elicitation']) and first_match(lines, ['elicitationresult']):
-        out.append('新增 `Elicitation` / `ElicitationResult` hooks：可以在结果回传前拦截或改写这一步交互。')
-    if first_match(lines, ['--name']) or first_match(lines, ['display name']):
-        out.append('新增 `-n / --name` 参数：启动会话时可以直接设置显示名称。')
-    if first_match(lines, ['sparsepaths']) or first_match(lines, ['sparse-checkout']):
-        out.append('`claude --worktree` 新增 `worktree.sparsePaths`：在大型 monorepo 里可以只检出需要的目录，减小 worktree 体积。')
-    if first_match(lines, ['postcompact']):
-        out.append('新增 `PostCompact` hook：上下文压缩完成后会触发新的后置 hook。')
-    if not out:
-        out = ['本次 release 有多项 CLI、hook 和 worktree 相关改进，整体方向仍然是增强 MCP、会话管理和大型仓库下的可用性。']
-    return out[:5]
+    update_points = []
+    raw_focus = []
+    impacts = []
+
+    mcp_line = first_match(lines, ['mcp', 'structured input']) or first_match(lines, ['mcp', 'interactive'])
+    if mcp_line:
+        update_points.append('MCP 交互能力继续增强：任务执行中可以补采结构化输入，不再只能靠单轮 prompt 把信息一次性喂完。')
+        raw_focus.append(mcp_line)
+        impacts.append('这会直接改善真实工作流里的“信息不齐就卡住”问题，agent 可以在中途向人要补充材料。')
+
+    elicitation_line = first_match(lines, ['elicitation']) or first_match(lines, ['elicitationresult'])
+    if elicitation_line:
+        update_points.append('新增 Elicitation / ElicitationResult hooks，说明“向用户追问—拿到结果—继续执行”这条链路开始可被 hook 拦截和编排。')
+        raw_focus.append(elicitation_line)
+        impacts.append('对自动化团队来说，这意味着 Claude Code 的会话流转更像一条可插拔的工作流，而不只是黑盒对话。')
+
+    name_line = first_match(lines, ['--name']) or first_match(lines, ['display name'])
+    if name_line:
+        update_points.append('CLI 新增 -n / --name，会话启动时就能明确命名，便于并行任务和多线程管理。')
+        raw_focus.append(name_line)
+
+    sparse_line = first_match(lines, ['sparsepaths']) or first_match(lines, ['sparse-checkout']) or first_match(lines, ['sparse paths'])
+    if sparse_line:
+        update_points.append('worktree.sparsePaths 进入可用状态，大仓库/monorepo 可以只检出必要目录，减小上下文和磁盘负担。')
+        raw_focus.append(sparse_line)
+        impacts.append('这类改动是面向重仓库场景的真优化，不是演示型功能；说明 Claude Code 在继续补企业仓库可用性。')
+
+    postcompact_line = first_match(lines, ['postcompact'])
+    if postcompact_line:
+        update_points.append('新增 PostCompact hook，表示上下文压缩后也能被挂接后处理逻辑。')
+        raw_focus.append(postcompact_line)
+        impacts.append('这对长会话治理很关键：压缩不再只是内部动作，而是能接进可观察、可校验、可补救的链路。')
+
+    if not update_points:
+        update_points = ['本次 release 主要围绕 CLI、MCP、hook 和 worktree 的可编排性展开，方向是把 Claude Code 做得更像可控的工程系统。']
+    if not raw_focus:
+        raw_focus = lines[:6]
+    if not impacts:
+        impacts = ['如果你在用 Claude Code 跑多轮任务或大仓库，这版比“模型更聪明”更值得关注，因为它改的是工作流可用性。']
+
+    return {
+        'overview': '这版不是 flashy 新能力，而是在补 Claude Code 作为工程工具的执行链路：MCP 交互、hook 节点、会话命名和大仓库 worktree 都更完整了。',
+        'update_points': limit_lines(update_points, 6),
+        'raw_focus': limit_lines(raw_focus, 6),
+        'impacts': limit_lines(impacts, 4),
+    }
 
 
 def summarize_openclaw(lines):
-    out = []
-    if first_match(lines, ['recover the broken']) or first_match(lines, ['tag/release path']):
-        out.append('这次发布主要是在修复上一版损坏的 tag / release 路径，属于发布链路补丁。')
-    if first_match(lines, ['npm version is still']):
-        out.append('npm 版本号仍然是 `2026.3.13`，`-1` 只体现在 Git tag 和 GitHub Release 上。')
-    if first_match(lines, ['compaction']):
-        out.append('修复 compaction 的后置校验：压缩后会按完整会话 token 数来做 sanity check。')
-    if first_match(lines, ['telegram']) and first_match(lines, ['ssrf']):
-        out.append('修复 Telegram 媒体传输相关的安全策略问题，和 SSRF 防护链路有关。')
-    if not out:
-        out = ['这版 OpenClaw 以稳定性修复为主，重点不在新功能，而在发布链路和安全/校验细节。']
-    return out[:5]
+    update_points = []
+    raw_focus = []
+    impacts = []
+
+    recover_line = first_match(lines, ['recover the broken']) or first_match(lines, ['tag/release path'])
+    if recover_line:
+        update_points.append('这次首先是在修补上一版损坏的 tag / release 路径，属于发布链路补丁，不是大功能更新。')
+        raw_focus.append(recover_line)
+        impacts.append('这类修复虽然不显眼，但会直接影响版本分发、自动升级和外部引用的可信度。')
+
+    npm_line = first_match(lines, ['npm version is still'])
+    if npm_line:
+        update_points.append('npm 版本号仍是 2026.3.13，-1 只体现在 Git tag / GitHub Release，等于是在修发布包装层。')
+        raw_focus.append(npm_line)
+
+    compaction_line = first_match(lines, ['compaction'])
+    if compaction_line:
+        update_points.append('compaction 后置校验被补上：压缩完成后会按完整会话 token 数做 sanity check。')
+        raw_focus.append(compaction_line)
+        impacts.append('这会减少长会话压缩后状态异常却不自知的问题，对 always-on agent 很重要。')
+
+    telegram_line = first_match(lines, ['telegram'])
+    ssrf_line = first_match(lines, ['ssrf'])
+    if telegram_line or ssrf_line:
+        update_points.append('Telegram 媒体传输相关的安全策略被修正，属于 SSRF 防护链路的一部分。')
+        raw_focus.extend([x for x in [telegram_line, ssrf_line] if x])
+        impacts.append('说明 OpenClaw 在补“平台接入层”的边界安全，不只是堆功能；这对消息渠道型 agent 是硬需求。')
+
+    if not update_points:
+        update_points = ['这版 OpenClaw 以稳定性和安全补丁为主，重点不在新功能，而在发布链路、压缩校验和外部平台接入边界。']
+    if not raw_focus:
+        raw_focus = lines[:6]
+    if not impacts:
+        impacts = ['如果你在跑常驻 OpenClaw，这类发布链路和安全细节修补，优先级其实高于新玩具功能。']
+
+    return {
+        'overview': '这版更像“把系统做结实”的维护版本：修发布链路、补 compaction 校验、收紧 Telegram / SSRF 防护。',
+        'update_points': limit_lines(update_points, 6),
+        'raw_focus': limit_lines(raw_focus, 6),
+        'impacts': limit_lines(impacts, 4),
+    }
 
 
 def summarize_opencode(lines):
-    out = []
-    if first_match(lines, ['effect-to-zod']) or first_match(lines, ['schema conversion']):
-        out.append('补上 effect-to-zod 的 schema conversion 基础能力，偏底层类型/结构转换。')
-    if first_match(lines, ['bun installations']):
-        out.append('为 Bun 安装场景补了配置序列化处理，减少安装链路里的环境问题。')
-    if first_match(lines, ['text attachments']):
-        out.append('应用侧新增文本附件支持，输入材料的形态更丰富了。')
-    if first_match(lines, ['session history']) and first_match(lines, ['performance']):
-        out.append('会话历史改成分页加载，重点是提升服务端性能。')
-    if first_match(lines, ['git init']) and first_match(lines, ['sessions lost']):
-        out.append('修复在已有项目里执行 `git init` 后会话丢失的问题。')
-    if not out:
-        out = ['这版 OpenCode 以底层能力补强和会话稳定性修复为主，同时增强了 app 侧输入能力。']
-    return out[:5]
+    update_points = []
+    raw_focus = []
+    impacts = []
+
+    effect_line = first_match(lines, ['effect-to-zod']) or first_match(lines, ['schema conversion'])
+    if effect_line:
+        update_points.append('补了 effect-to-zod 的 schema conversion，偏底层类型系统和结构转换能力。')
+        raw_focus.append(effect_line)
+
+    bun_line = first_match(lines, ['bun installations']) or first_match(lines, ['bun'])
+    if bun_line:
+        update_points.append('Bun 安装链路的配置序列化问题被处理，减少环境差异造成的安装异常。')
+        raw_focus.append(bun_line)
+
+    attachment_line = first_match(lines, ['text attachments'])
+    if attachment_line:
+        update_points.append('应用侧新增文本附件支持，输入材料不再只是一段 prompt，适合更复杂的资料投喂。')
+        raw_focus.append(attachment_line)
+        impacts.append('这会提升用 OpenCode 做分析/调试时的输入灵活性，尤其适合带日志、片段、说明一起喂。')
+
+    history_line = first_match(lines, ['session history']) or first_match(lines, ['performance'])
+    if history_line:
+        update_points.append('会话历史改成分页加载，目标是把服务端性能和长会话稳定性拉上来。')
+        raw_focus.append(history_line)
+        impacts.append('这不是表面功能，但说明 OpenCode 也在补“越用越重”后的历史负担问题。')
+
+    git_line = first_match(lines, ['git init']) or first_match(lines, ['sessions lost'])
+    if git_line:
+        update_points.append('修掉已有项目里执行 git init 后会话丢失的问题，属于真实使用中很烦人的稳定性坑。')
+        raw_focus.append(git_line)
+
+    if not update_points:
+        update_points = ['这版 OpenCode 以底层能力补强和会话稳定性修复为主，同时补了输入能力。']
+    if not raw_focus:
+        raw_focus = lines[:6]
+    if not impacts:
+        impacts = ['整体看不是新叙事，而是在把 OpenCode 往“能长期用”的日常工具打磨。']
+
+    return {
+        'overview': 'OpenCode 这版重点不在宣传点，而在底层结构、历史性能和输入形态这些会影响长期使用体验的细节。',
+        'update_points': limit_lines(update_points, 6),
+        'raw_focus': limit_lines(raw_focus, 6),
+        'impacts': limit_lines(impacts, 4),
+    }
 
 
 def summarize_zed(lines):
-    out = []
-    if first_match(lines, ['spawn_agent']) or first_match(lines, ['subagents']):
-        out.append('Zed Agent 新增 `spawn_agent`：可以并行调度子代理，提升多任务处理和上下文管理能力。')
-    if first_match(lines, ['gpt-5.3-codex']) and first_match(lines, ['openai provider']):
-        out.append('OpenAI provider 新增对 GPT-5.3-Codex 自带 Key 模式的支持。')
-    if first_match(lines, ['vercel ai gateway']):
-        out.append('Zed 新增 Vercel AI Gateway 作为 LLM 提供商。')
-    if first_match(lines, ['jump to a file from a diff']) or first_match(lines, ['open excerpts']):
-        out.append('在 agent 对话里，可以直接从 diff 跳回对应文件，减少来回切换。')
-    if first_match(lines, ['draft prompts']) or first_match(lines, ['thinking mode toggle']) or first_match(lines, ['thread history']):
-        out.append('Agent 线程体验继续加强：草稿提示词、思考模式等状态的持久化更完整了。')
-    if not out:
-        out = ['这版 Zed 主要在继续打磨 Agent 工作流、提供商接入和线程体验。']
-    return out[:5]
+    update_points = []
+    raw_focus = []
+    impacts = []
+
+    spawn_line = first_match(lines, ['spawn_agent']) or first_match(lines, ['subagents'])
+    if spawn_line:
+        update_points.append('Zed Agent 新增 spawn_agent，开始显式支持并行子代理调度。')
+        raw_focus.append(spawn_line)
+        impacts.append('这说明编辑器内 agent 也在往多 agent 编排靠，不再只是单线程聊天式助手。')
+
+    codex_line = first_match(lines, ['gpt-5.3-codex']) or first_match(lines, ['openai provider'])
+    if codex_line:
+        update_points.append('OpenAI provider 补上 GPT-5.3-Codex 自带 Key 模式支持，Codex 接入门槛继续下降。')
+        raw_focus.append(codex_line)
+
+    gateway_line = first_match(lines, ['vercel ai gateway'])
+    if gateway_line:
+        update_points.append('新增 Vercel AI Gateway 作为 LLM provider，意味着模型接入层继续扩张。')
+        raw_focus.append(gateway_line)
+
+    diff_line = first_match(lines, ['jump to a file from a diff']) or first_match(lines, ['open excerpts'])
+    if diff_line:
+        update_points.append('agent 对话里可以直接从 diff 跳回文件，减少“看改动—回源码”之间的切换成本。')
+        raw_focus.append(diff_line)
+
+    draft_line = first_match(lines, ['draft prompts']) or first_match(lines, ['thinking mode toggle']) or first_match(lines, ['thread history'])
+    if draft_line:
+        update_points.append('线程体验继续补：草稿提示词、思考模式和线程状态持久化更完整。')
+        raw_focus.append(draft_line)
+        impacts.append('这类细节改动会直接影响“把 agent 当长期搭档用”是否顺手。')
+
+    if not update_points:
+        update_points = ['这版 Zed 继续打磨 Agent 工作流、提供商接入和线程体验。']
+    if not raw_focus:
+        raw_focus = lines[:6]
+    if not impacts:
+        impacts = ['整体方向很清楚：Zed 在把编辑器内 agent 做成更适合多线程、多提供商、多任务的工作台。']
+
+    return {
+        'overview': 'Zed 这版的重点是 agent workflow 成熟化：子代理、提供商接入、diff 跳转和线程持久化都在补。',
+        'update_points': limit_lines(update_points, 6),
+        'raw_focus': limit_lines(raw_focus, 6),
+        'impacts': limit_lines(impacts, 4),
+    }
 
 
 def summarize_release(item):
     if 'error' in item:
         return {'repo': item['repo'], 'error': item['error']}
+
     repo = item['repo']
     lines = bullet_lines(item.get('body') or '')
     if repo == 'anthropics/claude-code':
-        highlights = summarize_claude_code(lines)
+        data = summarize_claude_code(lines)
     elif repo == 'openclaw/openclaw':
-        highlights = summarize_openclaw(lines)
+        data = summarize_openclaw(lines)
     elif repo == 'sst/opencode':
-        highlights = summarize_opencode(lines)
+        data = summarize_opencode(lines)
     elif repo == 'zed-industries/zed':
-        highlights = summarize_zed(lines)
+        data = summarize_zed(lines)
     else:
-        highlights = lines[:5]
+        data = {
+            'overview': '本次版本有可见更新，建议直接看 release 原文。',
+            'update_points': lines[:5],
+            'raw_focus': lines[:6],
+            'impacts': ['对具体工作流的影响需结合仓库定位再判断。'],
+        }
+
     return {
         'repo': repo,
         'tag': item.get('tagName'),
         'publishedAt': format_ts(item.get('publishedAt')),
         'url': item.get('url'),
-        'highlights': highlights,
+        'overview': data['overview'],
+        'update_points': data['update_points'],
+        'raw_focus': data['raw_focus'],
+        'impacts': data['impacts'],
     }
 
 
@@ -232,9 +377,34 @@ def plugin_desc_cn(text):
         return 'AWS Serverless 方向插件，覆盖设计、开发、部署、测试和调试。'
     if 'development kit' in low and 'agent sdk' in low:
         return '面向 Claude Agent SDK 的开发工具包。'
+    if 'notion workspace integration' in low:
+        return 'Notion 集成，可搜索页面、更新文档、管理数据库，把团队知识库直接接进 Claude Code。'
+    if 'browser automation' in low or 'stagehand' in low:
+        return '浏览器自动化插件，可驱动网页交互、抓数据和跑流程。'
+    if 'terraform' in low:
+        return 'Terraform 生态集成，适合 IaC 场景的查询、生成和自动化。'
+    if 'microsoft documentation' in low or 'azure' in low or '.net' in low:
+        return '微软官方文档入口，适合 Azure、.NET、Windows 相关开发查询。'
+    if 'intercom' in low:
+        return 'Intercom 集成，可直接查客服会话、联系人和公司信息。'
+    if 'neon' in low:
+        return 'Neon 数据库/项目管理集成，把托管 Postgres 工作流接入 Claude Code。'
     if not s:
         return '暂无说明。'
     return s if re.search(r'[。！？]$', s) else s + '。'
+
+
+def plugin_implication(diff):
+    added = diff['added']
+    names = {x['name'].lower() for x in added}
+    points = []
+    if any(n in names for n in ['stagehand', 'terraform', 'neon', 'notion', 'intercom', 'microsoft-docs']):
+        points.append('这批新增插件明显更偏“真实工作系统接入”而不是 demo：知识库、数据库、浏览器、IaC、客服系统都在补。')
+    if 'notion' in names and any(x['name'] == 'Notion' for x in diff['removed']):
+        points.append('Notion 同时出现删除和新增，更像条目规范化/重命名，不像功能下线。')
+    if not points:
+        points.append('插件仓库这次变化说明 Claude Code 官方生态还在继续向生产系统接入层扩展。')
+    return points
 
 
 def search_repos(query, limit=5):
@@ -259,7 +429,6 @@ def discovery_score(item):
     stars = int(item.get('stargazersCount') or 0)
 
     score = 0
-
     high_signal = CONFIG['discovery_high_signal_keywords']
     low_signal = CONFIG['discovery_low_signal_keywords']
 
@@ -286,7 +455,7 @@ def discovery_score(item):
     if len(desc) < 20:
         score -= 2
 
-    if any(k in text for k in ['claude code', 'openclaw']):
+    if any(k in text for k in ['claude code', 'openclaw', 'codex']):
         score += 6
 
     return score
@@ -385,6 +554,42 @@ def repo_reason(item):
     return '来自 coding agent 生态搜索。'
 
 
+def repo_relation(item):
+    text = f"{item['fullName']} {(item.get('description') or '')}".lower()
+    rel = []
+    if 'claude code' in text:
+        rel.append('和 Claude Code 生态直接相关')
+    if 'openclaw' in text:
+        rel.append('和 OpenClaw / always-on agent 方向相关')
+    if 'codex' in text:
+        rel.append('和 Codex / 多 agent 编排方向相关')
+    if any(k in text for k in ['mcp', 'acp']):
+        rel.append('属于协议 / 工具接入层')
+    if any(k in text for k in ['subagent', 'multi-agent']):
+        rel.append('属于多 agent 编排层')
+    if any(k in text for k in ['worktree', 'repo', 'memory']):
+        rel.append('和仓库上下文 / 多任务管理有关')
+    if not rel:
+        rel.append('与 coding agent 工作流相关，但还需要进一步点进仓库确认成熟度')
+    return '；'.join(rel) + '。'
+
+
+def repo_keywords(item):
+    text = f"{item['fullName']} {(item.get('description') or '')}".lower()
+    mapping = [
+        ('multi-agent', '多 Agent'), ('subagent', 'Subagent'), ('mcp', 'MCP'),
+        ('acp', 'ACP'), ('worktree', 'worktree'), ('memory', 'memory'),
+        ('terminal', 'terminal'), ('obsidian', 'Obsidian'), ('neovim', 'Neovim'),
+        ('vscode', 'VS Code'), ('codex', 'Codex'), ('claude code', 'Claude Code'),
+        ('openclaw', 'OpenClaw'), ('sandbox', 'sandbox'), ('plugin', 'plugin')
+    ]
+    out = []
+    for raw, label in mapping:
+        if raw in text and label not in out:
+            out.append(label)
+    return ' / '.join(out[:5]) if out else 'agentic coding / workflow'
+
+
 def main():
     now = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     core = [summarize_release(latest_release(repo)) for repo in CORE_RELEASE_REPOS]
@@ -394,6 +599,7 @@ def main():
     if PLUGIN_STATE.exists():
         previous_market = json.loads(PLUGIN_STATE.read_text())
     plugin_diff = diff_marketplace(previous_market, current_market)
+    plugin_diff['implication'] = plugin_implication(plugin_diff)
     PLUGIN_STATE.write_text(json.dumps(current_market, ensure_ascii=False, indent=2))
 
     discovery = discover(limit=DISCOVERY_COUNT)
@@ -414,16 +620,28 @@ def main():
 
     out_json = OUT_DIR / f'{now}.json'
     out_md = OUT_DIR / f'{now}.md'
+    dated_md = ROOT / f"{now[:10]}.md"
     out_json.write_text(json.dumps(result, ensure_ascii=False, indent=2))
 
-    lines = [f'# GitHub 日报试运行（{now}）', '', '## 核心仓库', '']
+    lines = [f'# GitHub AI Daily | {now[:10]}', '', '## 核心仓库', '']
     for item in core:
         if 'error' in item:
             lines += [f"### {item['repo']}", f"- 抓取失败：{item['error']}", '']
             continue
-        lines += [f"### {item['repo']} · {item.get('tag','')}", f"- 发布时间：{item.get('publishedAt','')}（北京时间）"]
-        for hl in item.get('highlights', [])[:5]:
-            lines.append(f'- {hl}')
+        lines += [f"### {item['repo']} · {item.get('tag', '')}"]
+        lines.append(f"- 发布时间：{item.get('publishedAt', '')}（北京时间）")
+        lines.append(f"- 一句话结论：{item.get('overview', '')}")
+        lines.append('- 更新点拆解：')
+        for hl in item.get('update_points', [])[:6]:
+            lines.append(f'  - {hl}')
+        if item.get('raw_focus'):
+            lines.append('- 原始变更要点：')
+            for rb in item['raw_focus'][:6]:
+                lines.append(f'  - {rb}')
+        if item.get('impacts'):
+            lines.append('- 对工作流的影响：')
+            for imp in item['impacts'][:4]:
+                lines.append(f'  - {imp}')
         if item.get('url'):
             lines.append(f"- 链接：{item['url']}")
         lines.append('')
@@ -432,32 +650,44 @@ def main():
     lines.append(f"- 新增：{len(plugin_diff['added'])}")
     lines.append(f"- 删除：{len(plugin_diff['removed'])}")
     lines.append(f"- 版本变化：{len(plugin_diff['changed'])}")
+    lines.append('- 这一轮变化说明：')
+    for point in plugin_diff.get('implication', [])[:3]:
+        lines.append(f'  - {point}')
     if plugin_diff['added']:
         lines.append('### 新增插件')
         for item in plugin_diff['added'][:10]:
-            lines.append(f"- {item['name']}：{plugin_desc_cn(item.get('description',''))}")
+            lines.append(f"- {item['name']}：{plugin_desc_cn(item.get('description', ''))}")
         lines.append('')
     if plugin_diff['removed']:
         lines.append('### 删除插件')
         for item in plugin_diff['removed'][:10]:
-            lines.append(f"- {item['name']}：{plugin_desc_cn(item.get('description',''))}")
+            lines.append(f"- {item['name']}：{plugin_desc_cn(item.get('description', ''))}")
         lines.append('')
     if plugin_diff['changed']:
         lines.append('### 插件版本变化')
         for item in plugin_diff['changed'][:10]:
-            lines.append(f"- {item['name']}：{item.get('from')} -> {item.get('to')}；{plugin_desc_cn(item.get('description',''))}")
+            lines.append(f"- {item['name']}：{item.get('from')} -> {item.get('to')}；{plugin_desc_cn(item.get('description', ''))}")
         lines.append('')
 
-    lines += [f"## 新仓候选（{DISCOVERY_COUNT} 个）", '']
+    lines += [f'## 新仓候选（{DISCOVERY_COUNT} 个）', '']
     for idx, item in enumerate(discovery, start=1):
         lines.append(f"### {idx}. {item['fullName']}")
-        lines.append(f"- 简介：{repo_desc_cn(item.get('description',''))}")
-        lines.append(f"- 为什么值得看：{repo_reason(item)}")
+        lines.append(f"- 做什么：{repo_desc_cn(item.get('description', ''))}")
+        lines.append(f"- 核心关键词：{repo_keywords(item)}")
+        lines.append(f"- 为什么现在值得看：{repo_reason(item)}")
+        lines.append(f"- 与主线关系：{repo_relation(item)}")
         lines.append(f"- Stars：{item.get('stargazersCount')} | 来源查询：{item.get('matchedQuery')}")
         lines.append(f"- 链接：{item.get('url')}")
         lines.append('')
 
-    out_md.write_text('\n'.join(lines))
+    lines += ['## 今日判断', '']
+    lines.append('- 今天 GitHub 侧最强的信号不是“又多了一个 AI repo”，而是核心工具都在继续往可编排、可长期使用、可接生产系统的方向补细节。')
+    lines.append('- 核心仓库部分必须优先看更新点拆解和对工作流的影响，不要只看版本号。')
+    lines.append('- 新仓候选里优先关注真正碰到 Claude Code / Codex / OpenClaw 主线的项目，少看纯列表和模板型仓库。')
+
+    md_text = '\n'.join(lines)
+    out_md.write_text(md_text)
+    dated_md.write_text(md_text)
     print(str(out_md))
 
 

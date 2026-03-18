@@ -1,7 +1,9 @@
 ## evalstate/fast-agent
 **fast-agent**
 
-Code, Build and Evaluate agents - excellent Model and Skills/MCP/ACP Support。
+- 属于协议 / 工具接入层。
+- 做什么：Code, Build and Evaluate agents - excellent Model and Skills/MCP/ACP Support。
+- 核心关键词：MCP / ACP
 
-- 为什么值得看：命中协议 / 工具接入方向。
-- Stars：3709 | 来源查询：ACP coding agent
+**一句话**
+命中协议 / 工具接入方向。

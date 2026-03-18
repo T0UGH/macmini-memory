@@ -1,7 +1,9 @@
 ## bytedance/deer-flow
 **deer-flow**
 
-An open-source SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skills and subagents, it handles different levels of tasks that could take minutes to hours.。
+- 属于多 agent 编排层。
+- 做什么：An open-source SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skills and subagents, it handles different levels of tasks that could take minutes to hours.。
+- 核心关键词：Subagent / sandbox
 
-- 为什么值得看：命中 subagent 方向。
-- Stars：31477 | 来源查询：subagent coding
+**一句话**
+命中 subagent 方向。

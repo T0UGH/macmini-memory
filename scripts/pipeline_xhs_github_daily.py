@@ -125,25 +125,27 @@ def parse_daily_markdown(md_text: str) -> list[dict]:
         if current_repo is None:
             continue
 
-        # Extract bullet lines
+        # Extract bullet lines (supports both top-level and indented bullets)
         bullet_m = re.match(r'^-\s+(.+)$', stripped)
-        if bullet_m:
-            text = bullet_m.group(1)
+        nested_m = re.match(r'^[ \t]+-\s+(.+)$', line)
+        if bullet_m or nested_m:
+            text = (bullet_m.group(1) if bullet_m else nested_m.group(1)).strip()
 
             # Extract special fields from bullets
             if text.startswith('发布时间：'):
-                # e.g. "发布时间：2026-03-17 08:28（北京时间）"
                 t = re.sub(r'[（(].*$', '', text.replace('发布时间：', '')).strip()
                 current_repo['release_time'] = t
             elif text.startswith('链接：'):
                 current_repo['link'] = text.replace('链接：', '').strip()
-            elif re.match(r'^简介：', text):
-                current_repo['intro'] = text.replace('简介：', '').strip()
+            elif re.match(r'^(简介|一句话结论)：', text):
+                current_repo['intro'] = re.sub(r'^(简介|一句话结论)：', '', text).strip()
             elif re.match(r'^成熟度判断：', text):
                 sm = re.search(r'Stars?\s+(\d[\d,]*)', text)
                 if sm:
                     current_repo['stars'] = sm.group(1)
                 current_repo['bullets'].append(text)
+            elif text in ('更新点拆解：', '原始变更要点：', '对工作流的影响：', '这一轮变化说明：'):
+                continue
             else:
                 current_repo['bullets'].append(text)
 
