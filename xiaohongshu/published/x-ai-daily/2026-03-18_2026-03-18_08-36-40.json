@@ -1,0 +1,31 @@
+{
+  "publishedAt": "2026-03-18T08:36:40.780707+08:00",
+  "payload": {
+    "date": "2026-03-18",
+    "title": "x ai日报 260318",
+    "content": "X AI 日报 260318 版。\n这次整理了 9 张图，重点看 coding agent、OpenClaw、Claude Code、评测工具和安全风险信号。\n这一版正文尽量把原文里真正发生了什么讲清楚，不只停留在摘要。",
+    "tags": [
+      "AI日报",
+      "AI情报",
+      "CodingAgent",
+      "ClaudeCode",
+      "OpenClaw"
+    ],
+    "variant": "square-9",
+    "visibility": "公开可见",
+    "images": [
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-18-square-9/01-codex-subagents-coding.png",
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-18-square-9/02-48-agent.png",
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-18-square-9/03-nvidia-nemoclaw-openclaw.png",
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-18-square-9/04-ollama-0-18.png",
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-18-square-9/05-claude-context-fork.png",
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-18-square-9/06-gpt-5-4.png",
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-18-square-9/07-simon-willison-coding.png",
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-18-square-9/08-anthropic-linux-foundation.png",
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-18-square-9/09-google-cloud-tech.png"
+    ]
+  },
+  "result": {
+    "stdout": "内容发布成功: &{Title:x ai日报 260318 Content:X AI 日报 260318 版。\n这次整理了 9 张图，重点看 coding agent、OpenClaw、Claude Code、评测工具和安全风险信号。\n这一版正文尽量把原文里真正发生了什么讲清楚，不只停留在摘要。 Images:9 Status:发布完成 PostID:}"
+  }
+}
