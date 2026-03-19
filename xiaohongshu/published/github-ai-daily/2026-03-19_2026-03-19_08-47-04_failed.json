@@ -1,0 +1,37 @@
+{
+  "publishedAt": "2026-03-19T08:47:04.840450+08:00",
+  "payload": {
+    "date": "2026-03-19",
+    "title": "github-ai日报 260319版",
+    "content": "GitHub AI 日报 260319 版。\n这次整理了 14 张图，按一仓一图展开，重点看 Claude Code、OpenClaw、Codex、OpenCode，以及值得继续跟踪的新项目。\n内容尽量把原文里真正发生了什么讲清楚，方便直接翻看。",
+    "tags": [
+      "GitHub",
+      "AI日报",
+      "ClaudeCode",
+      "Codex",
+      "OpenClaw"
+    ],
+    "variant": "square-9",
+    "visibility": "公开可见",
+    "images": [
+      "/Users/haha/workspace/memory/xiaohongshu/github-ai-daily/2026-03-19-square-9/01-claude-code.png",
+      "/Users/haha/workspace/memory/xiaohongshu/github-ai-daily/2026-03-19-square-9/02-openclaw.png",
+      "/Users/haha/workspace/memory/xiaohongshu/github-ai-daily/2026-03-19-square-9/03-opencode.png",
+      "/Users/haha/workspace/memory/xiaohongshu/github-ai-daily/2026-03-19-square-9/04-zed.png",
+      "/Users/haha/workspace/memory/xiaohongshu/github-ai-daily/2026-03-19-square-9/05-agent-of-empires.png",
+      "/Users/haha/workspace/memory/xiaohongshu/github-ai-daily/2026-03-19-square-9/06-codeg.png",
+      "/Users/haha/workspace/memory/xiaohongshu/github-ai-daily/2026-03-19-square-9/07-AgentHub.png",
+      "/Users/haha/workspace/memory/xiaohongshu/github-ai-daily/2026-03-19-square-9/08-agentpool.png",
+      "/Users/haha/workspace/memory/xiaohongshu/github-ai-daily/2026-03-19-square-9/09-superset.png",
+      "/Users/haha/workspace/memory/xiaohongshu/github-ai-daily/2026-03-19-square-9/10-fast-agent.png",
+      "/Users/haha/workspace/memory/xiaohongshu/github-ai-daily/2026-03-19-square-9/11-codex.png",
+      "/Users/haha/workspace/memory/xiaohongshu/github-ai-daily/2026-03-19-square-9/12-pi-subagents.png",
+      "/Users/haha/workspace/memory/xiaohongshu/github-ai-daily/2026-03-19-square-9/13-awesome-cli-coding-agents.png",
+      "/Users/haha/workspace/memory/xiaohongshu/github-ai-daily/2026-03-19-square-9/14-rocketride-server.png"
+    ]
+  },
+  "result": {
+    "error": "xiaohongshu-mcp publish_content timed out; server started successfully on 127.0.0.1:18060 but browser session could not complete publish (log shows missing cookies.json and context deadline exceeded while opening publish tab).",
+    "status": "publish_failed"
+  }
+}
