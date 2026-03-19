@@ -3,12 +3,13 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
 from typing import List
+
+from xiaohongshu_publish_common import append_publish_error_context, preflight_xhs
 
 ROOT = Path('/Users/haha/workspace/memory')
 XHS_ROOT = ROOT / 'xiaohongshu' / 'github-ai-daily'
@@ -86,16 +87,35 @@ def main() -> int:
         return 0
 
     call_expr = build_mcporter_call(args.title, args.content, images, args.tags, args.visibility)
-    proc = run([
-        'mcporter', 'call', '--timeout', str(args.timeout_ms), call_expr
-    ])
-    stdout = proc.stdout.strip()
-    result = {'stdout': stdout}
-    log_path = write_publish_log(args.date, payload, result)
-
-    print(stdout)
-    print(f'LOG_FILE={log_path}')
-    return 0
+    try:
+        preflight = preflight_xhs(restart=False)
+        proc = run([
+            'mcporter', 'call', '--timeout', str(args.timeout_ms), call_expr
+        ])
+        stdout = proc.stdout.strip()
+        result = {
+            'status': 'published',
+            'stdout': stdout,
+            'preflight': preflight,
+        }
+        log_path = write_publish_log(args.date, payload, result)
+        print(stdout)
+        print(f'LOG_FILE={log_path}')
+        return 0
+    except Exception as exc:
+        error_text = str(exc).strip()
+        if isinstance(exc, subprocess.CalledProcessError):
+            error_text = (exc.stderr or exc.stdout or str(exc)).strip()
+        result = {
+            'status': 'publish_failed',
+            'error': append_publish_error_context(error_text),
+        }
+        if 'preflight' in locals():
+            result['preflight'] = preflight
+        log_path = write_publish_log(args.date, payload, result)
+        print(result['error'], file=sys.stderr)
+        print(f'LOG_FILE={log_path}', file=sys.stderr)
+        return getattr(exc, 'returncode', 1) or 1
 
 
 if __name__ == '__main__':
