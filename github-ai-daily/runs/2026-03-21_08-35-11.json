@@ -1,0 +1,391 @@
+{
+  "generatedAt": "2026-03-21_08-35-11",
+  "language": "zh-CN",
+  "config": {
+    "min_stars": 50,
+    "discovery_count": 10,
+    "core_release_repos": [
+      "anthropics/claude-code",
+      "openclaw/openclaw",
+      "sst/opencode",
+      "zed-industries/zed"
+    ],
+    "plugin_repo": "anthropics/claude-plugins-official"
+  },
+  "core": [
+    {
+      "repo": "anthropics/claude-code",
+      "tag": "v2.1.81",
+      "publishedAt": "2026-03-21 06:24",
+      "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.81",
+      "overview": "这版不是 flashy 新能力，而是在补 Claude Code 作为工程工具的执行链路：MCP 交互、hook 节点、会话命名和大仓库 worktree 都更完整了。",
+      "update_points": [
+        "本次 release 主要围绕 CLI、MCP、hook 和 worktree 的可编排性展开，方向是把 Claude Code 做得更像可控的工程系统。"
+      ],
+      "raw_focus": [
+        "Added --bare flag for scripted -p calls — skips hooks, LSP, plugin sync, and skill directory walks; requires ANTHROPIC_API_KEY or an apiKeyHelper via --settings (OAuth and keychain auth disabled); auto-memory fully disabled",
+        "Added --channels permission relay — channel servers that declare the permission capability can forward tool approval prompts to your phone",
+        "Fixed multiple concurrent Claude Code sessions requiring repeated re-authentication when one session refreshes its OAuth token",
+        "Fixed voice mode silently swallowing retry failures and showing a misleading \"check your network\" message instead of the actual error",
+        "Fixed voice mode audio not recovering when the server silently drops the WebSocket connection",
+        "Fixed CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS not suppressing the structured-outputs beta header, causing 400 errors on proxy gateways forwarding to Vertex/Bedrock"
+      ],
+      "impacts": [
+        "如果你在用 Claude Code 跑多轮任务或大仓库，这版比“模型更聪明”更值得关注，因为它改的是工作流可用性。"
+      ]
+    },
+    {
+      "repo": "openclaw/openclaw",
+      "tag": "v2026.3.13-1",
+      "publishedAt": "2026-03-15 02:04",
+      "url": "https://github.com/openclaw/openclaw/releases/tag/v2026.3.13-1",
+      "overview": "这版更像“把系统做结实”的维护版本：修发布链路、补 compaction 校验、收紧 Telegram / SSRF 防护。",
+      "update_points": [
+        "这次首先是在修补上一版损坏的 tag / release 路径，属于发布链路补丁，不是大功能更新。",
+        "npm 版本号仍是 2026.3.13，-1 只体现在 Git tag / GitHub Release，等于是在修发布包装层。",
+        "compaction 后置校验被补上：压缩完成后会按完整会话 token 数做 sanity check。",
+        "Telegram 媒体传输相关的安全策略被修正，属于 SSRF 防护链路的一部分。"
+      ],
+      "raw_focus": [
+        "This release exists to recover the broken v2026.3.13 tag/release path.",
+        "The corresponding npm version is still 2026.3.13, not 2026.3.13-1.",
+        "fix(compaction): use full-session token count for post-compaction sanity check by @efe-arv in",
+        "fix(telegram): thread media transport policy into SSRF by @obviyus in"
+      ],
+      "impacts": [
+        "这类修复虽然不显眼，但会直接影响版本分发、自动升级和外部引用的可信度。",
+        "这会减少长会话压缩后状态异常却不自知的问题，对 always-on agent 很重要。",
+        "说明 OpenClaw 在补“平台接入层”的边界安全，不只是堆功能；这对消息渠道型 agent 是硬需求。"
+      ]
+    },
+    {
+      "repo": "sst/opencode",
+      "tag": "v1.2.27",
+      "publishedAt": "2026-03-16 10:34",
+      "url": "https://github.com/anomalyco/opencode/releases/tag/v1.2.27",
+      "overview": "OpenCode 这版重点不在宣传点，而在底层结构、历史性能和输入形态这些会影响长期使用体验的细节。",
+      "update_points": [
+        "这版 OpenCode 以底层能力补强和会话稳定性修复为主，同时补了输入能力。"
+      ],
+      "raw_focus": [
+        "Fixed VCS watcher if statement logic",
+        "Delete legacy permission module",
+        "Clean up pending entry when question is aborted",
+        "Remove SIGHUP exit handler",
+        "Effectify PermissionNext and fix InstanceState ALS bug",
+        "Inline branded ID schemas"
+      ],
+      "impacts": [
+        "整体看不是新叙事，而是在把 OpenCode 往“能长期用”的日常工具打磨。"
+      ]
+    },
+    {
+      "repo": "zed-industries/zed",
+      "tag": "v0.228.0",
+      "publishedAt": "2026-03-18 23:31",
+      "url": "https://github.com/zed-industries/zed/releases/tag/v0.228.0",
+      "overview": "Zed 这版的重点是 agent workflow 成熟化：子代理、提供商接入、diff 跳转和线程持久化都在补。",
+      "update_points": [
+        "这版 Zed 继续打磨 Agent 工作流、提供商接入和线程体验。"
+      ],
+      "raw_focus": [
+        "Agent: Added ability to @-mention your branch diff to include all changes since main as context.",
+        "Agent: Enabled thinking mode when using Anthropic models with Copilot.",
+        "Agent: Added Paste as Plain Text to the agent panel message editor right-click menu.",
+        "Agent: Added api_url and api_key settings for the LM Studio provider. (#48309; thanks SkyVence)",
+        "Added the ability to quickly resolve merge conflicts with the agent.",
+        "Added the ability to delete a git worktree from the worktree picker (cmd-shift-backspace on macOS, ctrl-shift-backspace on Linux/Windows). (#50015; thanks davidalecrim1)"
+      ],
+      "impacts": [
+        "整体方向很清楚：Zed 在把编辑器内 agent 做成更适合多线程、多提供商、多任务的工作台。"
+      ]
+    }
+  ],
+  "plugins": {
+    "added": [
+      {
+        "name": "ai-firstify",
+        "version": null,
+        "description": "AI-first project auditor and re-engineer based on the 9 design principles and 7 design patterns from the TechWolf AI-First Bootcamp",
+        "url": "https://ai-first.techwolf.ai"
+      },
+      {
+        "name": "ai-plugins",
+        "version": null,
+        "description": "Set up endorctl and use Endor Labs to scan, prioritize, and fix security risks across your software supply chain",
+        "url": "https://www.endorlabs.com"
+      },
+      {
+        "name": "aikido",
+        "version": null,
+        "description": "Aikido Security scanning for Claude Code — SAST, secrets, and IaC vulnerability detection powered by the Aikido MCP server.",
+        "url": "https://github.com/AikidoSec/aikido-claude-plugin"
+      },
+      {
+        "name": "astronomer-data-agents",
+        "version": null,
+        "description": "Data engineering for Apache Airflow and Astronomer. Author DAGs with best practices, debug pipeline failures, trace data lineage, profile tables, migrate Airflow 2 to 3, and manage local and cloud deployments.",
+        "url": "https://github.com/astronomer/agents"
+      },
+      {
+        "name": "atlan",
+        "version": null,
+        "description": "Atlan data catalog plugin for Claude Code. Search, explore, govern, and manage your data assets through natural language. Powered by the Atlan MCP server with semantic search, lineage traversal, glossary management, data quality rules, and more.",
+        "url": "https://docs.atlan.com/"
+      },
+      {
+        "name": "brightdata-plugin",
+        "version": null,
+        "description": "Web scraping, Google search, structured data extraction, and MCP server integration powered by Bright Data. Includes 7 skills: scrape any webpage as markdown (with bot detection/CAPTCHA bypass), search Google with structured JSON results, extract data from 40+ websites (Amazon, LinkedIn, Instagram, TikTok, YouTube, and more), orchestrate Bright Data's 60+ MCP tools, built-in best practices for Web Unlocker, SERP API, Web Scraper API, and Browser API, Python SDK best practices for the brightda...",
+        "url": "https://docs.brightdata.com"
+      },
+      {
+        "name": "cloudinary",
+        "version": null,
+        "description": "Use Cloudinary directly in Claude. Manage assets, apply transformations, optimize media, and more through natural conversation.",
+        "url": "https://cloudinary.com/documentation"
+      },
+      {
+        "name": "cockroachdb",
+        "version": null,
+        "description": "CockroachDB plugin for Claude Code — explore schemas, write optimized SQL, debug queries, and manage distributed database clusters directly from your AI coding agent.",
+        "url": "https://github.com/cockroachdb/claude-plugin"
+      },
+      {
+        "name": "data-engineering",
+        "version": null,
+        "description": "Data engineering plugin - warehouse exploration, pipeline authoring, Airflow integration",
+        "url": "https://github.com/astronomer/agents"
+      },
+      {
+        "name": "elixir-ls-lsp",
+        "version": null,
+        "description": "Elixir language server (ElixirLS) for Claude Code — provides code intelligence and diagnostics for .ex, .exs, and .heex files.",
+        "url": "https://elixir-lsp.github.io/elixir-ls/"
+      },
+      {
+        "name": "fastly-agent-toolkit",
+        "version": null,
+        "description": "Fastly development tools and platform skills",
+        "url": "https://github.com/fastly/fastly-agent-toolkit/blob/main/README.md"
+      },
+      {
+        "name": "fiftyone",
+        "version": null,
+        "description": "Build high-quality datasets and computer vision models. Visualize datasets, analyze models, find duplicates, run inference, evaluate predictions, and develop custom plugins.",
+        "url": "https://docs.voxel51.com/"
+      },
+      {
+        "name": "firetiger",
+        "version": null,
+        "description": "Claude Code plugin for Firetiger observability workflows and MCP-powered investigations.",
+        "url": "https://www.firetiger.com/"
+      },
+      {
+        "name": "followrabbit",
+        "version": null,
+        "description": "Cloud cost optimization for GCP infrastructure. Review changes for cost impact and auto-apply savings recommendations using the followrabbit CLI.",
+        "url": "https://subscriptions.agentic.followrabbit.ai/"
+      },
+      {
+        "name": "goodmem",
+        "version": null,
+        "description": "GoodMem memory infrastructure for AI agents. Use Python SDK skills to write code that manages embedders, spaces, and memories, or use MCP tools to perform GoodMem operations directly via natural language.",
+        "url": "https://github.com/PAIR-Systems-Inc/goodmem-claude-code-plugin"
+      },
+      {
+        "name": "helius",
+        "version": null,
+        "description": "Build on Solana with Helius — live blockchain tools, expert coding patterns, and autonomous account signup",
+        "url": "https://www.helius.dev/docs"
+      },
+      {
+        "name": "mcp-server-dev",
+        "version": null,
+        "description": "Skills for designing and building MCP servers that work seamlessly with Claude. Guides you through deployment models (remote HTTP, MCPB, local), tool design patterns, auth, and interactive MCP apps.",
+        "url": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/mcp-server-dev"
+      },
+      {
+        "name": "netlify-skills",
+        "version": null,
+        "description": "Netlify platform skills for Claude Code — functions, edge functions, blobs, database, image CDN, forms, config, CLI, frameworks, caching, AI gateway, and deployment.",
+        "url": "https://github.com/netlify/context-and-tools"
+      },
+      {
+        "name": "nightvision",
+        "version": null,
+        "description": "Skills for working with NightVision, a DAST and API Discovery platform that finds exploitable vulnerabilities in web applications and REST APIs",
+        "url": "https://github.com/nvsecurity/nightvision-skills"
+      },
+      {
+        "name": "nimble",
+        "version": null,
+        "description": "Nimble web data toolkit — search, extract, map, crawl the web and work with structured data agents",
+        "url": "https://docs.nimbleway.com/integrations/agent-skills/plugin-installation"
+      },
+      {
+        "name": "opsera-devsecops",
+        "version": null,
+        "description": "Opsera DevSecOps Agent — AI-powered architecture analysis, security scanning, compliance auditing, and SQL security for your codebase. Free trial included.",
+        "url": "https://opsera.ai/agents"
+      },
+      {
+        "name": "optibot",
+        "version": null,
+        "description": "AI code review that catches production-breaking bugs, business logic issues, and security vulnerabilities — directly in Claude Code.",
+        "url": "https://getoptimal.ai"
+      },
+      {
+        "name": "postiz",
+        "version": null,
+        "description": "Social media automation CLI for scheduling posts, managing integrations, uploading media, and tracking analytics across 28+ platforms including X, LinkedIn, Reddit, YouTube, TikTok, Instagram, and more",
+        "url": "https://postiz.com/agent"
+      },
+      {
+        "name": "prisma",
+        "version": null,
+        "description": "Prisma MCP integration for Postgres database management, schema migrations, SQL queries, and connection string management. Provision Prisma Postgres databases, run migrations, and interact with your data directly.",
+        "url": "https://prisma.io"
+      },
+      {
+        "name": "product-tracking-skills",
+        "version": null,
+        "description": "AI agent skills that make SaaS products data-ready for product analytics — from codebase scan to tracking plan to working instrumentation code.",
+        "url": "https://www.accoil.com/product-tracking"
+      },
+      {
+        "name": "remember",
+        "version": null,
+        "description": "Continuous memory for Claude Code. Extracts, summarizes, and compresses conversations into tiered daily logs. Claude remembers what you did yesterday.",
+        "url": "https://github.com/Digital-Process-Tools/claude-remember"
+      },
+      {
+        "name": "revenuecat",
+        "version": null,
+        "description": "Configure RevenueCat projects, apps, products, entitlements, and offerings directly from Claude Code. Manage your in-app purchase backend without leaving your development workflow.",
+        "url": "https://www.revenuecat.com"
+      },
+      {
+        "name": "searchfit-seo",
+        "version": null,
+        "description": "Free AI-powered SEO toolkit — audit websites, plan content strategy, optimize pages, generate schema markup, cluster keywords, and track AI visibility. Works with any website or codebase.",
+        "url": "https://searchfit.ai"
+      },
+      {
+        "name": "voila-api",
+        "version": null,
+        "description": "Definitive guide for the Voila API. Covers shipment creation (Manual/Smart Shipping), real-time tracking, detailed history, manifesting, collections, webhooks, and third-party integrations (Sorted, Peoplevox, Mintsoft, Veeqo, JD).",
+        "url": "https://github.com/TSedmanDC/Voila-API-Skill"
+      },
+      {
+        "name": "wordpress.com",
+        "version": null,
+        "description": "Uses Claude Code to create and edit WordPress sites with WordPress Studio before deploying changes to your WordPress.com site.",
+        "url": "https://developer.wordpress.com/wordpress-com-claude-code-plugin/"
+      },
+      {
+        "name": "zoominfo",
+        "version": null,
+        "description": "Search companies and contacts, enrich leads, find lookalikes, and get AI-ranked contact recommendations. Pre-built skills chain multiple ZoomInfo tools into complete B2B sales workflows.",
+        "url": "https://zoominfo.com"
+      }
+    ],
+    "removed": [],
+    "changed": [],
+    "implication": [
+      "插件仓库这次变化说明 Claude Code 官方生态还在继续向生产系统接入层扩展。"
+    ]
+  },
+  "discovery": [
+    {
+      "description": "Orchestrate Claude Code, Codex, and Gemini sessions on a multiplayer canvas. Manage git worktrees, track AI conversations, and visualize your team's agentic work in real-time.",
+      "fullName": "preset-io/agor",
+      "stargazersCount": 1064,
+      "updatedAt": "2026-03-21T00:21:31Z",
+      "url": "https://github.com/preset-io/agor",
+      "matchedQuery": "worktree coding agent",
+      "_score": 38
+    },
+    {
+      "description": "Bring AI agents into Obsidian via Agent Client Protocol (ACP), such as Claude Code, Codex and Gemini CLI.",
+      "fullName": "RAIT-09/obsidian-agent-client",
+      "stargazersCount": 1278,
+      "updatedAt": "2026-03-20T18:05:00Z",
+      "url": "https://github.com/RAIT-09/obsidian-agent-client",
+      "matchedQuery": "ACP coding agent",
+      "_score": 33
+    },
+    {
+      "description": "Codeg (Code Generation) is an enterprise-grade multi-agent coding workspace. It unifies local AI coding agents in one desktop app with session aggregation, parallel git worktree development, MCP/Skills management, and integrated Git/file/terminal workflows.（企业级多 Agent 编码工作台）",
+      "fullName": "xintaofei/codeg",
+      "stargazersCount": 359,
+      "updatedAt": "2026-03-20T23:58:56Z",
+      "url": "https://github.com/xintaofei/codeg",
+      "matchedQuery": "ACP coding agent",
+      "_score": 33
+    },
+    {
+      "description": "A unified agent orchestration hub that lets you configure and manage multiple AI agents (native, ACP, AGUI, Claude Code) via YAML, and exposes them through standardized protocols (ACP/OpenCode Server).",
+      "fullName": "phil65/agentpool",
+      "stargazersCount": 113,
+      "updatedAt": "2026-03-20T23:38:55Z",
+      "url": "https://github.com/phil65/agentpool",
+      "matchedQuery": "ACP coding agent",
+      "_score": 29
+    },
+    {
+      "description": "IDE for the AI Agents Era - Run an army of Claude Code, Codex, etc. on your machine",
+      "fullName": "superset-sh/superset",
+      "stargazersCount": 7528,
+      "updatedAt": "2026-03-21T00:27:26Z",
+      "url": "https://github.com/superset-sh/superset",
+      "matchedQuery": "terminal coding agent",
+      "_score": 28
+    },
+    {
+      "description": "Code, Build and Evaluate agents - excellent Model and Skills/MCP/ACP Support",
+      "fullName": "evalstate/fast-agent",
+      "stargazersCount": 3714,
+      "updatedAt": "2026-03-20T19:08:53Z",
+      "url": "https://github.com/evalstate/fast-agent",
+      "matchedQuery": "ACP coding agent",
+      "_score": 27
+    },
+    {
+      "description": "Agentic Chat Interface directly in Neovim with ACP providers from Claude-Code, Gemini, Codex, OpenCode, and Cursor-agent",
+      "fullName": "carlos-algms/agentic.nvim",
+      "stargazersCount": 306,
+      "updatedAt": "2026-03-20T23:06:37Z",
+      "url": "https://github.com/carlos-algms/agentic.nvim",
+      "matchedQuery": "ACP coding agent",
+      "_score": 24
+    },
+    {
+      "description": "Lightweight coding agent that runs in your terminal",
+      "fullName": "openai/codex",
+      "stargazersCount": 66613,
+      "updatedAt": "2026-03-21T00:34:25Z",
+      "url": "https://github.com/openai/codex",
+      "matchedQuery": "terminal coding agent",
+      "_score": 23
+    },
+    {
+      "description": "A universal git-native AI agent framework. Your agent lives inside a git repo — identity, rules, memory, tools, and skills are all version-controlled files.",
+      "fullName": "open-gitagent/gitclaw",
+      "stargazersCount": 164,
+      "updatedAt": "2026-03-20T19:36:54Z",
+      "url": "https://github.com/open-gitagent/gitclaw",
+      "matchedQuery": "repo memory agent",
+      "_score": 18
+    },
+    {
+      "description": "⌥  AI Coding agent for the terminal — hash-anchored edits, optimized tool harness, LSP, Python, browser, subagents, and more",
+      "fullName": "can1357/oh-my-pi",
+      "stargazersCount": 2208,
+      "updatedAt": "2026-03-21T00:28:57Z",
+      "url": "https://github.com/can1357/oh-my-pi",
+      "matchedQuery": "subagent coding",
+      "_score": 17
+    }
+  ]
+}

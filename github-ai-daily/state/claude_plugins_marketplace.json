@@ -9,6 +9,21 @@
     "description": "Development kit for working with the Claude Agent SDK",
     "url": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/agent-sdk-dev"
   },
+  "ai-firstify": {
+    "version": null,
+    "description": "AI-first project auditor and re-engineer based on the 9 design principles and 7 design patterns from the TechWolf AI-First Bootcamp",
+    "url": "https://ai-first.techwolf.ai"
+  },
+  "ai-plugins": {
+    "version": null,
+    "description": "Set up endorctl and use Endor Labs to scan, prioritize, and fix security risks across your software supply chain",
+    "url": "https://www.endorlabs.com"
+  },
+  "aikido": {
+    "version": null,
+    "description": "Aikido Security scanning for Claude Code — SAST, secrets, and IaC vulnerability detection powered by the Aikido MCP server.",
+    "url": "https://github.com/AikidoSec/aikido-claude-plugin"
+  },
   "amazon-location-service": {
     "version": null,
     "description": "Guide developers through adding maps, places search, geocoding, routing, and other geospatial features with Amazon Location Service, including authentication setup, SDK integration, and best practices.",
@@ -18,6 +33,16 @@
     "version": null,
     "description": "Asana project management integration. Create and manage tasks, search projects, update assignments, track progress, and integrate your development workflow with Asana's work management platform.",
     "url": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/asana"
+  },
+  "astronomer-data-agents": {
+    "version": null,
+    "description": "Data engineering for Apache Airflow and Astronomer. Author DAGs with best practices, debug pipeline failures, trace data lineage, profile tables, migrate Airflow 2 to 3, and manage local and cloud deployments.",
+    "url": "https://github.com/astronomer/agents"
+  },
+  "atlan": {
+    "version": null,
+    "description": "Atlan data catalog plugin for Claude Code. Search, explore, govern, and manage your data assets through natural language. Powered by the Atlan MCP server with semantic search, lineage traversal, glossary management, data quality rules, and more.",
+    "url": "https://docs.atlan.com/"
   },
   "atlassian": {
     "version": null,
@@ -38,6 +63,11 @@
     "version": null,
     "description": "Design, build, deploy, test, and debug serverless applications with AWS Serverless services.",
     "url": "https://github.com/awslabs/agent-plugins"
+  },
+  "brightdata-plugin": {
+    "version": null,
+    "description": "Web scraping, Google search, structured data extraction, and MCP server integration powered by Bright Data. Includes 7 skills: scrape any webpage as markdown (with bot detection/CAPTCHA bypass), search Google with structured JSON results, extract data from 40+ websites (Amazon, LinkedIn, Instagram, TikTok, YouTube, and more), orchestrate Bright Data's 60+ MCP tools, built-in best practices for Web Unlocker, SERP API, Web Scraper API, and Browser API, Python SDK best practices for the brightda...",
+    "url": "https://docs.brightdata.com"
   },
   "chrome-devtools-mcp": {
     "version": null,
@@ -63,6 +93,16 @@
     "version": null,
     "description": "Tools to maintain and improve CLAUDE.md files - audit quality, capture session learnings, and keep project memory current.",
     "url": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-md-management"
+  },
+  "cloudinary": {
+    "version": null,
+    "description": "Use Cloudinary directly in Claude. Manage assets, apply transformations, optimize media, and more through natural conversation.",
+    "url": "https://cloudinary.com/documentation"
+  },
+  "cockroachdb": {
+    "version": null,
+    "description": "CockroachDB plugin for Claude Code — explore schemas, write optimized SQL, debug queries, and manage distributed database clusters directly from your AI coding agent.",
+    "url": "https://github.com/cockroachdb/claude-plugin"
   },
   "code-review": {
     "version": null,
@@ -99,6 +139,11 @@
     "description": "Data engineering for Apache Airflow and Astronomer. Author DAGs with best practices, debug pipeline failures, trace data lineage, profile tables, migrate Airflow 2 to 3, and manage local and cloud deployments.",
     "url": "https://github.com/astronomer/agents"
   },
+  "data-engineering": {
+    "version": null,
+    "description": "Data engineering plugin - warehouse exploration, pipeline authoring, Airflow integration",
+    "url": "https://github.com/astronomer/agents"
+  },
   "deploy-on-aws": {
     "version": null,
     "description": "Deploy applications to AWS with architecture recommendations, cost estimates, and IaC deployment.",
@@ -108,6 +153,11 @@
     "version": null,
     "description": "Discord messaging bridge with built-in access control. Manage pairing, allowlists, and policy via /discord:access.",
     "url": ""
+  },
+  "elixir-ls-lsp": {
+    "version": null,
+    "description": "Elixir language server (ElixirLS) for Claude Code — provides code intelligence and diagnostics for .ex, .exs, and .heex files.",
+    "url": "https://elixir-lsp.github.io/elixir-ls/"
   },
   "explanatory-output-style": {
     "version": null,
@@ -119,10 +169,20 @@
     "description": "Localhost web chat for testing the channel notification flow. No tokens, no access control, no third-party service.",
     "url": ""
   },
+  "fastly-agent-toolkit": {
+    "version": null,
+    "description": "Fastly development tools and platform skills",
+    "url": "https://github.com/fastly/fastly-agent-toolkit/blob/main/README.md"
+  },
   "feature-dev": {
     "version": null,
     "description": "Comprehensive feature development workflow with specialized agents for codebase exploration, architecture design, and quality review",
     "url": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/feature-dev"
+  },
+  "fiftyone": {
+    "version": null,
+    "description": "Build high-quality datasets and computer vision models. Visualize datasets, analyze models, find duplicates, run inference, evaluate predictions, and develop custom plugins.",
+    "url": "https://docs.voxel51.com/"
   },
   "figma": {
     "version": null,
@@ -139,6 +199,16 @@
     "description": "Web scraping and crawling powered by Firecrawl. Turn any website into clean, LLM-ready markdown or structured data. Scrape single pages, crawl entire sites, search the web, and extract structured information. Includes an AI agent for autonomous multi-source data gathering - just describe what you need and it finds, navigates, and extracts automatically.",
     "url": "https://github.com/firecrawl/firecrawl-claude-plugin.git"
   },
+  "firetiger": {
+    "version": null,
+    "description": "Claude Code plugin for Firetiger observability workflows and MCP-powered investigations.",
+    "url": "https://www.firetiger.com/"
+  },
+  "followrabbit": {
+    "version": null,
+    "description": "Cloud cost optimization for GCP infrastructure. Review changes for cost impact and auto-apply savings recommendations using the followrabbit CLI.",
+    "url": "https://subscriptions.agentic.followrabbit.ai/"
+  },
   "frontend-design": {
     "version": null,
     "description": "Create distinctive, production-grade frontend interfaces with high design quality. Generates creative, polished code that avoids generic AI aesthetics.",
@@ -154,6 +224,11 @@
     "description": "GitLab DevOps platform integration. Manage repositories, merge requests, CI/CD pipelines, issues, and wikis. Full access to GitLab's comprehensive DevOps lifecycle tools.",
     "url": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/gitlab"
   },
+  "goodmem": {
+    "version": null,
+    "description": "GoodMem memory infrastructure for AI agents. Use Python SDK skills to write code that manages embedders, spaces, and memories, or use MCP tools to perform GoodMem operations directly via natural language.",
+    "url": "https://github.com/PAIR-Systems-Inc/goodmem-claude-code-plugin"
+  },
   "gopls-lsp": {
     "version": "1.0.0",
     "description": "Go language server for code intelligence and refactoring",
@@ -163,6 +238,11 @@
     "version": null,
     "description": "AI-powered codebase search and understanding. Query your repositories using natural language to find relevant code, understand dependencies, and get contextual answers about your codebase architecture.",
     "url": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/greptile"
+  },
+  "helius": {
+    "version": null,
+    "description": "Build on Solana with Helius — live blockchain tools, expert coding patterns, and autonomous account signup",
+    "url": "https://www.helius.dev/docs"
   },
   "hookify": {
     "version": null,
@@ -214,6 +294,11 @@
     "description": "Lua language server for code intelligence",
     "url": ""
   },
+  "mcp-server-dev": {
+    "version": null,
+    "description": "Skills for designing and building MCP servers that work seamlessly with Claude. Guides you through deployment models (remote HTTP, MCPB, local), tool design patterns, auth, and interactive MCP apps.",
+    "url": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/mcp-server-dev"
+  },
   "microsoft-docs": {
     "version": null,
     "description": "Access official Microsoft documentation, API references, and code samples for Azure, .NET, Windows, and more.",
@@ -234,10 +319,35 @@
     "description": "Manage your Neon projects and databases with the neon-postgres agent skill and the Neon MCP Server.",
     "url": "https://github.com/neondatabase/agent-skills/tree/main/plugins/neon-postgres"
   },
+  "netlify-skills": {
+    "version": null,
+    "description": "Netlify platform skills for Claude Code — functions, edge functions, blobs, database, image CDN, forms, config, CLI, frameworks, caching, AI gateway, and deployment.",
+    "url": "https://github.com/netlify/context-and-tools"
+  },
+  "nightvision": {
+    "version": null,
+    "description": "Skills for working with NightVision, a DAST and API Discovery platform that finds exploitable vulnerabilities in web applications and REST APIs",
+    "url": "https://github.com/nvsecurity/nightvision-skills"
+  },
+  "nimble": {
+    "version": null,
+    "description": "Nimble web data toolkit — search, extract, map, crawl the web and work with structured data agents",
+    "url": "https://docs.nimbleway.com/integrations/agent-skills/plugin-installation"
+  },
   "notion": {
     "version": null,
     "description": "Notion workspace integration. Search pages, create and update documents, manage databases, and access your team's knowledge base directly from Claude Code for seamless documentation workflows.",
     "url": "https://github.com/makenotion/claude-code-notion-plugin"
+  },
+  "opsera-devsecops": {
+    "version": null,
+    "description": "Opsera DevSecOps Agent — AI-powered architecture analysis, security scanning, compliance auditing, and SQL security for your codebase. Free trial included.",
+    "url": "https://opsera.ai/agents"
+  },
+  "optibot": {
+    "version": null,
+    "description": "AI code review that catches production-breaking bugs, business logic issues, and security vulnerabilities — directly in Claude Code.",
+    "url": "https://getoptimal.ai"
   },
   "pagerduty": {
     "version": null,
@@ -279,6 +389,11 @@
     "description": "Access PostHog analytics, feature flags, experiments, error tracking, and insights directly from Claude Code.",
     "url": "https://posthog.com/docs/model-context-protocol"
   },
+  "postiz": {
+    "version": null,
+    "description": "Social media automation CLI for scheduling posts, managing integrations, uploading media, and tracking analytics across 28+ platforms including X, LinkedIn, Reddit, YouTube, TikTok, Instagram, and more",
+    "url": "https://postiz.com/agent"
+  },
   "postman": {
     "version": null,
     "description": "Full API lifecycle management for Claude Code. Sync collections, generate client code, discover APIs, run tests, create mocks, publish docs, and audit security. Powered by the Postman MCP Server.",
@@ -288,6 +403,16 @@
     "version": null,
     "description": "Comprehensive PR review agents specializing in comments, tests, error handling, type design, code quality, and code simplification",
     "url": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/pr-review-toolkit"
+  },
+  "prisma": {
+    "version": null,
+    "description": "Prisma MCP integration for Postgres database management, schema migrations, SQL queries, and connection string management. Provision Prisma Postgres databases, run migrations, and interact with your data directly.",
+    "url": "https://prisma.io"
+  },
+  "product-tracking-skills": {
+    "version": null,
+    "description": "AI agent skills that make SaaS products data-ready for product analytics — from codebase scan to tracking plan to working instrumentation code.",
+    "url": "https://www.accoil.com/product-tracking"
   },
   "pyright-lsp": {
     "version": "1.0.0",
@@ -314,6 +439,16 @@
     "description": "Configure RevenueCat projects, apps, products, entitlements, and offerings directly from Claude Code. Manage your in-app purchase backend without leaving your development workflow.",
     "url": "https://www.revenuecat.com"
   },
+  "remember": {
+    "version": null,
+    "description": "Continuous memory for Claude Code. Extracts, summarizes, and compresses conversations into tiered daily logs. Claude remembers what you did yesterday.",
+    "url": "https://github.com/Digital-Process-Tools/claude-remember"
+  },
+  "revenuecat": {
+    "version": null,
+    "description": "Configure RevenueCat projects, apps, products, entitlements, and offerings directly from Claude Code. Manage your in-app purchase backend without leaving your development workflow.",
+    "url": "https://www.revenuecat.com"
+  },
   "ruby-lsp": {
     "version": "1.0.0",
     "description": "Ruby language server for code intelligence and analysis",
@@ -328,6 +463,11 @@
     "version": null,
     "description": "Sanity content platform integration with MCP server, agent skills, and slash commands. Query and author content, build and optimize GROQ queries, design schemas, and set up Visual Editing.",
     "url": "https://www.sanity.io"
+  },
+  "searchfit-seo": {
+    "version": null,
+    "description": "Free AI-powered SEO toolkit — audit websites, plan content strategy, optimize pages, generate schema markup, cluster keywords, and track AI visibility. Works with any website or codebase.",
+    "url": "https://searchfit.ai"
   },
   "security-guidance": {
     "version": null,
@@ -419,14 +559,29 @@
     "description": "Vercel deployment platform integration. Manage deployments, check build status, access logs, configure domains, and control your frontend infrastructure directly from Claude Code.",
     "url": "https://github.com/vercel/vercel-plugin"
   },
+  "voila-api": {
+    "version": null,
+    "description": "Definitive guide for the Voila API. Covers shipment creation (Manual/Smart Shipping), real-time tracking, detailed history, manifesting, collections, webhooks, and third-party integrations (Sorted, Peoplevox, Mintsoft, Veeqo, JD).",
+    "url": "https://github.com/TSedmanDC/Voila-API-Skill"
+  },
   "wix": {
     "version": null,
     "description": "Build, manage, and deploy Wix sites and apps. CLI development skills for dashboard extensions, backend APIs, site widgets, and service plugins with the Wix Design System, plus MCP server for site management.",
     "url": "https://dev.wix.com/docs/wix-cli/guides/development/about-wix-skills"
   },
+  "wordpress.com": {
+    "version": null,
+    "description": "Uses Claude Code to create and edit WordPress sites with WordPress Studio before deploying changes to your WordPress.com site.",
+    "url": "https://developer.wordpress.com/wordpress-com-claude-code-plugin/"
+  },
   "zapier": {
     "version": null,
     "description": "Connect 8,000+ apps to your AI workflow. Discover, enable, and execute Zapier actions directly from your client.",
     "url": "https://github.com/zapier/zapier-mcp/tree/main/plugins/zapier"
+  },
+  "zoominfo": {
+    "version": null,
+    "description": "Search companies and contacts, enrich leads, find lookalikes, and get AI-ranked contact recommendations. Pre-built skills chain multiple ZoomInfo tools into complete B2B sales workflows.",
+    "url": "https://zoominfo.com"
   }
 }
