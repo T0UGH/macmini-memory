@@ -1,0 +1,21 @@
+{
+  "ph_api_url": "https://api.producthunt.com/v2/api/graphql",
+  "ph_client_id": "",
+  "ph_client_secret": "",
+  "ph_access_token": "",
+  "anthropic_model": "claude-haiku-4-5-20251001",
+  "ai_topics": [
+    "AI", "artificial intelligence", "machine learning", "LLM",
+    "agent", "coding", "developer tools", "automation", "workflow",
+    "GPT", "Claude", "copilot", "RAG", "vector", "embedding",
+    "NLP", "computer vision", "generative", "prompt"
+  ],
+  "exclude_keywords": [
+    "wallpaper", "avatar generator", "AI girlfriend", "AI boyfriend",
+    "face swap", "AI art filter"
+  ],
+  "max_products": 10,
+  "min_votes": 5,
+  "output_dir": "/Users/haha/workspace/memory/product-hunt-ai-daily",
+  "memory_repo": "/Users/haha/workspace/memory"
+}
