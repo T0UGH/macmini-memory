@@ -8,3 +8,10 @@
   - 完成后运行：`opencli doctor --live`
 
 - [ ] 继续研究 OpenCLI 原理，下一步优先看 Browser Bridge / daemon / CDP 这层是怎么接起来的。
+
+- [ ] 注册 Product Hunt 开发者应用，获取 API 凭据：
+  - 打开 https://www.producthunt.com/v2/oauth/applications
+  - 创建一个新应用（免费）
+  - 拿到 `client_id` 和 `client_secret`
+  - 填入 `/Users/haha/workspace/memory/scripts/config_product_hunt.json` 的对应字段
+  - 有了这个，Product Hunt AI Daily 就能从月度数据升级到每日精确数据
