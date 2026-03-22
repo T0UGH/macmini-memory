@@ -353,7 +353,7 @@ def generate_chinese_summary(product: dict) -> dict:
         product['relevance'] = '待分析'
         return product
 
-    prompt = f"""请为以下 Product Hunt 产品生成中文简介。
+    prompt = f"""请为以下科技产品生成中文简介。
 
 产品名：{product['name']}
 Tagline：{product.get('tagline', '')}
@@ -411,12 +411,12 @@ def generate_overview(products: list[dict]) -> str:
         return f'- 今天筛选出 {len(products)} 个 AI 方向产品'
 
     names = [f"{p['name']}（{p.get('description_cn', p.get('tagline', '')[:60])}）" for p in products[:10]]
-    prompt = f"""以下是今天 Product Hunt 上筛选出的 AI 方向产品：
+    prompt = f"""以下是今天筛选出的 AI 方向科技新产品：
 
 {chr(10).join(f'- {n}' for n in names)}
 
 请用 2-3 句中文写一个"今日判断"，风格参考：
-- 今天 Product Hunt 的 AI 产品偏消费娱乐，真正值得看的不多
+- 今天的 AI 产品偏消费娱乐，真正值得看的不多
 - 今天出现 2 个和 agent workflow 相关的新工具，值得继续跟踪
 
 要求：简洁、有判断、不空泛。只输出判断文本，每句一行，以 - 开头。"""
