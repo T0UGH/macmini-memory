@@ -4,7 +4,7 @@
 ⭐ Stars：1294
 
 **README 要点**
-（README 内容不可用）
+Bring AI agents (Claude Code, Codex, Gemini CLI) directly into Obsidian. Chat with your AI assistant right from your vault. Built on Agent Client Protocol (ACP) by Zed. https://github.com/user-attachments/assets/1c538349…
 
 - 和 Claude Code 生态直接相关；和 Codex / 多 agent 编排方向相关；属于协议 / 工具接入层。
 - 做什么：把 Claude Code、Codex、Gemini CLI 等 AI agent 通过 ACP 接进 Obsidian。
