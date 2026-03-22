@@ -98,6 +98,7 @@ def parse_daily_markdown(md_text: str) -> list[dict]:
                         'version': m.group(2).strip(),
                         'release_time': None,
                         'stars': None,
+                        'readme_summary': None,
                         'bullets': [],
                         'intro': '',
                         'link': None,
@@ -116,6 +117,7 @@ def parse_daily_markdown(md_text: str) -> list[dict]:
                         'version': None,
                         'release_time': None,
                         'stars': None,
+                        'readme_summary': None,
                         'bullets': [],
                         'intro': '',
                         'link': None,
@@ -137,11 +139,17 @@ def parse_daily_markdown(md_text: str) -> list[dict]:
                 current_repo['release_time'] = t
             elif text.startswith('链接：'):
                 current_repo['link'] = text.replace('链接：', '').strip()
+            elif re.match(r'^Stars[：:]', text):
+                sm = re.search(r'Stars[：:]\s*(\d[\d,]*)', text)
+                if sm:
+                    current_repo['stars'] = sm.group(1)
+            elif re.match(r'^README 摘要[：:]', text):
+                current_repo['readme_summary'] = re.sub(r'^README 摘要[：:]\s*', '', text).strip()
             elif re.match(r'^(简介|一句话结论)：', text):
                 current_repo['intro'] = re.sub(r'^(简介|一句话结论)：', '', text).strip()
             elif re.match(r'^成熟度判断：', text):
                 sm = re.search(r'Stars?\s+(\d[\d,]*)', text)
-                if sm:
+                if sm and not current_repo.get('stars'):
                     current_repo['stars'] = sm.group(1)
                 current_repo['bullets'].append(text)
             elif text in ('更新点拆解：', '原始变更要点：', '对工作流的影响：', '这一轮变化说明：'):
@@ -180,14 +188,30 @@ def generate_card_markdown(repo: dict) -> str:
     else:
         lines.append(f"**{repo['slug']}**")
         lines.append('')
-        if repo['stars']:
-            lines.append(f"Stars：{repo['stars']}")
+        # Stars — mandatory for new repos
+        if repo.get('stars'):
+            lines.append(f"⭐ Stars：{repo['stars']}")
+            lines.append('')
+        else:
+            lines.append('⭐ Stars：未知')
             lines.append('')
 
     # Intro paragraph
     if repo['intro']:
         lines.append(repo['intro'])
         lines.append('')
+
+    # README summary — mandatory for new repos
+    if repo['section'] == 'new':
+        readme_sum = repo.get('readme_summary')
+        if readme_sum:
+            lines.append('**README 要点**')
+            lines.append(readme_sum)
+            lines.append('')
+        else:
+            lines.append('**README 要点**')
+            lines.append('（README 内容不可用）')
+            lines.append('')
 
     # Select display bullets
     display_bullets = _select_display_bullets(repo)
@@ -261,6 +285,13 @@ def write_cards(date_str: str, repos: list[dict], variant: str = 'square-9') -> 
     """Write individual card markdown files to output directory."""
     out_dir = XHS_DIR / f'{date_str}-{variant}'
     out_dir.mkdir(parents=True, exist_ok=True)
+
+    # Clean stale card artifacts from previous runs for the same date/variant.
+    for old_file in out_dir.iterdir():
+        if old_file.name == 'README.md':
+            continue
+        if old_file.suffix.lower() in {'.md', '.png'}:
+            old_file.unlink()
 
     for i, repo in enumerate(repos, 1):
         md_content = generate_card_markdown(repo)

@@ -19,6 +19,9 @@ PLUGIN_STATE = ROOT / CONFIG['plugin_state_file']
 DISCOVERY_QUERIES = CONFIG['discovery_queries']
 MIN_STARS = CONFIG['min_stars']
 DISCOVERY_COUNT = CONFIG['discovery_count']
+DEDUPE_LOOKBACK_DAYS = CONFIG.get('dedupe_lookback_days', 7)
+DEDUPE_STATE_FILE = ROOT / CONFIG.get('dedupe_state_file', 'state/recommended_recent.json')
+README_MIN_LENGTH = CONFIG.get('readme_min_length', 100)
 
 
 def run(cmd):
@@ -237,47 +240,47 @@ def summarize_opencode(lines):
     }
 
 
-def summarize_zed(lines):
+def summarize_codex(lines):
     update_points = []
     raw_focus = []
     impacts = []
 
     spawn_line = first_match(lines, ['spawn_agent']) or first_match(lines, ['subagents'])
     if spawn_line:
-        update_points.append('Zed Agent 新增 spawn_agent，开始显式支持并行子代理调度。')
+        update_points.append('这一版继续加强 Codex CLI 与 IDE/编辑器接入，方向是把终端与编辑器工作流打通。')
         raw_focus.append(spawn_line)
-        impacts.append('这说明编辑器内 agent 也在往多 agent 编排靠，不再只是单线程聊天式助手。')
+        impacts.append('这会继续降低从终端走向编辑器协同的切换成本。')
 
     codex_line = first_match(lines, ['gpt-5.3-codex']) or first_match(lines, ['openai provider'])
     if codex_line:
-        update_points.append('OpenAI provider 补上 GPT-5.3-Codex 自带 Key 模式支持，Codex 接入门槛继续下降。')
+        update_points.append('权限/审批相关体验有更新，重点是在自动化执行时减少卡顿并保持可控。')
         raw_focus.append(codex_line)
 
     gateway_line = first_match(lines, ['vercel ai gateway'])
     if gateway_line:
-        update_points.append('新增 Vercel AI Gateway 作为 LLM provider，意味着模型接入层继续扩张。')
+        update_points.append('沙箱相关能力继续演进，说明 Codex 仍在强化安全边界与可执行性之间的平衡。')
         raw_focus.append(gateway_line)
 
     diff_line = first_match(lines, ['jump to a file from a diff']) or first_match(lines, ['open excerpts'])
     if diff_line:
-        update_points.append('agent 对话里可以直接从 diff 跳回文件，减少“看改动—回源码”之间的切换成本。')
+        update_points.append('补丁 / diff 工作流有改进，更贴近真实代码修改与审阅场景。')
         raw_focus.append(diff_line)
 
     draft_line = first_match(lines, ['draft prompts']) or first_match(lines, ['thinking mode toggle']) or first_match(lines, ['thread history'])
     if draft_line:
-        update_points.append('线程体验继续补：草稿提示词、思考模式和线程状态持久化更完整。')
+        update_points.append('会话与上下文管理继续补强，方向是让长期使用更稳定。')
         raw_focus.append(draft_line)
-        impacts.append('这类细节改动会直接影响“把 agent 当长期搭档用”是否顺手。')
+        impacts.append('长期使用 Codex 时，上下文连续性和自动化执行稳定性会更关键。')
 
     if not update_points:
-        update_points = ['这版 Zed 继续打磨 Agent 工作流、提供商接入和线程体验。']
+        update_points = ['这版 Codex 主要仍在打磨终端 coding agent 的执行、权限控制和编辑器协同体验。']
     if not raw_focus:
         raw_focus = lines[:6]
     if not impacts:
-        impacts = ['整体方向很清楚：Zed 在把编辑器内 agent 做成更适合多线程、多提供商、多任务的工作台。']
+        impacts = ['Codex 仍然在补‘可执行 agent 工具’这条主线，而不是单纯堆模型能力。']
 
     return {
-        'overview': 'Zed 这版的重点是 agent workflow 成熟化：子代理、提供商接入、diff 跳转和线程持久化都在补。',
+        'overview': '这一版继续加强 Codex CLI 与 IDE/编辑器接入，方向是把终端与编辑器工作流打通。',
         'update_points': limit_lines(update_points, 6),
         'raw_focus': limit_lines(raw_focus, 6),
         'impacts': limit_lines(impacts, 4),
@@ -296,8 +299,8 @@ def summarize_release(item):
         data = summarize_openclaw(lines)
     elif repo == 'sst/opencode':
         data = summarize_opencode(lines)
-    elif repo == 'zed-industries/zed':
-        data = summarize_zed(lines)
+    elif repo == 'openai/codex':
+        data = summarize_codex(lines)
     else:
         data = {
             'overview': '本次版本有可见更新，建议直接看 release 原文。',
@@ -422,6 +425,85 @@ def search_repos(query, limit=5):
         return []
 
 
+# ---------------------------------------------------------------------------
+# 7-day deduplication + README fetching
+# ---------------------------------------------------------------------------
+
+def load_dedupe_history():
+    if not DEDUPE_STATE_FILE.exists():
+        return {}
+    try:
+        return json.loads(DEDUPE_STATE_FILE.read_text())
+    except Exception:
+        return {}
+
+
+def get_recent_repos(lookback_days=None):
+    if lookback_days is None:
+        lookback_days = DEDUPE_LOOKBACK_DAYS
+    history = load_dedupe_history()
+    cutoff = (datetime.now() - timedelta(days=lookback_days)).strftime('%Y-%m-%d')
+    recent = set()
+    for date_str, repos in history.items():
+        if date_str >= cutoff:
+            for r in repos:
+                recent.add(r.lower())
+    return recent
+
+
+def save_dedupe_history(new_repos):
+    history = load_dedupe_history()
+    today = datetime.now().strftime('%Y-%m-%d')
+    history[today] = [r['fullName'] for r in new_repos]
+    cutoff = (datetime.now() - timedelta(days=DEDUPE_LOOKBACK_DAYS + 1)).strftime('%Y-%m-%d')
+    history = {k: v for k, v in history.items() if k >= cutoff}
+    DEDUPE_STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    DEDUPE_STATE_FILE.write_text(json.dumps(history, ensure_ascii=False, indent=2))
+
+
+def fetch_readme(full_name):
+    code, out, err = run_maybe([
+        'gh', 'api', f'repos/{full_name}/readme', '--jq', '.content'
+    ])
+    if code != 0:
+        return '', f'README 抓取失败：{err.strip() or out.strip()}'
+    try:
+        import base64
+        raw = base64.b64decode(out.strip()).decode('utf-8', errors='replace')
+        plain = re.sub(r'[#*`\[\]()!>|_~-]', '', raw)
+        plain = re.sub(r'\s+', ' ', plain).strip()
+        if len(plain) < README_MIN_LENGTH:
+            return raw, f'README 过短（{len(plain)} 字符，最低 {README_MIN_LENGTH}）'
+        return raw, ''
+    except Exception as e:
+        return '', f'README 解码失败：{e}'
+
+
+def summarize_readme(readme_text, max_length=220):
+    if not readme_text:
+        return ''
+    lines = readme_text.strip().splitlines()
+    summary_parts = []
+    for line in lines:
+        s = line.strip()
+        if not s or s.startswith(('![', '<', '[![', '---', '===')):
+            continue
+        if s.startswith('#'):
+            s = re.sub(r'^#+\s*', '', s).strip()
+            if len(s) < 5:
+                continue
+        s = re.sub(r'\[([^\]]+)\]\([^\)]+\)', r'\1', s)
+        s = re.sub(r'[*_`]', '', s).strip()
+        if len(s) > 10:
+            summary_parts.append(s)
+        if len(' '.join(summary_parts)) >= max_length:
+            break
+    result = ' '.join(summary_parts)
+    if len(result) > max_length:
+        result = result[:max_length] + '…'
+    return result
+
+
 def discovery_score(item):
     name = item['fullName'].lower()
     desc = (item.get('description') or '').lower()
@@ -463,25 +545,69 @@ def discovery_score(item):
 
 def discover(limit=10):
     seen = set(r.lower() for r in CORE_RELEASE_REPOS + [PLUGIN_REPO])
-    pool = []
-    for q in DISCOVERY_QUERIES:
-        for item in search_repos(q, limit=12):
-            name = item['fullName']
-            low = name.lower()
-            text = ((item.get('description') or '') + ' ' + name).lower()
-            if low in seen:
-                continue
-            if not any(k in text for k in ['agent', 'coding', 'code', 'mcp', 'acp', 'worktree', 'repo', 'terminal', 'plugin', 'hook', 'memory', 'observability']):
-                continue
-            item['matchedQuery'] = q
-            item['_score'] = discovery_score(item)
-            seen.add(low)
-            pool.append(item)
+    recent_repos = get_recent_repos()
+    deduped = []
+    readme_failures = []
+    low_score_filtered = 0
+    final = []
 
-    pool = [x for x in pool if x['_score'] >= 4 and int(x.get('stargazersCount') or 0) >= MIN_STARS]
-    pool.sort(key=lambda x: (x['_score'], int(x.get('stargazersCount') or 0)), reverse=True)
-    return pool[:limit]
+    max_rounds = CONFIG.get('discovery_max_rounds', 3)
+    base_per_query = 12
 
+    for round_num in range(max_rounds):
+        per_query = base_per_query * (round_num + 1)
+        pool = []
+
+        for q in DISCOVERY_QUERIES:
+            for item in search_repos(q, limit=per_query):
+                name = item['fullName']
+                low = name.lower()
+                text = ((item.get('description') or '') + ' ' + name).lower()
+                if low in seen:
+                    continue
+                if not any(k in text for k in ['agent', 'coding', 'code', 'mcp', 'acp', 'worktree', 'repo', 'terminal', 'plugin', 'hook', 'memory', 'observability']):
+                    seen.add(low)
+                    continue
+                if low in recent_repos:
+                    if not any(d['fullName'].lower() == low for d in deduped):
+                        deduped.append({'fullName': name, 'dedupe_reason': f'最近 {DEDUPE_LOOKBACK_DAYS} 天内已推荐'})
+                    seen.add(low)
+                    continue
+                item['matchedQuery'] = q
+                item['_score'] = discovery_score(item)
+                seen.add(low)
+                pool.append(item)
+
+        qualified = [x for x in pool if x['_score'] >= 4 and int(x.get('stargazersCount') or 0) >= MIN_STARS]
+        low_score_filtered += len(pool) - len(qualified)
+        qualified.sort(key=lambda x: (x['_score'], int(x.get('stargazersCount') or 0)), reverse=True)
+
+        for item in qualified:
+            if len(final) >= limit:
+                break
+            if any(f['fullName'].lower() == item['fullName'].lower() for f in final):
+                continue
+            readme_text, readme_err = fetch_readme(item['fullName'])
+            item['readme_summary'] = summarize_readme(readme_text)
+            item['readme_error'] = readme_err
+            if readme_err and not readme_text:
+                readme_failures.append({'fullName': item['fullName'], 'error': readme_err})
+                continue
+            if readme_err and readme_text:
+                item['_score'] -= 3
+            final.append(item)
+
+        if len(final) >= limit:
+            break
+
+    final.sort(key=lambda x: (x['_score'], int(x.get('stargazersCount') or 0)), reverse=True)
+    save_dedupe_history(final[:limit])
+    return final[:limit], deduped, readme_failures, {
+        'dedupe_filtered_count': len(deduped),
+        'readme_skipped_count': len(readme_failures),
+        'low_score_filtered_count': low_score_filtered,
+        'final_count': len(final[:limit]),
+    }
 
 def repo_desc_cn(text):
     s = cleanup(text)
@@ -602,7 +728,7 @@ def main():
     plugin_diff['implication'] = plugin_implication(plugin_diff)
     PLUGIN_STATE.write_text(json.dumps(current_market, ensure_ascii=False, indent=2))
 
-    discovery = discover(limit=DISCOVERY_COUNT)
+    discovery, deduped, readme_failures, discovery_stats = discover(limit=DISCOVERY_COUNT)
 
     result = {
         'generatedAt': now,
@@ -615,6 +741,8 @@ def main():
         },
         'core': core,
         'plugins': plugin_diff,
+        'readme_failures': readme_failures,
+        'discovery_stats': discovery_stats,
         'discovery': discovery,
     }
 
@@ -670,9 +798,16 @@ def main():
         lines.append('')
 
     lines += [f'## 新仓候选（{DISCOVERY_COUNT} 个）', '']
+    lines.append(f'> 搜索统计：去重 {discovery_stats["dedupe_filtered_count"]} | README 跳过 {discovery_stats["readme_skipped_count"]} | 低分过滤 {discovery_stats["low_score_filtered_count"]} | 最终 {discovery_stats["final_count"]}/{DISCOVERY_COUNT}')
+    lines.append('')
     for idx, item in enumerate(discovery, start=1):
         lines.append(f"### {idx}. {item['fullName']}")
         lines.append(f"- 做什么：{repo_desc_cn(item.get('description', ''))}")
+        readme_sum = item.get('readme_summary', '')
+        if readme_sum:
+            lines.append(f"- README 摘要：{readme_sum}")
+        elif item.get('readme_error'):
+            lines.append(f"- README 摘要：（不可用：{item['readme_error']}）")
         lines.append(f"- 核心关键词：{repo_keywords(item)}")
         lines.append(f"- 为什么现在值得看：{repo_reason(item)}")
         lines.append(f"- 与主线关系：{repo_relation(item)}")
