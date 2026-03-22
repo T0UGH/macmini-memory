@@ -171,109 +171,180 @@ def generate_card_markdown(repo: dict) -> str:
     """Generate a single Xiaohongshu card markdown for a repo."""
     lines: list[str] = []
 
-    # Title: just owner/repo, NO "图 N｜" prefix
     lines.append(f"## {repo['owner_repo']}")
 
     if repo['section'] == 'core':
-        # Product name + version
         name = repo['slug']
-        if repo['version']:
-            lines.append(f"**{name} {repo['version']}**")
-        else:
-            lines.append(f"**{name}**")
+        lines.append(f"**{name} {repo['version']}**" if repo['version'] else f"**{name}**")
         lines.append('')
         if repo['release_time']:
             lines.append(f"发布时间：{repo['release_time']}")
             lines.append('')
+        if repo['intro']:
+            lines.append(repo['intro'])
+            lines.append('')
+        core_sections = _build_core_sections(repo)
+        for title, section_lines in core_sections:
+            if not section_lines:
+                continue
+            lines.append(f'**{title}**')
+            for item in section_lines:
+                lines.append(f'- {item}')
+            lines.append('')
     else:
         lines.append(f"**{repo['slug']}**")
         lines.append('')
-        # Stars — mandatory for new repos
-        if repo.get('stars'):
-            lines.append(f"⭐ Stars：{repo['stars']}")
-            lines.append('')
-        else:
-            lines.append('⭐ Stars：未知')
-            lines.append('')
-
-    # Intro paragraph
-    if repo['intro']:
-        lines.append(repo['intro'])
+        lines.append(f"⭐ Stars：{repo['stars'] if repo.get('stars') else '未知'}")
+        lines.append('')
+        lines.append('**它是做什么的**')
+        lines.append(_normalize_new_intro(repo))
         lines.append('')
 
-    # README summary — mandatory for new repos
-    if repo['section'] == 'new':
-        readme_sum = repo.get('readme_summary')
-        if readme_sum:
-            lines.append('**README 要点**')
-            lines.append(readme_sum)
-            lines.append('')
-        else:
-            lines.append('**README 要点**')
-            lines.append('（README 内容不可用）')
+        readme_sum = _clean_readme_summary(repo.get('readme_summary') or '')
+        lines.append('**README 要点**')
+        lines.append(readme_sum or '（README 内容不可用）')
+        lines.append('')
+
+        relation = _extract_relation(repo)
+        if relation:
+            lines.append('**和主线的关系**')
+            lines.append(relation)
             lines.append('')
 
-    # Select display bullets
-    display_bullets = _select_display_bullets(repo)
-    for b in display_bullets:
-        lines.append(f"- {b}")
-    lines.append('')
-
-    # One-sentence summary
     summary = _extract_summary(repo)
     if summary:
-        lines.append('**一句话**')
+        lines.append('**一句判断**')
         lines.append(summary)
         lines.append('')
 
     return '\n'.join(lines)
 
 
-def _select_display_bullets(repo: dict) -> list[str]:
-    """Pick the most important bullets for card display (max 5)."""
-    content_bullets = []
-    relation_bullet = None
+def _extract_relation(repo: dict) -> Optional[str]:
     for b in repo['bullets']:
-        if re.match(r'^(链接|简介)：', b):
-            continue
-        if re.match(r'^(建议动作|成熟度判断)：', b):
-            continue
-        if re.match(r'^为什么现在值得看：', b):
-            continue
-        if re.match(r'^与主线关系：', b):
-            relation_bullet = b.replace('与主线关系：', '').strip()
-            continue
-        content_bullets.append(b)
+        if b.startswith('与主线关系：'):
+            return b.replace('与主线关系：', '').strip()
+    return None
 
-    # For core repos: take up to 5 content bullets
-    if repo['section'] == 'core':
-        return content_bullets[:5]
 
-    # For new repos: use relation + remaining content bullets (max 3 total)
-    result = []
-    if relation_bullet:
-        result.append(relation_bullet)
-    result.extend(content_bullets[:3 - len(result)])
-    return result
+def _clean_bullet_text(text: str) -> str:
+    text = re.sub(r'^与主线关系：\s*', '', text).strip()
+    text = re.sub(r'^做什么：\s*', '', text).strip()
+    text = re.sub(r'^核心关键词：\s*', '', text).strip()
+    text = re.sub(r'^为什么现在值得看：\s*', '', text).strip()
+    return text
+
+
+def _clean_readme_summary(text: str) -> str:
+    if not text:
+        return ''
+    text = re.sub(r'https?://\S+', '', text)
+    text = text.replace('<br />', ' ').replace('&nbsp;', ' ')
+    text = re.sub(r'<[^>]+>', ' ', text)
+    text = re.sub(r'\s+', ' ', text).strip(' -|>')
+    skip_prefixes = (
+        'Quickstart', 'Table of Contents', 'Fork of', 'Please see', 'FREE FOR PERSONAL USE',
+        'Documentation', 'English |', '中文 |', '日本語', 'Docs', 'Highlights',
+    )
+    parts = re.split(r'(?<=[.!?。！？])\s+|\s+-\s+|\s+>\s+', text)
+    kept = []
+    for part in parts:
+        s = part.strip(' -|>')
+        if not s:
+            continue
+        if any(s.startswith(prefix) for prefix in skip_prefixes):
+            continue
+        low = s.lower()
+        if any(token in low for token in ['table of contents', 'quickstart', 'fork of', 'please see', 'documentation', 'free for personal use']):
+            continue
+        kept.append(s)
+        if len(' '.join(kept)) >= 180:
+            break
+    result = ' '.join(kept) if kept else text
+    result = re.sub(r'\s+', ' ', result).strip()
+    return (result[:177] + '…') if len(result) > 180 else result
+
+
+def _build_core_sections(repo: dict) -> list[tuple[str, list[str]]]:
+    cn = []
+    evidence = []
+    impacts = []
+    seen = set()
+    for raw in repo['bullets']:
+        b = _clean_bullet_text(raw)
+        if not b or b in seen:
+            continue
+        seen.add(b)
+        if re.search(r'[A-Za-z]{4,}', b) and not re.search(r'[一-鿿]', b):
+            evidence.append(b)
+        elif any(token in b for token in ['工作流', '长期使用', '值得关注', '优先级', '很重要', '受益']):
+            impacts.append(b)
+        else:
+            cn.append(b)
+    if repo['intro'] in cn:
+        cn.remove(repo['intro'])
+    merged_impacts = []
+    for item in impacts + _infer_core_impacts(repo, cn):
+        if item and item not in merged_impacts:
+            merged_impacts.append(item)
+    return [
+        ('这次具体改了什么', cn[:3]),
+        ('这意味着什么', merged_impacts[:2]),
+        ('原始证据', evidence[:1]),
+    ]
+
+
+def _infer_core_impacts(repo: dict, cn_bullets: list[str]) -> list[str]:
+    out = []
+    text = ' '.join(cn_bullets + [repo.get('intro', '')])
+    low = text.lower()
+    if 'worktree' in low or 'mcp' in low or 'hook' in low:
+        out.append('更偏工程执行链路补强，不是表面功能加法。')
+    if '发布链路' in text or '校验' in text or 'ssrf' in low:
+        out.append('这类改动对常驻运行和生产使用更关键。')
+    if '历史' in text or '稳定性' in text or '会话' in text:
+        out.append('长期使用时的稳定性和可维护性会比短期演示更受益。')
+    if 'ide' in low or '编辑器' in text or 'subagents' in low:
+        out.append('说明工具还在继续往可执行 agent 工作流靠，而不是只拼模型能力。')
+    if not out and cn_bullets:
+        out.append('这次重点是把已有工作流做顺，而不是新增一个 flashy 卖点。')
+    return out
+
+
+def _normalize_new_intro(repo: dict) -> str:
+    if repo.get('intro'):
+        return repo['intro']
+    for b in repo['bullets']:
+        if b.startswith('做什么：'):
+            return b.replace('做什么：', '').strip()
+    return '需要点进仓库进一步确认。'
 
 
 def _extract_summary(repo: dict) -> Optional[str]:
-    """Extract or generate a one-sentence summary."""
-    # For new repos, look for "为什么现在值得看" bullet
     if repo['section'] == 'new':
+        reason = None
+        relation = _extract_relation(repo) or ''
+        intro = _normalize_new_intro(repo)
         for b in repo['bullets']:
             if b.startswith('为什么现在值得看：'):
-                return b.replace('为什么现在值得看：', '').strip()
+                reason = b.replace('为什么现在值得看：', '').strip().rstrip('。')
+                break
+        if reason and 'Claude Code' in relation:
+            return f'{reason}，而且和 Claude Code 主线贴得比较近。'
+        if reason and 'Codex' in relation:
+            return f'{reason}，也能接到 Codex / 多 agent 这条线。'
+        if reason and '仓库上下文' in relation:
+            return f'{reason}，更偏仓库上下文和多任务管理。'
+        if reason:
+            return reason + '。'
+        return intro[:60]
 
-    # For core repos, use the first bullet (usually the overview statement)
-    if repo['section'] == 'core' and repo['bullets']:
-        first = repo['bullets'][0]
-        # If the first bullet is already a good summary (short enough), use it
-        if len(first) <= 60:
-            return first
-        # Otherwise, take the intro-style first line
-        return first
-
+    if repo.get('intro'):
+        return repo['intro']
+    for b in repo['bullets']:
+        clean = _clean_bullet_text(b)
+        if clean:
+            return clean
     return None
 
 

@@ -484,6 +484,10 @@ def summarize_readme(readme_text, max_length=220):
         return ''
     lines = readme_text.strip().splitlines()
     summary_parts = []
+    skip_prefixes = (
+        'Quickstart', 'Table of Contents', 'Fork of', 'Please see', 'FREE FOR PERSONAL USE',
+        'Documentation', 'English |', '中文 |', '日本語', 'Highlights',
+    )
     for line in lines:
         s = line.strip()
         if not s or s.startswith(('![', '<', '[![', '---', '===')):
@@ -493,7 +497,15 @@ def summarize_readme(readme_text, max_length=220):
             if len(s) < 5:
                 continue
         s = re.sub(r'\[([^\]]+)\]\([^\)]+\)', r'\1', s)
-        s = re.sub(r'[*_`]', '', s).strip()
+        s = re.sub(r'https?://\S+', '', s)
+        s = re.sub(r'<[^>]+>', ' ', s)
+        s = re.sub(r'[*_`|>]', ' ', s)
+        s = re.sub(r'\s+', ' ', s).strip(' -')
+        if not s or any(s.startswith(prefix) for prefix in skip_prefixes):
+            continue
+        low = s.lower()
+        if any(token in low for token in ['table of contents', 'quickstart', 'fork of', 'please see', 'documentation', 'free for personal use']):
+            continue
         if len(s) > 10:
             summary_parts.append(s)
         if len(' '.join(summary_parts)) >= max_length:
