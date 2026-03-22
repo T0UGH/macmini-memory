@@ -5,11 +5,15 @@
 
 OpenCode 这版重点不在宣传点，而在底层结构、历史性能和输入形态这些会影响长期使用体验的细节。
 
+**这次具体改了什么**
 - 这版 OpenCode 以底层能力补强和会话稳定性修复为主，同时补了输入能力。
-- Fixed VCS watcher if statement logic
-- Delete legacy permission module
-- Clean up pending entry when question is aborted
-- Remove SIGHUP exit handler
+- 整体看不是新叙事，而是在把 OpenCode 往“能长期用”的日常工具打磨。
 
-**一句话**
-这版 OpenCode 以底层能力补强和会话稳定性修复为主，同时补了输入能力。
+**这意味着什么**
+- 长期使用时的稳定性和可维护性会比短期演示更受益。
+
+**原始证据**
+- Fixed VCS watcher if statement logic
+
+**一句判断**
+OpenCode 这版重点不在宣传点，而在底层结构、历史性能和输入形态这些会影响长期使用体验的细节。
