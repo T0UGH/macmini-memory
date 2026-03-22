@@ -13,4 +13,4 @@ ACP Client for VS Code A Visual Studio Code extension that provides a client for
 属于协议 / 工具接入层。
 
 **一句判断**
-命中协议 / 工具接入方向。；属于协议 / 工具接入层。
+命中协议 / 工具接入方向。
