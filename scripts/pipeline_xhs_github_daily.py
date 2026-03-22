@@ -164,6 +164,20 @@ def parse_daily_markdown(md_text: str) -> list[dict]:
 
 
 # ---------------------------------------------------------------------------
+# Card rules (product constraints, not just rendering details)
+# ---------------------------------------------------------------------------
+# Core repo cards:
+# - structure = intro -> 这次具体改了什么 -> 这意味着什么 -> 原始证据 -> 一句判断
+# - prefer Chinese explanation; keep at most one English evidence bullet
+# - do not dump raw release bullets directly into the card
+#
+# New repo cards:
+# - structure = 它是做什么的 -> README 要点 -> 和主线的关系 -> 一句判断
+# - README summary should describe the product itself, not quickstart/docs/fork/banner noise
+# - 一句判断 should read like an editor judgement, not an internal retrieval label
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
 # Step 2: Generate card markdowns (one per repo, no slide numbering)
 # ---------------------------------------------------------------------------
 
@@ -329,14 +343,14 @@ def _extract_summary(repo: dict) -> Optional[str]:
             if b.startswith('为什么现在值得看：'):
                 reason = b.replace('为什么现在值得看：', '').strip().rstrip('。')
                 break
-        if reason and 'Claude Code' in relation:
-            return f'{reason}，而且和 Claude Code 主线贴得比较近。'
-        if reason and 'Codex' in relation:
-            return f'{reason}，也能接到 Codex / 多 agent 这条线。'
-        if reason and '仓库上下文' in relation:
-            return f'{reason}，更偏仓库上下文和多任务管理。'
         if reason:
-            return reason + '。'
+            if 'Claude Code' in relation:
+                return f'这项目现在值得看，主要因为{reason}，而且和 Claude Code 主线贴得比较近。'
+            if 'Codex' in relation:
+                return f'这项目现在值得看，主要因为{reason}，也能接到 Codex / 多 agent 这条线。'
+            if '仓库上下文' in relation:
+                return f'这项目现在值得看，主要因为{reason}，更偏仓库上下文和多任务管理。'
+            return f'这项目现在值得看，主要因为{reason}。'
         return intro[:60]
 
     if repo.get('intro'):
