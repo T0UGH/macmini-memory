@@ -11,8 +11,8 @@
 - compaction 后置校验被补上：压缩完成后会按完整会话 token 数做 sanity check。
 
 **这意味着什么**
+- 这会减少长会话压缩后状态异常却不自知的问题，对 always-on agent 很重要。
 - 这类改动对常驻运行和生产使用更关键。
-- 长期使用时的稳定性和可维护性会比短期演示更受益。
 
 **原始证据**
 - This release exists to recover the broken v2026.3.13 tag/release path.
