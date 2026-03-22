@@ -13,4 +13,4 @@ Claude Code. Any Model. Use your existing AI subscriptions with Claude Code. Wor
 和 Claude Code 生态直接相关。
 
 **一句判断**
-命中 coding agent 主查询，而且和 Claude Code 主线贴得比较近。
+这项目现在值得看，主要因为命中 coding agent 主查询，而且和 Claude Code 主线贴得比较近。

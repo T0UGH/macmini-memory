@@ -13,4 +13,4 @@ RPG-ZeroRepo RPG (Repository Planning Graph) is a hierarchical graph representat
 和仓库上下文 / 多任务管理有关。
 
 **一句判断**
-命中 repo memory / 上下文方向，更偏仓库上下文和多任务管理。
+这项目现在值得看，主要因为命中 repo memory / 上下文方向，更偏仓库上下文和多任务管理。

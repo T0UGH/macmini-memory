@@ -13,4 +13,4 @@ Native terminal coding agents command center. Technical Stack The Composable Arc
 和仓库上下文 / 多任务管理有关。
 
 **一句判断**
-命中 worktree / 多任务协作方向，更偏仓库上下文和多任务管理。
+这项目现在值得看，主要因为命中 worktree / 多任务协作方向，更偏仓库上下文和多任务管理。

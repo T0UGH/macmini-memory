@@ -13,4 +13,4 @@ Your agent in your terminal, equipped with local tools: writes code, uses the te
 与 coding agent 工作流相关，但还需要进一步点进仓库确认成熟度。
 
 **一句判断**
-命中终端 coding agent 方向。
+这项目现在值得看，主要因为命中终端 coding agent 方向。

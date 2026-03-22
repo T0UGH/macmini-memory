@@ -13,4 +13,4 @@ Complete E2E Development Workflow For Solo Dev Startups Building with Next.js + 
 和 Claude Code 生态直接相关；属于多 agent 编排层。
 
 **一句判断**
-命中 subagent 方向，而且和 Claude Code 主线贴得比较近。
+这项目现在值得看，主要因为命中 subagent 方向，而且和 Claude Code 主线贴得比较近。
