@@ -1,14 +1,26 @@
 {
   "2026-03-22": [
-    "SethGammon/Citadel",
+    "preset-io/agor",
+    "njbrake/agent-of-empires",
+    "MadAppGang/claudish",
+    "open-gitagent/gitclaw",
+    "supabitapp/supacode",
+    "olimorris/codecompanion.nvim",
+    "gptme/gptme",
+    "microsoft/RPG-ZeroRepo",
+    "formulahendry/vscode-acp",
+    "undeadlist/claude-code-agents"
+  ],
+  "2026-03-23": [
     "RAIT-09/obsidian-agent-client",
     "xintaofei/codeg",
+    "hesreallyhim/awesome-claude-code",
     "phil65/agentpool",
     "superset-sh/superset",
     "bytedance/deer-flow",
     "evalstate/fast-agent",
     "carlos-algms/agentic.nvim",
-    "can1357/oh-my-pi",
-    "jgravelle/jcodemunch-mcp"
+    "Dicklesworthstone/ntm",
+    "orneryd/NornicDB"
   ]
 }

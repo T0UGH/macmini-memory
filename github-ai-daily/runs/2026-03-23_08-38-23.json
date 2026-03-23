@@ -1,0 +1,223 @@
+{
+  "generatedAt": "2026-03-23_08-38-23",
+  "language": "zh-CN",
+  "config": {
+    "min_stars": 50,
+    "discovery_count": 10,
+    "core_release_repos": [
+      "anthropics/claude-code",
+      "openclaw/openclaw",
+      "sst/opencode",
+      "openai/codex"
+    ],
+    "plugin_repo": "anthropics/claude-plugins-official"
+  },
+  "core": [
+    {
+      "repo": "anthropics/claude-code",
+      "tag": "v2.1.81",
+      "publishedAt": "2026-03-21 06:24",
+      "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.81",
+      "overview": "这版不是 flashy 新能力，而是在补 Claude Code 作为工程工具的执行链路：MCP 交互、hook 节点、会话命名和大仓库 worktree 都更完整了。",
+      "update_points": [
+        "本次 release 主要围绕 CLI、MCP、hook 和 worktree 的可编排性展开，方向是把 Claude Code 做得更像可控的工程系统。"
+      ],
+      "raw_focus": [
+        "Added --bare flag for scripted -p calls — skips hooks, LSP, plugin sync, and skill directory walks; requires ANTHROPIC_API_KEY or an apiKeyHelper via --settings (OAuth and keychain auth disabled); auto-memory fully disabled",
+        "Added --channels permission relay — channel servers that declare the permission capability can forward tool approval prompts to your phone",
+        "Fixed multiple concurrent Claude Code sessions requiring repeated re-authentication when one session refreshes its OAuth token",
+        "Fixed voice mode silently swallowing retry failures and showing a misleading \"check your network\" message instead of the actual error",
+        "Fixed voice mode audio not recovering when the server silently drops the WebSocket connection",
+        "Fixed CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS not suppressing the structured-outputs beta header, causing 400 errors on proxy gateways forwarding to Vertex/Bedrock"
+      ],
+      "impacts": [
+        "如果你在用 Claude Code 跑多轮任务或大仓库，这版比“模型更聪明”更值得关注，因为它改的是工作流可用性。"
+      ]
+    },
+    {
+      "repo": "openclaw/openclaw",
+      "tag": "v2026.3.13-1",
+      "publishedAt": "2026-03-15 02:04",
+      "url": "https://github.com/openclaw/openclaw/releases/tag/v2026.3.13-1",
+      "overview": "这版更像“把系统做结实”的维护版本：修发布链路、补 compaction 校验、收紧 Telegram / SSRF 防护。",
+      "update_points": [
+        "这次首先是在修补上一版损坏的 tag / release 路径，属于发布链路补丁，不是大功能更新。",
+        "npm 版本号仍是 2026.3.13，-1 只体现在 Git tag / GitHub Release，等于是在修发布包装层。",
+        "compaction 后置校验被补上：压缩完成后会按完整会话 token 数做 sanity check。",
+        "Telegram 媒体传输相关的安全策略被修正，属于 SSRF 防护链路的一部分。"
+      ],
+      "raw_focus": [
+        "This release exists to recover the broken v2026.3.13 tag/release path.",
+        "The corresponding npm version is still 2026.3.13, not 2026.3.13-1.",
+        "fix(compaction): use full-session token count for post-compaction sanity check by @efe-arv in",
+        "fix(telegram): thread media transport policy into SSRF by @obviyus in"
+      ],
+      "impacts": [
+        "这类修复虽然不显眼，但会直接影响版本分发、自动升级和外部引用的可信度。",
+        "这会减少长会话压缩后状态异常却不自知的问题，对 always-on agent 很重要。",
+        "说明 OpenClaw 在补“平台接入层”的边界安全，不只是堆功能；这对消息渠道型 agent 是硬需求。"
+      ]
+    },
+    {
+      "repo": "sst/opencode",
+      "tag": "v1.3.0",
+      "publishedAt": "2026-03-23 07:32",
+      "url": "https://github.com/anomalyco/opencode/releases/tag/v1.3.0",
+      "overview": "OpenCode 这版重点不在宣传点，而在底层结构、历史性能和输入形态这些会影响长期使用体验的细节。",
+      "update_points": [
+        "Bun 安装链路的配置序列化问题被处理，减少环境差异造成的安装异常。",
+        "会话历史改成分页加载，目标是把服务端性能和长会话稳定性拉上来。"
+      ],
+      "raw_focus": [
+        "**Node.js Support** : opencode can now run on Node.js in addition to Bun, with a dedicated Node.js entry point and build script that bundles the server with database migrations.",
+        "**xAI Responses API** : Improved xAI reasoning models performance in long multi-turn conversations by switching to the responses API with encrypted content support."
+      ],
+      "impacts": [
+        "这不是表面功能，但说明 OpenCode 也在补“越用越重”后的历史负担问题。"
+      ]
+    },
+    {
+      "repo": "openai/codex",
+      "tag": "rust-v0.116.0",
+      "publishedAt": "2026-03-20 01:51",
+      "url": "https://github.com/openai/codex/releases/tag/rust-v0.116.0",
+      "overview": "这一版继续加强 Codex CLI 与 IDE/编辑器接入，方向是把终端与编辑器工作流打通。",
+      "update_points": [
+        "这一版继续加强 Codex CLI 与 IDE/编辑器接入，方向是把终端与编辑器工作流打通。"
+      ],
+      "raw_focus": [
+        "#13702 fix(subagents) share execpolicy by default @dylan-hurd-oai"
+      ],
+      "impacts": [
+        "这会继续降低从终端走向编辑器协同的切换成本。"
+      ]
+    }
+  ],
+  "plugins": {
+    "added": [],
+    "removed": [],
+    "changed": [],
+    "implication": [
+      "插件仓库这次变化说明 Claude Code 官方生态还在继续向生产系统接入层扩展。"
+    ]
+  },
+  "readme_failures": [],
+  "discovery_stats": {
+    "dedupe_filtered_count": 1,
+    "readme_skipped_count": 0,
+    "low_score_filtered_count": 68,
+    "final_count": 10
+  },
+  "discovery": [
+    {
+      "description": "Bring AI agents into Obsidian via Agent Client Protocol (ACP), such as Claude Code, Codex and Gemini CLI.",
+      "fullName": "RAIT-09/obsidian-agent-client",
+      "stargazersCount": 1313,
+      "updatedAt": "2026-03-22T23:31:07Z",
+      "url": "https://github.com/RAIT-09/obsidian-agent-client",
+      "matchedQuery": "ACP coding agent",
+      "_score": 33,
+      "readme_summary": "Bring AI agents (Claude Code, Codex, Gemini CLI) directly into Obsidian. Chat with your AI assistant right from your vault. Built on Agent Client Protocol (ACP) by Zed. Note Mentions : Reference your notes with @notename…",
+      "readme_error": ""
+    },
+    {
+      "description": "Codeg (Code Generation) is an enterprise-grade multi-agent coding workspace. It unifies local AI coding agents in one desktop app with session aggregation, parallel git worktree development, MCP/Skills management, and integrated Git/file/terminal workflows.（企业级多 Agent 编码工作台）",
+      "fullName": "xintaofei/codeg",
+      "stargazersCount": 384,
+      "updatedAt": "2026-03-22T16:30:04Z",
+      "url": "https://github.com/xintaofei/codeg",
+      "matchedQuery": "ACP coding agent",
+      "_score": 33,
+      "readme_summary": "Codeg (Code Generation) is an enterprise-grade multi-agent coding workspace. It unifies local AI coding agents (Claude Code, Codex CLI, OpenCode, Gemini CLI, OpenClaw, etc.) in one desktop app with session aggregation, p…",
+      "readme_error": ""
+    },
+    {
+      "description": "A curated list of awesome skills, hooks, slash-commands, agent orchestrators, applications, and plugins for Claude Code by Anthropic",
+      "fullName": "hesreallyhim/awesome-claude-code",
+      "stargazersCount": 30266,
+      "updatedAt": "2026-03-23T00:37:44Z",
+      "url": "https://github.com/hesreallyhim/awesome-claude-code",
+      "matchedQuery": "coding agent",
+      "_score": 32,
+      "readme_summary": "Awesome Claude Code A selectively curated list of skills, agents, plugins, hooks, and other amazing tools for enhancing your Claude Code workflow. Latest Additions Claude Scientific Skills by K-Dense - \"A set of ready-to…",
+      "readme_error": ""
+    },
+    {
+      "description": "A unified agent orchestration hub that lets you configure and manage multiple AI agents (native, ACP, AGUI, Claude Code) via YAML, and exposes them through standardized protocols (ACP/OpenCode Server).",
+      "fullName": "phil65/agentpool",
+      "stargazersCount": 113,
+      "updatedAt": "2026-03-22T17:58:10Z",
+      "url": "https://github.com/phil65/agentpool",
+      "matchedQuery": "ACP coding agent",
+      "_score": 29,
+      "readme_summary": "A unified agent orchestration hub that lets you configure and manage heterogeneous AI agents via YAML and expose them through standardized protocols. The Problem You want to use multiple AI agents together - Claude Code …",
+      "readme_error": ""
+    },
+    {
+      "description": "IDE for the AI Agents Era - Run an army of Claude Code, Codex, etc. on your machine",
+      "fullName": "superset-sh/superset",
+      "stargazersCount": 7739,
+      "updatedAt": "2026-03-23T00:22:26Z",
+      "url": "https://github.com/superset-sh/superset",
+      "matchedQuery": "terminal coding agent",
+      "_score": 28,
+      "readme_summary": "The Code Editor for AI Agents Orchestrate swarms of Claude Code, Codex, and more in parallel. Works with any CLI agent. Built for local worktree-based development. Code 10x Faster With No Switching Cost Superset orchestr…",
+      "readme_error": ""
+    },
+    {
+      "description": "An open-source SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skills and subagents, it handles different levels of tasks that could take minutes to hours.",
+      "fullName": "bytedance/deer-flow",
+      "stargazersCount": 35264,
+      "updatedAt": "2026-03-23T00:38:24Z",
+      "url": "https://github.com/bytedance/deer-flow",
+      "matchedQuery": "subagent coding",
+      "_score": 27,
+      "readme_summary": "🦌 DeerFlow - 2.0 English 中文 日本語 On February 28th, 2026, DeerFlow claimed the 🏆 #1 spot on GitHub Trending following the launch of version 2. Thanks a million to our incredible community — you made this happen! 💪🔥 DeerFlo…",
+      "readme_error": ""
+    },
+    {
+      "description": "Code, Build and Evaluate agents - excellent Model and Skills/MCP/ACP Support",
+      "fullName": "evalstate/fast-agent",
+      "stargazersCount": 3716,
+      "updatedAt": "2026-03-22T20:27:46Z",
+      "url": "https://github.com/evalstate/fast-agent",
+      "matchedQuery": "ACP coding agent",
+      "_score": 27,
+      "readme_summary": "fast-agent enables you to create and interact with sophisticated multimodal Agents and Workflows in minutes. It is the first framework with complete, end-to-end tested MCP Feature support including Sampling and Elicitati…",
+      "readme_error": ""
+    },
+    {
+      "description": "Agentic Chat Interface directly in Neovim with ACP providers from Claude-Code, Gemini, Codex, OpenCode, and Cursor-agent",
+      "fullName": "carlos-algms/agentic.nvim",
+      "stargazersCount": 330,
+      "updatedAt": "2026-03-22T22:29:40Z",
+      "url": "https://github.com/carlos-algms/agentic.nvim",
+      "matchedQuery": "ACP coding agent",
+      "_score": 24,
+      "readme_summary": "Agentic.nvim ⚡ A Chat interface for AI agents in Neovim that works with any provider supporting the Agent Client Protocol (ACP) — including Claude, Gemini, Codex, OpenCode, Cursor Agent, Copilot, Auggie, Mistral Vibe, Cl…",
+      "readme_error": ""
+    },
+    {
+      "description": "Named Tmux Manager: spawn, tile, and coordinate multiple AI coding agents (Claude, Codex, Gemini) across tmux panes with a TUI command palette",
+      "fullName": "Dicklesworthstone/ntm",
+      "stargazersCount": 207,
+      "updatedAt": "2026-03-23T00:37:00Z",
+      "url": "https://github.com/Dicklesworthstone/ntm",
+      "matchedQuery": "agentic coding",
+      "_score": 19,
+      "readme_summary": "NTM - Named Tmux Manager A powerful tmux session management tool for orchestrating multiple AI coding agents in parallel. Spawn, manage, and coordinate Claude Code, OpenAI Codex, and Google Gemini CLI agents across tiled…",
+      "readme_error": ""
+    },
+    {
+      "description": "NornicDB is a high-performance graph + vector database built for AI agents and knowledge systems. Compatible w/Neo4j (Bolt/Cypher) and qdrant's (gRPC) drivers so you can switch with zero code changes, while adding intelligent features like local LLM inference, embeddings, HNSW+rerank search, GPU acceleration, Auto-TLP, Memory Decay, and MCP server",
+      "fullName": "orneryd/NornicDB",
+      "stargazersCount": 315,
+      "updatedAt": "2026-03-23T00:31:49Z",
+      "url": "https://github.com/orneryd/NornicDB",
+      "matchedQuery": "MCP server coding",
+      "_score": 18,
+      "readme_summary": "Neo4j-compatible • GPU-accelerated • Memory that evolves What Problem Does This Solve? NornicDB is a high-performance graph database designed for AI agents and knowledge systems. It speaks Neo4j's language (Bolt protocol…",
+      "readme_error": ""
+    }
+  ]
+}
