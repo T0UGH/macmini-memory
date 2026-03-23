@@ -1,5 +1,9 @@
 # TODO
 
+- [ ] 本周研究一下这个 Obsidian 相关思路/用法：
+  - 链接：`https://x.com/boniusex/status/2035630916668907740?s=46`
+  - 备注：来自 boniusex 的 X 帖子，先作为待研究线索收录；后续重点看它适不适合纳入个人知识管理 / 记忆工作流。
+
 - [ ] 完成 OpenCLI Browser Bridge 初始化：
   - 在 Chrome 打开 `chrome://extensions`
   - 打开 Developer mode
