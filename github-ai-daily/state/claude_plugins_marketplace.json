@@ -204,6 +204,11 @@
     "description": "Claude Code plugin for Firetiger observability workflows and MCP-powered investigations.",
     "url": "https://www.firetiger.com/"
   },
+  "flint": {
+    "version": null,
+    "description": "Build and manage websites with Flint's AI website builder through natural conversation.",
+    "url": "https://www.tryflint.com/docs/claude-code-plugin"
+  },
   "followrabbit": {
     "version": null,
     "description": "Cloud cost optimization for GCP infrastructure. Review changes for cost impact and auto-apply savings recommendations using the followrabbit CLI.",
@@ -253,6 +258,11 @@
     "version": null,
     "description": "Build, train, evaluate, and use open source AI models, datasets, and spaces.",
     "url": "https://github.com/huggingface/skills.git"
+  },
+  "imessage": {
+    "version": null,
+    "description": "iMessage messaging bridge with built-in access control. Reads chat.db directly, sends via AppleScript. Manage pairing, allowlists, and policy via /imessage:access.",
+    "url": ""
   },
   "intercom": {
     "version": null,

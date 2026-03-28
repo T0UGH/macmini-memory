@@ -1,0 +1,215 @@
+{
+  "generatedAt": "2026-03-28_08-37-30",
+  "language": "zh-CN",
+  "config": {
+    "min_stars": 50,
+    "discovery_count": 10,
+    "core_release_repos": [
+      "anthropics/claude-code",
+      "openclaw/openclaw",
+      "sst/opencode",
+      "openai/codex"
+    ],
+    "plugin_repo": "anthropics/claude-plugins-official"
+  },
+  "core": [
+    {
+      "repo": "anthropics/claude-code",
+      "tag": "v2.1.86",
+      "publishedAt": "2026-03-28 05:42",
+      "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.86",
+      "overview": "这版不是 flashy 新能力，而是在补 Claude Code 作为工程工具的执行链路：MCP 交互、hook 节点、会话命名和大仓库 worktree 都更完整了。",
+      "update_points": [
+        "MCP 交互能力继续增强：任务执行中可以补采结构化输入，不再只能靠单轮 prompt 把信息一次性喂完。"
+      ],
+      "raw_focus": [
+        "Fixed --bare mode dropping MCP tools in interactive sessions and silently discarding messages enqueued mid-turn"
+      ],
+      "impacts": [
+        "这会直接改善真实工作流里的“信息不齐就卡住”问题，agent 可以在中途向人要补充材料。"
+      ]
+    },
+    {
+      "repo": "openclaw/openclaw",
+      "tag": "v2026.3.24",
+      "publishedAt": "2026-03-26 00:35",
+      "url": "https://github.com/openclaw/openclaw/releases/tag/v2026.3.24",
+      "overview": "这版更像“把系统做结实”的维护版本：修发布链路、补 compaction 校验、收紧 Telegram / SSRF 防护。",
+      "update_points": [
+        "Telegram 媒体传输相关的安全策略被修正，属于 SSRF 防护链路的一部分。"
+      ],
+      "raw_focus": [
+        "Gateway/restart sentinel: wake the interrupted agent session via heartbeat after restart instead of only sending a best-effort restart note, retry outbound delivery once on transient failure, and preserve explicit thread/topic routing through the wake path so replies land in the correct Telegram topic or Slack thread. Thanks @VACInc."
+      ],
+      "impacts": [
+        "说明 OpenClaw 在补“平台接入层”的边界安全，不只是堆功能；这对消息渠道型 agent 是硬需求。"
+      ]
+    },
+    {
+      "repo": "sst/opencode",
+      "tag": "v1.3.3",
+      "publishedAt": "2026-03-26 23:05",
+      "url": "https://github.com/anomalyco/opencode/releases/tag/v1.3.3",
+      "overview": "OpenCode 这版重点不在宣传点，而在底层结构、历史性能和输入形态这些会影响长期使用体验的细节。",
+      "update_points": [
+        "Bun 安装链路的配置序列化问题被处理，减少环境差异造成的安装异常。",
+        "会话历史改成分页加载，目标是把服务端性能和长会话稳定性拉上来。"
+      ],
+      "raw_focus": [
+        "Classify ZlibError from Bun fetch as retryable instead of unknown error",
+        "Bypass local SSE event streaming in worker for improved performance"
+      ],
+      "impacts": [
+        "这不是表面功能，但说明 OpenCode 也在补“越用越重”后的历史负担问题。"
+      ]
+    },
+    {
+      "repo": "openai/codex",
+      "tag": "rust-v0.117.0",
+      "publishedAt": "2026-03-27 06:27",
+      "url": "https://github.com/openai/codex/releases/tag/rust-v0.117.0",
+      "overview": "这一版继续加强 Codex CLI 与 IDE/编辑器接入，方向是把终端与编辑器工作流打通。",
+      "update_points": [
+        "这版 Codex 主要仍在打磨终端 coding agent 的执行、权限控制和编辑器协同体验。"
+      ],
+      "raw_focus": [
+        "Plugins are now a first-class workflow: Codex can sync product-scoped plugins at startup, browse them in /plugins, and install or remove them with clearer auth/setup handling. (#15041, #15042, #15195, #15215, #15217, #15264, #15275, #15342, #15580, #15606, #15802)",
+        "Sub-agents now use readable path-based addresses like /root/agent_a, with structured inter-agent messaging and agent listing for multi-agent v2 workflows. (#15313, #15515, #15556, #15570, #15621, #15647)",
+        "The /title terminal-title picker now works in both the classic TUI and the app-server TUI, making parallel sessions easier to tell apart. (#12334, #15860)",
+        "App-server clients can now send ! shell commands, watch filesystem changes, and connect to remote websocket servers with bearer-token auth. (#14988, #14533, #14847, #14853)",
+        "Image workflows got smoother: view_image now returns image URLs for code mode, generated images are reopenable from the TUI, and image-generation history survives resume. (#15072, #15154, #15223)",
+        "Prompt history recall now works in the app-server TUI, including across sessions."
+      ],
+      "impacts": [
+        "Codex 仍然在补‘可执行 agent 工具’这条主线，而不是单纯堆模型能力。"
+      ]
+    }
+  ],
+  "plugins": {
+    "added": [],
+    "removed": [],
+    "changed": [],
+    "implication": [
+      "插件仓库这次变化说明 Claude Code 官方生态还在继续向生产系统接入层扩展。"
+    ]
+  },
+  "readme_failures": [],
+  "discovery_stats": {
+    "dedupe_filtered_count": 23,
+    "readme_skipped_count": 0,
+    "low_score_filtered_count": 207,
+    "final_count": 10
+  },
+  "discovery": [
+    {
+      "description": "Your own Claude Code UI, sandbox, in-browser VS Code, terminal, multi-provider support (Anthropic, OpenAI, GitHub Copilot, OpenRouter), custom skills, and MCP servers.",
+      "fullName": "Mng-dev-ai/agentrove",
+      "stargazersCount": 250,
+      "updatedAt": "2026-03-28T00:05:24Z",
+      "url": "https://github.com/Mng-dev-ai/agentrove",
+      "matchedQuery": "terminal coding agent",
+      "_score": 34,
+      "readme_summary": "Self-hosted Claude Code workspace with multi-provider routing, sandboxed execution, and a full web IDE. Note: Agentrove is under active development. Expect breaking changes between releases. Screenshots Join the Discord …",
+      "readme_error": ""
+    },
+    {
+      "description": "Multi-agent orchestration extension for Gemini CLI — 22 specialists, parallel subagents, persistent sessions, and built-in code review, debugging, security, SEO, accessibility, and compliance tools",
+      "fullName": "josstei/maestro-gemini",
+      "stargazersCount": 243,
+      "updatedAt": "2026-03-27T20:37:18Z",
+      "url": "https://github.com/josstei/maestro-gemini",
+      "matchedQuery": "subagent coding",
+      "_score": 23,
+      "readme_summary": "Multi-agent development orchestration platform — 22 specialists, 4-phase orchestration, native parallel subagents, persistent sessions, and standalone review/debug/security/perf/seo/a11y/compliance commands Getting Start…",
+      "readme_error": ""
+    },
+    {
+      "description": "Workflow orchestration for AI coding agents, from task to merged PR.",
+      "fullName": "jonwiggins/optio",
+      "stargazersCount": 538,
+      "updatedAt": "2026-03-28T00:37:05Z",
+      "url": "https://github.com/jonwiggins/optio",
+      "matchedQuery": "coding agent",
+      "_score": 22,
+      "readme_summary": "Workflow orchestration for AI coding agents, from task to merged PR. Optio turns coding tasks into merged pull requests — without human babysitting. Submit a task (manually, from a GitHub Issue, or from Linear), and Opti…",
+      "readme_error": ""
+    },
+    {
+      "description": "Multi-workspace terminal aggregator with Claude Code AI integration",
+      "fullName": "tony1223/better-agent-terminal",
+      "stargazersCount": 210,
+      "updatedAt": "2026-03-27T23:58:38Z",
+      "url": "https://github.com/tony1223/better-agent-terminal",
+      "matchedQuery": "terminal coding agent",
+      "_score": 19,
+      "readme_summary": "Better Agent Terminal A cross-platform terminal aggregator with multi-workspace support and built-in AI agent integration Manage multiple project terminals in one window, with a built-in Claude Code agent panel, file bro…",
+      "readme_error": ""
+    },
+    {
+      "description": "A dev agent multiplexer for git worktrees and coding agents.",
+      "fullName": "standardagents/dmux",
+      "stargazersCount": 1281,
+      "updatedAt": "2026-03-27T18:50:18Z",
+      "url": "https://github.com/standardagents/dmux",
+      "matchedQuery": "worktree coding agent",
+      "_score": 17,
+      "readme_summary": "Manage multiple AI coding agents in isolated git worktrees. Branch, develop, and merge &mdash; all in parallel. npm install -g dmux Quick Start cd /path/to/your/project Press n to create a new pane, type a prompt, pick o…",
+      "readme_error": ""
+    },
+    {
+      "description": "declarative CLI orchestrator for parallel AI coding agents. define workstreams, run in isolated worktrees, review with comments, and iterate until done.",
+      "fullName": "workstream-labs/workstreams",
+      "stargazersCount": 53,
+      "updatedAt": "2026-03-27T20:57:02Z",
+      "url": "https://github.com/workstream-labs/workstreams",
+      "matchedQuery": "worktree coding agent",
+      "_score": 15,
+      "readme_summary": "Parallel AI coding agents in isolated git worktrees. curl -fsSL bash Or from source (requires Bun): cd workstreams bun install && bun link Quick Start ws init # set up in any git repo ws create add-tests -p \"Add unit tes…",
+      "readme_error": ""
+    },
+    {
+      "description": "CodexFlow is a unified desktop workbench for AI coding agents (Codex/Claude/Gemini) across Windows and WSL. Organize chats by project, run parallel tasks via Git worktrees, build rich prompts with files/@refs, and resume any session in one click.",
+      "fullName": "lulu-sk/CodexFlow",
+      "stargazersCount": 50,
+      "updatedAt": "2026-03-27T15:34:01Z",
+      "url": "https://github.com/lulu-sk/CodexFlow",
+      "matchedQuery": "worktree coding agent",
+      "_score": 15,
+      "readme_summary": "English 简体中文 A \"Unified Workbench\" crafted for AI Coding Agents — switch between Codex / Claude / Gemini (and custom engines) in one click, organize sessions and history by project directories , run parallel tasks with G…",
+      "readme_error": ""
+    },
+    {
+      "description": "Open-source Python, TypeScript, and Go SAST with dead code detection. Finds secrets, exploitable   flows, and AI regressions. VS Code extension, GitHub Action, and MCP server for AI agents.",
+      "fullName": "duriantaco/skylos",
+      "stargazersCount": 356,
+      "updatedAt": "2026-03-28T00:13:54Z",
+      "url": "https://github.com/duriantaco/skylos",
+      "matchedQuery": "MCP server coding",
+      "_score": 13,
+      "readme_summary": "What is Skylos? Skylos is an open-source static analysis tool and PR gate for Python, TypeScript, and Go. It helps teams detect dead code, hardcoded secrets, exploitable flows, and AI-generated security regressions befor…",
+      "readme_error": ""
+    },
+    {
+      "description": "ACP adapter for pi coding agent",
+      "fullName": "svkozak/pi-acp",
+      "stargazersCount": 105,
+      "updatedAt": "2026-03-27T20:56:15Z",
+      "url": "https://github.com/svkozak/pi-acp",
+      "matchedQuery": "ACP coding agent",
+      "_score": 13,
+      "readme_summary": "ACP (Agent Client Protocol) adapter for pi coding agent (fka shitty coding agent). pi-acp communicates ACP JSON-RPC 2.0 over stdio to an ACP client (e.g. Zed editor) and spawns pi --mode rpc , bridging requests/events be…",
+      "readme_error": ""
+    },
+    {
+      "description": "A resource-efficient, open source AI coding agent with a native TUI, built in Rust.",
+      "fullName": "1jehuang/jcode",
+      "stargazersCount": 127,
+      "updatedAt": "2026-03-27T23:43:52Z",
+      "url": "https://github.com/1jehuang/jcode",
+      "matchedQuery": "terminal coding agent",
+      "_score": 8,
+      "readme_summary": "A blazing-fast, fully autonomous AI coding agent with a gorgeous TUI, multi-model support, swarm coordination, persistent memory, and 30+ built-in tools all running natively in your terminal. Features · Install · Quick S…",
+      "readme_error": ""
+    }
+  ]
+}
