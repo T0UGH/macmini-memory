@@ -1,0 +1,220 @@
+{
+  "generatedAt": "2026-03-27_08-36-31",
+  "language": "zh-CN",
+  "config": {
+    "min_stars": 50,
+    "discovery_count": 10,
+    "core_release_repos": [
+      "anthropics/claude-code",
+      "openclaw/openclaw",
+      "sst/opencode",
+      "openai/codex"
+    ],
+    "plugin_repo": "anthropics/claude-plugins-official"
+  },
+  "core": [
+    {
+      "repo": "anthropics/claude-code",
+      "tag": "v2.1.85",
+      "publishedAt": "2026-03-27 06:52",
+      "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.85",
+      "overview": "这版不是 flashy 新能力，而是在补 Claude Code 作为工程工具的执行链路：MCP 交互、hook 节点、会话命名和大仓库 worktree 都更完整了。",
+      "update_points": [
+        "本次 release 主要围绕 CLI、MCP、hook 和 worktree 的可编排性展开，方向是把 Claude Code 做得更像可控的工程系统。"
+      ],
+      "raw_focus": [
+        "Added CLAUDE_CODE_MCP_SERVER_NAME and CLAUDE_CODE_MCP_SERVER_URL environment variables to MCP headersHelper scripts, allowing one helper to serve multiple servers",
+        "Added conditional if field for hooks using permission rule syntax (e.g., Bash(git *)) to filter when they run, reducing process spawning overhead",
+        "Added timestamp markers in transcripts when scheduled tasks (/loop, CronCreate) fire",
+        "Added trailing space after [Image #N] placeholder when pasting images",
+        "Deep link queries (claude-cli://open?q=…) now support up to 5,000 characters, with a \"scroll to review\" warning for long pre-filled prompts",
+        "MCP OAuth now follows RFC 9728 Protected Resource Metadata discovery to find the authorization server"
+      ],
+      "impacts": [
+        "如果你在用 Claude Code 跑多轮任务或大仓库，这版比“模型更聪明”更值得关注，因为它改的是工作流可用性。"
+      ]
+    },
+    {
+      "repo": "openclaw/openclaw",
+      "tag": "v2026.3.24",
+      "publishedAt": "2026-03-26 00:35",
+      "url": "https://github.com/openclaw/openclaw/releases/tag/v2026.3.24",
+      "overview": "这版更像“把系统做结实”的维护版本：修发布链路、补 compaction 校验、收紧 Telegram / SSRF 防护。",
+      "update_points": [
+        "Telegram 媒体传输相关的安全策略被修正，属于 SSRF 防护链路的一部分。"
+      ],
+      "raw_focus": [
+        "Gateway/restart sentinel: wake the interrupted agent session via heartbeat after restart instead of only sending a best-effort restart note, retry outbound delivery once on transient failure, and preserve explicit thread/topic routing through the wake path so replies land in the correct Telegram topic or Slack thread. Thanks @VACInc."
+      ],
+      "impacts": [
+        "说明 OpenClaw 在补“平台接入层”的边界安全，不只是堆功能；这对消息渠道型 agent 是硬需求。"
+      ]
+    },
+    {
+      "repo": "sst/opencode",
+      "tag": "v1.3.3",
+      "publishedAt": "2026-03-26 23:05",
+      "url": "https://github.com/anomalyco/opencode/releases/tag/v1.3.3",
+      "overview": "OpenCode 这版重点不在宣传点，而在底层结构、历史性能和输入形态这些会影响长期使用体验的细节。",
+      "update_points": [
+        "Bun 安装链路的配置序列化问题被处理，减少环境差异造成的安装异常。",
+        "会话历史改成分页加载，目标是把服务端性能和长会话稳定性拉上来。"
+      ],
+      "raw_focus": [
+        "Classify ZlibError from Bun fetch as retryable instead of unknown error",
+        "Bypass local SSE event streaming in worker for improved performance"
+      ],
+      "impacts": [
+        "这不是表面功能，但说明 OpenCode 也在补“越用越重”后的历史负担问题。"
+      ]
+    },
+    {
+      "repo": "openai/codex",
+      "tag": "rust-v0.117.0",
+      "publishedAt": "2026-03-27 06:27",
+      "url": "https://github.com/openai/codex/releases/tag/rust-v0.117.0",
+      "overview": "这一版继续加强 Codex CLI 与 IDE/编辑器接入，方向是把终端与编辑器工作流打通。",
+      "update_points": [
+        "这版 Codex 主要仍在打磨终端 coding agent 的执行、权限控制和编辑器协同体验。"
+      ],
+      "raw_focus": [
+        "Plugins are now a first-class workflow: Codex can sync product-scoped plugins at startup, browse them in /plugins, and install or remove them with clearer auth/setup handling. (#15041, #15042, #15195, #15215, #15217, #15264, #15275, #15342, #15580, #15606, #15802)",
+        "Sub-agents now use readable path-based addresses like /root/agent_a, with structured inter-agent messaging and agent listing for multi-agent v2 workflows. (#15313, #15515, #15556, #15570, #15621, #15647)",
+        "The /title terminal-title picker now works in both the classic TUI and the app-server TUI, making parallel sessions easier to tell apart. (#12334, #15860)",
+        "App-server clients can now send ! shell commands, watch filesystem changes, and connect to remote websocket servers with bearer-token auth. (#14988, #14533, #14847, #14853)",
+        "Image workflows got smoother: view_image now returns image URLs for code mode, generated images are reopenable from the TUI, and image-generation history survives resume. (#15072, #15154, #15223)",
+        "Prompt history recall now works in the app-server TUI, including across sessions."
+      ],
+      "impacts": [
+        "Codex 仍然在补‘可执行 agent 工具’这条主线，而不是单纯堆模型能力。"
+      ]
+    }
+  ],
+  "plugins": {
+    "added": [],
+    "removed": [],
+    "changed": [],
+    "implication": [
+      "插件仓库这次变化说明 Claude Code 官方生态还在继续向生产系统接入层扩展。"
+    ]
+  },
+  "readme_failures": [],
+  "discovery_stats": {
+    "dedupe_filtered_count": 21,
+    "readme_skipped_count": 0,
+    "low_score_filtered_count": 212,
+    "final_count": 10
+  },
+  "discovery": [
+    {
+      "description": "Session browser + Agent Cockpit +  Analytics + Limits tracker for Codex CLI,  Claude Code, OpenCode, Gemini CLI, Factory Droid , GitHub Copilot CLI & OpenClaw. Search/filter ALL past sessions,  archive sessions, resume instantly, see rate limits in real-time. Native macOS app.",
+      "fullName": "jazzyalex/agent-sessions",
+      "stargazersCount": 406,
+      "updatedAt": "2026-03-27T00:36:26Z",
+      "url": "https://github.com/jazzyalex/agent-sessions",
+      "matchedQuery": "coding agent",
+      "_score": 29,
+      "readme_summary": "Agent Sessions (macOS) Unified session browser for Codex CLI, Claude Code, Gemini CLI, GitHub Copilot CLI, Droid (Factory CLI), and OpenCode. Search, browse, and resume your past AI-coding sessions in a local-first macOS…",
+      "readme_error": ""
+    },
+    {
+      "description": "Sub-agents for pi with Claude Code look and feel — parallel execution, live widget, custom agent types, mid-run steering and more ...",
+      "fullName": "tintinweb/pi-subagents",
+      "stargazersCount": 92,
+      "updatedAt": "2026-03-26T22:46:35Z",
+      "url": "https://github.com/tintinweb/pi-subagents",
+      "matchedQuery": "subagent coding",
+      "_score": 21,
+      "readme_summary": "@tintinweb/pi-subagents A pi extension that brings Claude Code-style autonomous sub-agents to pi. Spawn specialized agents that run in isolated sessions — each with its own tools, system prompt, model, and thinking level…",
+      "readme_error": ""
+    },
+    {
+      "description": "Run agentic coding workflows in a fully native desktop app for Git worktrees, terminals, and diffs.",
+      "fullName": "penso/arbor",
+      "stargazersCount": 496,
+      "updatedAt": "2026-03-26T23:30:46Z",
+      "url": "https://github.com/penso/arbor",
+      "matchedQuery": "worktree coding agent",
+      "_score": 18,
+      "readme_summary": "Arbor is a fully native app for agentic coding built with Rust and GPUI. It gives you one place to manage repositories, issue-driven worktrees, embedded terminals, managed processes, diffs, PR context, AI coding agent ac…",
+      "readme_error": ""
+    },
+    {
+      "description": "A Git worktree workflow tool for AI coding agents. Enables parallel development with isolated environments.",
+      "fullName": "nekocode/agent-worktree",
+      "stargazersCount": 123,
+      "updatedAt": "2026-03-26T17:10:13Z",
+      "url": "https://github.com/nekocode/agent-worktree",
+      "matchedQuery": "worktree coding agent",
+      "_score": 18,
+      "readme_summary": "agent-worktree A Git worktree workflow tool for AI coding agents. Enables parallel development with isolated environments. AI coding agents work best with isolated environments: Parallel execution : Run multiple agents s…",
+      "readme_error": ""
+    },
+    {
+      "description": "⌥  AI Coding agent for the terminal — hash-anchored edits, optimized tool harness, LSP, Python, browser, subagents, and more",
+      "fullName": "can1357/oh-my-pi",
+      "stargazersCount": 2399,
+      "updatedAt": "2026-03-26T22:49:19Z",
+      "url": "https://github.com/can1357/oh-my-pi",
+      "matchedQuery": "subagent coding",
+      "_score": 17,
+      "readme_summary": "Installation Getting Started Terminal Setup API Keys & OAuth First 15 Minutes (Recommended) Slash Commands Editor Features Keyboard Shortcuts Image Support Session Management Context Compaction Autonomous Memory Configur…",
+      "readme_error": ""
+    },
+    {
+      "description": "A collection of 100+ specialized Claude Code subagents covering a wide range of development use cases",
+      "fullName": "VoltAgent/awesome-claude-code-subagents",
+      "stargazersCount": 15280,
+      "updatedAt": "2026-03-26T23:36:12Z",
+      "url": "https://github.com/VoltAgent/awesome-claude-code-subagents",
+      "matchedQuery": "subagent coding",
+      "_score": 16,
+      "readme_summary": "Awesome Claude Code Subagents This repository serves as the definitive collection of Claude Code subagents, specialized AI assitants designed for specific development tasks. Installation As Claude Code Plugin (Recommende…",
+      "readme_error": ""
+    },
+    {
+      "description": "GitHub Copilot CLI brings the power of Copilot coding agent directly to your terminal. ",
+      "fullName": "github/copilot-cli",
+      "stargazersCount": 9600,
+      "updatedAt": "2026-03-27T00:07:59Z",
+      "url": "https://github.com/github/copilot-cli",
+      "matchedQuery": "terminal coding agent",
+      "_score": 12,
+      "readme_summary": "GitHub Copilot CLI The power of GitHub Copilot, now in your terminal. GitHub Copilot CLI brings AI-powered coding assistance directly to your command line, enabling you to build, debug, and understand code through natura…",
+      "readme_error": ""
+    },
+    {
+      "description": "Browser based agent orchestrator / You host the server wherever you want / Harnesses all CLI AI harnesses / Mobile and VR Voice coding",
+      "fullName": "tlbx-ai/MidTerm",
+      "stargazersCount": 86,
+      "updatedAt": "2026-03-27T00:01:27Z",
+      "url": "https://github.com/tlbx-ai/MidTerm",
+      "matchedQuery": "terminal coding agent",
+      "_score": 10,
+      "readme_summary": "Your terminal workspace, anywhere. Run AI coding agents and local tools on your own machine, then keep using them from any browser on desktop, tablet, or phone. What MidTerm Is MidTerm is a web-based terminal multiplexer…",
+      "readme_error": ""
+    },
+    {
+      "description": "Open-Source Coding Agent in the terminal",
+      "fullName": "opendev-to/opendev",
+      "stargazersCount": 416,
+      "updatedAt": "2026-03-27T00:26:19Z",
+      "url": "https://github.com/opendev-to/opendev",
+      "matchedQuery": "terminal coding agent",
+      "_score": 8,
+      "readme_summary": "Introduction OpenDev is an open-source, terminal-native coding agent built as a compound AI system. Instead of a single monolithic LLM, it uses a structured ensemble of agents and workflows -- each independently bound to…",
+      "readme_error": ""
+    },
+    {
+      "description": "An AI coding agent by JetBrains that ships code from your terminal, IDE, or CI/CD pipeline - powered by any LLM you choose",
+      "fullName": "JetBrains/junie",
+      "stargazersCount": 121,
+      "updatedAt": "2026-03-26T22:42:50Z",
+      "url": "https://github.com/JetBrains/junie",
+      "matchedQuery": "terminal coding agent",
+      "_score": 8,
+      "readme_summary": "An LLM-agnostic coding agent built for real-world development — by JetBrains. Junie is an AI coding agent that lives in your terminal, integrates with your IDE and CI/CD pipelines, and helps you ship code faster. Give it…",
+      "readme_error": ""
+    }
+  ]
+}

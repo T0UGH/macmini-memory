@@ -1,0 +1,82 @@
+{
+  "2026-03-22": [
+    "preset-io/agor",
+    "njbrake/agent-of-empires",
+    "MadAppGang/claudish",
+    "open-gitagent/gitclaw",
+    "supabitapp/supacode",
+    "olimorris/codecompanion.nvim",
+    "gptme/gptme",
+    "microsoft/RPG-ZeroRepo",
+    "formulahendry/vscode-acp",
+    "undeadlist/claude-code-agents"
+  ],
+  "2026-03-23": [
+    "RAIT-09/obsidian-agent-client",
+    "xintaofei/codeg",
+    "hesreallyhim/awesome-claude-code",
+    "phil65/agentpool",
+    "superset-sh/superset",
+    "bytedance/deer-flow",
+    "evalstate/fast-agent",
+    "carlos-algms/agentic.nvim",
+    "Dicklesworthstone/ntm",
+    "orneryd/NornicDB"
+  ],
+  "2026-03-24": [
+    "SethGammon/Citadel",
+    "AgriciDaniel/claude-seo",
+    "rebornix/Agmente",
+    "K9i-0/ccpocket",
+    "rocketride-org/rocketride-server",
+    "phiat/claude-esp",
+    "shrijayan/itwillsync",
+    "letta-ai/letta-code",
+    "automagik-dev/genie",
+    "GlitterKill/sdl-mcp"
+  ],
+  "2026-03-26": [
+    "ruvnet/ruflo",
+    "milisp/codexia",
+    "athola/skrills",
+    "jamesrochabrun/AgentHub",
+    "huanchong-99/GitCortex",
+    "matt1398/claude-devtools",
+    "deusyu/translate-book",
+    "TYH-labs/unsloth-buddy",
+    "manaflow-ai/cmux",
+    "millionco/expect"
+  ],
+  "2026-03-27": [
+    "jazzyalex/agent-sessions",
+    "tintinweb/pi-subagents",
+    "penso/arbor",
+    "nekocode/agent-worktree",
+    "can1357/oh-my-pi",
+    "VoltAgent/awesome-claude-code-subagents",
+    "github/copilot-cli",
+    "tlbx-ai/MidTerm",
+    "opendev-to/opendev",
+    "JetBrains/junie"
+  ],
+  "2026-03-28": [
+    "Mng-dev-ai/agentrove",
+    "josstei/maestro-gemini",
+    "jonwiggins/optio",
+    "tony1223/better-agent-terminal",
+    "standardagents/dmux",
+    "workstream-labs/workstreams",
+    "lulu-sk/CodexFlow",
+    "duriantaco/skylos",
+    "svkozak/pi-acp",
+    "1jehuang/jcode"
+  ],
+  "2026-03-29": [
+    "affaan-m/everything-claude-code",
+    "smtg-ai/claude-squad",
+    "NeoLabHQ/context-engineering-kit",
+    "generalaction/emdash",
+    "yologdev/yoyo-evolve",
+    "microsoft/TypeAgent"
+  ]
+}

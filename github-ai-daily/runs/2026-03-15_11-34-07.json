@@ -1,0 +1,520 @@
+{
+  "generatedAt": "2026-03-15_11-34-07",
+  "core": [
+    {
+      "repo": "anthropics/claude-code",
+      "tag": "v2.1.76",
+      "publishedAt": "2026-03-14T01:23:58Z",
+      "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.76",
+      "highlights": [
+        "Added MCP elicitation support — MCP servers can now request structured input mid-task via an interactive dialog (form fields or browser URL)",
+        "Added new `Elicitation` and `ElicitationResult` hooks to intercept and override responses before they're sent back",
+        "Added `-n` / `--name <name>` CLI flag to set a display name for the session at startup",
+        "Added `worktree.sparsePaths` setting for `claude --worktree` in large monorepos to check out only the directories you need via git sparse-checkout",
+        "Added `PostCompact` hook that fires after compaction completes"
+      ]
+    },
+    {
+      "repo": "openclaw/openclaw",
+      "tag": "v2026.3.13-1",
+      "publishedAt": "2026-03-14T18:04:28Z",
+      "url": "https://github.com/openclaw/openclaw/releases/tag/v2026.3.13-1",
+      "highlights": [
+        "This release exists to recover the broken `v2026.3.13` tag/release path.",
+        "The corresponding npm version is still `2026.3.13`, not `2026.3.13-1`.",
+        "The `-1` suffix is for the Git tag and GitHub Release only.",
+        "fix(compaction): use full-session token count for post-compaction sanity check by @efe-arv in https://github.com/openclaw/openclaw/pull/28347",
+        "fix(telegram): thread media transport policy into SSRF by @obviyus in https://github.com/openclaw/openclaw/pull/44639"
+      ]
+    },
+    {
+      "repo": "sst/opencode",
+      "tag": "v1.2.26",
+      "publishedAt": "2026-03-13T16:33:18Z",
+      "url": "https://github.com/anomalyco/opencode/releases/tag/v1.2.26",
+      "highlights": [
+        "Scaffold effect-to-zod bridge for schema conversion",
+        "Serialize configuration for Bun installations",
+        "Support text attachments in app",
+        "Paginate session history for improved server performance",
+        "Sessions lost after git init in existing project (@michaeldwan)"
+      ]
+    },
+    {
+      "repo": "zed-industries/zed",
+      "tag": "v0.227.1",
+      "publishedAt": "2026-03-11T15:41:38Z",
+      "url": "https://github.com/zed-industries/zed/releases/tag/v0.227.1",
+      "highlights": [
+        "Agent: Added a new `spawn_agent` tool which allows the Zed Agent to utilize subagents for doing tasks in parallel and better context management. ([#50493](https://github.com/zed-industries/zed/pull/50493))",
+        "Agent: Added support for GPT-5.3-Codex as a bring-your-own-key model in the OpenAI provider. ([#50122](https://github.com/zed-industries/zed/pull/50122))",
+        "Agent: Added Vercel AI Gateway as a new LLM provider in Zed. ([#50207](https://github.com/zed-industries/zed/pull/50207); thanks [dancer](https://github.com/dancer))",
+        "Agent: Added the ability to jump to a file from a diff inside the agent conversation with option-enter (`editor: Open excerpts`). ([#50292](https://github.com/zed-industries/zed/pull/50292))",
+        "Agent: Added persistence for draft prompts across Zed restarts. ([#49541](https://github.com/zed-industries/zed/pull/49541))"
+      ]
+    }
+  ],
+  "plugins": {
+    "added": [
+      {
+        "name": "Notion",
+        "version": null,
+        "description": "Notion workspace integration. Search pages, create and update documents, manage databases, and access your team's knowledge base directly from Claude Code for seamless documentation workflows.",
+        "url": "https://github.com/makenotion/claude-code-notion-plugin"
+      },
+      {
+        "name": "adspirer-ads-agent",
+        "version": null,
+        "description": "Cross-platform ad management for Google Ads, Meta Ads, TikTok Ads, and LinkedIn Ads. 91 tools for keyword research, campaign creation, performance analysis, and budget optimization.",
+        "url": "https://www.adspirer.com"
+      },
+      {
+        "name": "agent-sdk-dev",
+        "version": null,
+        "description": "Development kit for working with the Claude Agent SDK",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/agent-sdk-dev"
+      },
+      {
+        "name": "amazon-location-service",
+        "version": null,
+        "description": "Guide developers through adding maps, places search, geocoding, routing, and other geospatial features with Amazon Location Service, including authentication setup, SDK integration, and best practices.",
+        "url": "https://github.com/awslabs/agent-plugins"
+      },
+      {
+        "name": "asana",
+        "version": null,
+        "description": "Asana project management integration. Create and manage tasks, search projects, update assignments, track progress, and integrate your development workflow with Asana's work management platform.",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/asana"
+      },
+      {
+        "name": "atlassian",
+        "version": null,
+        "description": "Connect to Atlassian products including Jira and Confluence. Search and create issues, access documentation, manage sprints, and integrate your development workflow with Atlassian's collaboration tools.",
+        "url": "https://github.com/atlassian/atlassian-mcp-server"
+      },
+      {
+        "name": "aws-serverless",
+        "version": null,
+        "description": "Design, build, deploy, test, and debug serverless applications with AWS Serverless services.",
+        "url": "https://github.com/awslabs/agent-plugins"
+      },
+      {
+        "name": "chrome-devtools-mcp",
+        "version": null,
+        "description": "Control and inspect a live Chrome browser from your coding agent. Record performance traces, analyze network requests, check console messages with source-mapped stack traces, and automate browser actions with Puppeteer.",
+        "url": "https://github.com/ChromeDevTools/chrome-devtools-mcp"
+      },
+      {
+        "name": "circleback",
+        "version": null,
+        "description": "Circleback conversational context integration. Search and access meetings, emails, calendar events, and more.",
+        "url": "https://github.com/circlebackai/claude-code-plugin.git"
+      },
+      {
+        "name": "clangd-lsp",
+        "version": "1.0.0",
+        "description": "C/C++ language server (clangd) for code intelligence",
+        "url": ""
+      },
+      {
+        "name": "claude-code-setup",
+        "version": null,
+        "description": "Analyze codebases and recommend tailored Claude Code automations such as hooks, skills, MCP servers, and subagents.",
+        "url": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-code-setup"
+      },
+      {
+        "name": "claude-md-management",
+        "version": null,
+        "description": "Tools to maintain and improve CLAUDE.md files - audit quality, capture session learnings, and keep project memory current.",
+        "url": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-md-management"
+      },
+      {
+        "name": "code-review",
+        "version": null,
+        "description": "Automated code review for pull requests using multiple specialized agents with confidence-based scoring to filter false positives",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/code-review"
+      },
+      {
+        "name": "code-simplifier",
+        "version": null,
+        "description": "Agent that simplifies and refines code for clarity, consistency, and maintainability while preserving functionality. Focuses on recently modified code.",
+        "url": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier"
+      },
+      {
+        "name": "coderabbit",
+        "version": null,
+        "description": "Your code review partner. CodeRabbit provides external validation using a specialized AI architecture and 40+ integrated static analyzers—offering a different perspective that catches bugs, security vulnerabilities, logic errors, and edge cases. Context-aware analysis via AST parsing and codegraph relationships. Automatically incorporates CLAUDE.md and project coding guidelines into reviews. Useful after writing or modifying code, before commits, when implementing complex or security-sensitive logic, or when a second opinion would increase confidence in the changes. Returns specific findings with suggested fixes that can be applied immediately. Free to use.",
+        "url": "https://github.com/coderabbitai/claude-plugin.git"
+      },
+      {
+        "name": "commit-commands",
+        "version": null,
+        "description": "Commands for git commit workflows including commit, push, and PR creation",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/commit-commands"
+      },
+      {
+        "name": "context7",
+        "version": null,
+        "description": "Upstash Context7 MCP server for up-to-date documentation lookup. Pull version-specific documentation and code examples directly from source repositories into your LLM context.",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/context7"
+      },
+      {
+        "name": "csharp-lsp",
+        "version": "1.0.0",
+        "description": "C# language server for code intelligence",
+        "url": ""
+      },
+      {
+        "name": "data",
+        "version": null,
+        "description": "Data engineering for Apache Airflow and Astronomer. Author DAGs with best practices, debug pipeline failures, trace data lineage, profile tables, migrate Airflow 2 to 3, and manage local and cloud deployments.",
+        "url": "https://github.com/astronomer/agents"
+      },
+      {
+        "name": "deploy-on-aws",
+        "version": null,
+        "description": "Deploy applications to AWS with architecture recommendations, cost estimates, and IaC deployment.",
+        "url": "https://github.com/awslabs/agent-plugins"
+      },
+      {
+        "name": "explanatory-output-style",
+        "version": null,
+        "description": "Adds educational insights about implementation choices and codebase patterns (mimics the deprecated Explanatory output style)",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/explanatory-output-style"
+      },
+      {
+        "name": "feature-dev",
+        "version": null,
+        "description": "Comprehensive feature development workflow with specialized agents for codebase exploration, architecture design, and quality review",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/feature-dev"
+      },
+      {
+        "name": "figma",
+        "version": null,
+        "description": "Figma design platform integration. Access design files, extract component information, read design tokens, and translate designs into code. Bridge the gap between design and development workflows.",
+        "url": "https://github.com/figma/mcp-server-guide"
+      },
+      {
+        "name": "firebase",
+        "version": null,
+        "description": "Google Firebase MCP integration. Manage Firestore databases, authentication, cloud functions, hosting, and storage. Build and manage your Firebase backend directly from your development workflow.",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/firebase"
+      },
+      {
+        "name": "firecrawl",
+        "version": null,
+        "description": "Web scraping and crawling powered by Firecrawl. Turn any website into clean, LLM-ready markdown or structured data. Scrape single pages, crawl entire sites, search the web, and extract structured information. Includes an AI agent for autonomous multi-source data gathering - just describe what you need and it finds, navigates, and extracts automatically.",
+        "url": "https://github.com/firecrawl/firecrawl-claude-plugin.git"
+      },
+      {
+        "name": "frontend-design",
+        "version": null,
+        "description": "Create distinctive, production-grade frontend interfaces with high design quality. Generates creative, polished code that avoids generic AI aesthetics.",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/frontend-design"
+      },
+      {
+        "name": "github",
+        "version": null,
+        "description": "Official GitHub MCP server for repository management. Create issues, manage pull requests, review code, search repositories, and interact with GitHub's full API directly from Claude Code.",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/github"
+      },
+      {
+        "name": "gitlab",
+        "version": null,
+        "description": "GitLab DevOps platform integration. Manage repositories, merge requests, CI/CD pipelines, issues, and wikis. Full access to GitLab's comprehensive DevOps lifecycle tools.",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/gitlab"
+      },
+      {
+        "name": "gopls-lsp",
+        "version": "1.0.0",
+        "description": "Go language server for code intelligence and refactoring",
+        "url": ""
+      },
+      {
+        "name": "greptile",
+        "version": null,
+        "description": "AI-powered codebase search and understanding. Query your repositories using natural language to find relevant code, understand dependencies, and get contextual answers about your codebase architecture.",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/greptile"
+      },
+      {
+        "name": "hookify",
+        "version": null,
+        "description": "Easily create custom hooks to prevent unwanted behaviors by analyzing conversation patterns or from explicit instructions. Define rules via simple markdown files.",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/hookify"
+      },
+      {
+        "name": "huggingface-skills",
+        "version": null,
+        "description": "Build, train, evaluate, and use open source AI models, datasets, and spaces.",
+        "url": "https://github.com/huggingface/skills.git"
+      },
+      {
+        "name": "jdtls-lsp",
+        "version": "1.0.0",
+        "description": "Java language server (Eclipse JDT.LS) for code intelligence",
+        "url": ""
+      },
+      {
+        "name": "kotlin-lsp",
+        "version": "1.0.0",
+        "description": "Kotlin language server for code intelligence",
+        "url": ""
+      },
+      {
+        "name": "laravel-boost",
+        "version": null,
+        "description": "Laravel development toolkit MCP server. Provides intelligent assistance for Laravel applications including Artisan commands, Eloquent queries, routing, migrations, and framework-specific code generation.",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/laravel-boost"
+      },
+      {
+        "name": "learning-output-style",
+        "version": null,
+        "description": "Interactive learning mode that requests meaningful code contributions at decision points (mimics the unshipped Learning output style)",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/learning-output-style"
+      },
+      {
+        "name": "legalzoom",
+        "version": null,
+        "description": "Attorney guidance and legal tools for business and personal needs. AI-powered document review identifies critical risks and important clauses, advises when to engage an attorney, and routes to LegalZoom's network when professional expertise is needed.",
+        "url": "https://www.legalzoom.com/"
+      },
+      {
+        "name": "linear",
+        "version": null,
+        "description": "Linear issue tracking integration. Create issues, manage projects, update statuses, search across workspaces, and streamline your software development workflow with Linear's modern issue tracker.",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/linear"
+      },
+      {
+        "name": "lua-lsp",
+        "version": "1.0.0",
+        "description": "Lua language server for code intelligence",
+        "url": ""
+      },
+      {
+        "name": "migration-to-aws",
+        "version": null,
+        "description": "Assess current cloud provider usage and billing to estimate and compare AWS services and pricing, with recommendations for migration or continued use of current provider.",
+        "url": "https://github.com/awslabs/agent-plugins"
+      },
+      {
+        "name": "mintlify",
+        "version": null,
+        "description": "Build beautiful documentation sites with Mintlify. Convert non-markdown files into properly formatted MDX pages, add and modify content with correct component use, and automate documentation updates.",
+        "url": "https://www.mintlify.com/"
+      },
+      {
+        "name": "pagerduty",
+        "version": null,
+        "description": "Enhance code quality and security through PagerDuty risk scoring and incident correlation. Score pre-commit diffs against historical incident data and surface deployment risk before you ship.",
+        "url": "https://github.com/PagerDuty/claude-code-plugins"
+      },
+      {
+        "name": "php-lsp",
+        "version": "1.0.0",
+        "description": "PHP language server (Intelephense) for code intelligence",
+        "url": ""
+      },
+      {
+        "name": "pinecone",
+        "version": null,
+        "description": "Pinecone vector database integration. Streamline your Pinecone development with powerful tools for managing vector indexes, querying data, and rapid prototyping. Use slash commands like /quickstart to generate AGENTS.md files and initialize Python projects and /query to quickly explore indexes. Access the Pinecone MCP server for creating, describing, upserting and querying indexes with Claude. Perfect for developers building semantic search, RAG applications, recommendation systems, and other vector-based applications with Pinecone.",
+        "url": "https://github.com/pinecone-io/pinecone-claude-code-plugin"
+      },
+      {
+        "name": "planetscale",
+        "version": null,
+        "description": "An authenticated hosted MCP server that accesses your PlanetScale organizations, databases, branches, schema, and Insights data. Query against your data, surface slow queries, and get organizational and account information.",
+        "url": "https://planetscale.com/"
+      },
+      {
+        "name": "playground",
+        "version": null,
+        "description": "Creates interactive HTML playgrounds — self-contained single-file explorers with visual controls, live preview, and prompt output with copy button. Includes templates for design playgrounds, data explorers, concept maps, and document critique.",
+        "url": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/playground"
+      },
+      {
+        "name": "playwright",
+        "version": null,
+        "description": "Browser automation and end-to-end testing MCP server by Microsoft. Enables Claude to interact with web pages, take screenshots, fill forms, click elements, and perform automated browser testing workflows.",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/playwright"
+      },
+      {
+        "name": "plugin-dev",
+        "version": null,
+        "description": "Comprehensive toolkit for developing Claude Code plugins. Includes 7 expert skills covering hooks, MCP integration, commands, agents, and best practices. AI-assisted plugin creation and validation.",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/plugin-dev"
+      },
+      {
+        "name": "posthog",
+        "version": null,
+        "description": "Access PostHog analytics, feature flags, experiments, error tracking, and insights directly from Claude Code.",
+        "url": "https://posthog.com/docs/model-context-protocol"
+      },
+      {
+        "name": "postman",
+        "version": null,
+        "description": "Full API lifecycle management for Claude Code. Sync collections, generate client code, discover APIs, run tests, create mocks, publish docs, and audit security. Powered by the Postman MCP Server.",
+        "url": "https://learning.postman.com/docs/developer/postman-mcp-server/"
+      },
+      {
+        "name": "pr-review-toolkit",
+        "version": null,
+        "description": "Comprehensive PR review agents specializing in comments, tests, error handling, type design, code quality, and code simplification",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/pr-review-toolkit"
+      },
+      {
+        "name": "pyright-lsp",
+        "version": "1.0.0",
+        "description": "Python language server (Pyright) for type checking and code intelligence",
+        "url": ""
+      },
+      {
+        "name": "qodo-skills",
+        "version": null,
+        "description": "Qodo Skills provides a curated library of reusable AI agent capabilities that extend Claude's functionality for software development workflows. Each skill is designed to integrate seamlessly into your development process, enabling tasks like code quality checks, automated testing, security scanning, and compliance validation. Skills operate across your entire SDLC—from IDE to CI/CD—ensuring consistent standards and catching issues early.",
+        "url": "https://github.com/qodo-ai/qodo-skills.git"
+      },
+      {
+        "name": "railway",
+        "version": null,
+        "description": "Deploy and manage apps, databases, and infrastructure on Railway. Covers project setup, deploys, environment configuration, networking, troubleshooting, and monitoring.",
+        "url": "https://docs.railway.com/ai/claude-code-plugin"
+      },
+      {
+        "name": "ralph-loop",
+        "version": null,
+        "description": "Interactive self-referential AI loops for iterative development, implementing the Ralph Wiggum technique. Claude works on the same task repeatedly, seeing its previous work, until completion.",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/ralph-loop"
+      },
+      {
+        "name": "rc",
+        "version": null,
+        "description": "Configure RevenueCat projects, apps, products, entitlements, and offerings directly from Claude Code. Manage your in-app purchase backend without leaving your development workflow.",
+        "url": "https://www.revenuecat.com"
+      },
+      {
+        "name": "ruby-lsp",
+        "version": "1.0.0",
+        "description": "Ruby language server for code intelligence and analysis",
+        "url": ""
+      },
+      {
+        "name": "rust-analyzer-lsp",
+        "version": "1.0.0",
+        "description": "Rust language server for code intelligence and analysis",
+        "url": ""
+      },
+      {
+        "name": "sanity-plugin",
+        "version": null,
+        "description": "Sanity content platform integration with MCP server, agent skills, and slash commands. Query and author content, build and optimize GROQ queries, design schemas, and set up Visual Editing.",
+        "url": "https://www.sanity.io"
+      },
+      {
+        "name": "security-guidance",
+        "version": null,
+        "description": "Security reminder hook that warns about potential security issues when editing files, including command injection, XSS, and unsafe code patterns",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/security-guidance"
+      },
+      {
+        "name": "semgrep",
+        "version": null,
+        "description": "Semgrep catches security vulnerabilities in real-time and guides Claude to write secure code from the start.",
+        "url": "https://github.com/semgrep/mcp-marketplace.git"
+      },
+      {
+        "name": "sentry",
+        "version": null,
+        "description": "Sentry error monitoring integration. Access error reports, analyze stack traces, search issues by fingerprint, and debug production errors directly from your development environment.",
+        "url": "https://github.com/getsentry/sentry-for-claude/tree/main"
+      },
+      {
+        "name": "serena",
+        "version": null,
+        "description": "Semantic code analysis MCP server providing intelligent code understanding, refactoring suggestions, and codebase navigation through language server protocol integration.",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/serena"
+      },
+      {
+        "name": "skill-creator",
+        "version": null,
+        "description": "Create new skills, improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, update or optimize an existing skill, run evals to test a skill, or benchmark skill performance with variance analysis.",
+        "url": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/skill-creator"
+      },
+      {
+        "name": "slack",
+        "version": null,
+        "description": "Slack workspace integration. Search messages, access channels, read threads, and stay connected with your team's communications while coding. Find relevant discussions and context quickly.",
+        "url": "https://github.com/slackapi/slack-mcp-plugin/tree/main"
+      },
+      {
+        "name": "sonatype-guide",
+        "version": null,
+        "description": "Sonatype Guide MCP server for software supply chain intelligence and dependency security. Analyze dependencies for vulnerabilities, get secure version recommendations, and check component quality metrics.",
+        "url": "https://github.com/sonatype/sonatype-guide-claude-plugin.git"
+      },
+      {
+        "name": "sourcegraph",
+        "version": null,
+        "description": "Code search and understanding across codebases. Search, read, and trace references across repositories; analyze refactor impact; investigate incidents via commit and diff search; run targeted security sweeps.",
+        "url": "https://sourcegraph.com"
+      },
+      {
+        "name": "stripe",
+        "version": null,
+        "description": "Stripe development plugin for Claude",
+        "url": "https://github.com/stripe/ai/tree/main/providers/claude/plugin"
+      },
+      {
+        "name": "sumup",
+        "version": null,
+        "description": "SumUp payment integrations across terminal and online checkout flows. Build Android and iOS POS apps with SumUp card readers, online checkout with server SDKs and the checkout widget, and control card readers remotely via Cloud API.",
+        "url": "https://www.sumup.com/"
+      },
+      {
+        "name": "supabase",
+        "version": null,
+        "description": "Supabase MCP integration for database operations, authentication, storage, and real-time subscriptions. Manage your Supabase projects, run SQL queries, and interact with your backend directly.",
+        "url": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/supabase"
+      },
+      {
+        "name": "superpowers",
+        "version": null,
+        "description": "Superpowers teaches Claude brainstorming, subagent driven development with built in code review, systematic debugging, and red/green TDD. Additionally, it teaches Claude how to author and test new skills.",
+        "url": "https://github.com/obra/superpowers.git"
+      },
+      {
+        "name": "swift-lsp",
+        "version": "1.0.0",
+        "description": "Swift language server (SourceKit-LSP) for code intelligence",
+        "url": ""
+      },
+      {
+        "name": "typescript-lsp",
+        "version": "1.0.0",
+        "description": "TypeScript/JavaScript language server for enhanced code intelligence",
+        "url": ""
+      },
+      {
+        "name": "vercel",
+        "version": null,
+        "description": "Vercel deployment platform integration. Manage deployments, check build status, access logs, configure domains, and control your frontend infrastructure directly from Claude Code.",
+        "url": "https://github.com/vercel/vercel-deploy-claude-code-plugin"
+      },
+      {
+        "name": "wix",
+        "version": null,
+        "description": "Build, manage, and deploy Wix sites and apps. CLI development skills for dashboard extensions, backend APIs, site widgets, and service plugins with the Wix Design System, plus MCP server for site management.",
+        "url": "https://dev.wix.com/docs/wix-cli/guides/development/about-wix-skills"
+      },
+      {
+        "name": "zapier",
+        "version": null,
+        "description": "Connect 8,000+ apps to your AI workflow. Discover, enable, and execute Zapier actions directly from your client.",
+        "url": "https://github.com/zapier/zapier-mcp/tree/main/plugins/zapier"
+      }
+    ],
+    "removed": [],
+    "changed": []
+  },
+  "discovery": []
+}

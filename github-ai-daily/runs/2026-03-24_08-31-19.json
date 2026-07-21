@@ -1,0 +1,215 @@
+{
+  "generatedAt": "2026-03-24_08-31-19",
+  "language": "zh-CN",
+  "config": {
+    "min_stars": 50,
+    "discovery_count": 10,
+    "core_release_repos": [
+      "anthropics/claude-code",
+      "openclaw/openclaw",
+      "sst/opencode",
+      "openai/codex"
+    ],
+    "plugin_repo": "anthropics/claude-plugins-official"
+  },
+  "core": [
+    {
+      "repo": "anthropics/claude-code",
+      "tag": "v2.1.81",
+      "publishedAt": "2026-03-21 06:24",
+      "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.81",
+      "overview": "这版不是 flashy 新能力，而是在补 Claude Code 作为工程工具的执行链路：MCP 交互、hook 节点、会话命名和大仓库 worktree 都更完整了。",
+      "update_points": [
+        "本次 release 主要围绕 CLI、MCP、hook 和 worktree 的可编排性展开，方向是把 Claude Code 做得更像可控的工程系统。"
+      ],
+      "raw_focus": [
+        "Added --bare flag for scripted -p calls — skips hooks, LSP, plugin sync, and skill directory walks; requires ANTHROPIC_API_KEY or an apiKeyHelper via --settings (OAuth and keychain auth disabled); auto-memory fully disabled",
+        "Added --channels permission relay — channel servers that declare the permission capability can forward tool approval prompts to your phone",
+        "Fixed multiple concurrent Claude Code sessions requiring repeated re-authentication when one session refreshes its OAuth token",
+        "Fixed voice mode silently swallowing retry failures and showing a misleading \"check your network\" message instead of the actual error",
+        "Fixed voice mode audio not recovering when the server silently drops the WebSocket connection",
+        "Fixed CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS not suppressing the structured-outputs beta header, causing 400 errors on proxy gateways forwarding to Vertex/Bedrock"
+      ],
+      "impacts": [
+        "如果你在用 Claude Code 跑多轮任务或大仓库，这版比“模型更聪明”更值得关注，因为它改的是工作流可用性。"
+      ]
+    },
+    {
+      "repo": "openclaw/openclaw",
+      "tag": "v2026.3.23",
+      "publishedAt": "2026-03-24 07:15",
+      "url": "https://github.com/openclaw/openclaw/releases/tag/v2026.3.23",
+      "overview": "这版更像“把系统做结实”的维护版本：修发布链路、补 compaction 校验、收紧 Telegram / SSRF 防护。",
+      "update_points": [
+        "Telegram 媒体传输相关的安全策略被修正，属于 SSRF 防护链路的一部分。"
+      ],
+      "raw_focus": [
+        "Telegram/auto-reply: preserve same-chat inbound debounce order without stranding stale busy-session followups, and keep same-key overflow turns ordered when tracked debounce keys are saturated. Thanks @osolmaz."
+      ],
+      "impacts": [
+        "说明 OpenClaw 在补“平台接入层”的边界安全，不只是堆功能；这对消息渠道型 agent 是硬需求。"
+      ]
+    },
+    {
+      "repo": "sst/opencode",
+      "tag": "v1.3.0",
+      "publishedAt": "2026-03-23 07:32",
+      "url": "https://github.com/anomalyco/opencode/releases/tag/v1.3.0",
+      "overview": "OpenCode 这版重点不在宣传点，而在底层结构、历史性能和输入形态这些会影响长期使用体验的细节。",
+      "update_points": [
+        "Bun 安装链路的配置序列化问题被处理，减少环境差异造成的安装异常。",
+        "会话历史改成分页加载，目标是把服务端性能和长会话稳定性拉上来。"
+      ],
+      "raw_focus": [
+        "**Node.js Support** : opencode can now run on Node.js in addition to Bun, with a dedicated Node.js entry point and build script that bundles the server with database migrations.",
+        "**xAI Responses API** : Improved xAI reasoning models performance in long multi-turn conversations by switching to the responses API with encrypted content support."
+      ],
+      "impacts": [
+        "这不是表面功能，但说明 OpenCode 也在补“越用越重”后的历史负担问题。"
+      ]
+    },
+    {
+      "repo": "openai/codex",
+      "tag": "rust-v0.116.0",
+      "publishedAt": "2026-03-20 01:51",
+      "url": "https://github.com/openai/codex/releases/tag/rust-v0.116.0",
+      "overview": "这一版继续加强 Codex CLI 与 IDE/编辑器接入，方向是把终端与编辑器工作流打通。",
+      "update_points": [
+        "这一版继续加强 Codex CLI 与 IDE/编辑器接入，方向是把终端与编辑器工作流打通。"
+      ],
+      "raw_focus": [
+        "#13702 fix(subagents) share execpolicy by default @dylan-hurd-oai"
+      ],
+      "impacts": [
+        "这会继续降低从终端走向编辑器协同的切换成本。"
+      ]
+    }
+  ],
+  "plugins": {
+    "added": [],
+    "removed": [],
+    "changed": [],
+    "implication": [
+      "插件仓库这次变化说明 Claude Code 官方生态还在继续向生产系统接入层扩展。"
+    ]
+  },
+  "readme_failures": [],
+  "discovery_stats": {
+    "dedupe_filtered_count": 12,
+    "readme_skipped_count": 0,
+    "low_score_filtered_count": 139,
+    "final_count": 10
+  },
+  "discovery": [
+    {
+      "description": "Agent orchestration harness for Claude Code. Four-tier routing (/do), campaign persistence across sessions, parallel agents in isolated worktrees, discovery relay between waves, lifecycle hooks, circuit breaker, and 6 production-quality skills. From solo developer to institutional scale.",
+      "fullName": "SethGammon/Citadel",
+      "stargazersCount": 216,
+      "updatedAt": "2026-03-24T00:29:30Z",
+      "url": "https://github.com/SethGammon/Citadel",
+      "matchedQuery": "worktree coding agent",
+      "_score": 39,
+      "readme_summary": "Citadel — Agent Orchestration Harness for Claude Code Run autonomous coding campaigns with Claude Code. Route any task through the right tool at the right scale — from a one-line fix to a multi-day parallel campaign. 24 …",
+      "readme_error": ""
+    },
+    {
+      "description": "Universal SEO skill for Claude Code. 13 sub-skills, 7 subagents, extensions system with DataForSEO MCP integration. Technical SEO, E-E-A-T, schema, GEO/AEO, and strategic planning.",
+      "fullName": "AgriciDaniel/claude-seo",
+      "stargazersCount": 2943,
+      "updatedAt": "2026-03-24T00:19:23Z",
+      "url": "https://github.com/AgriciDaniel/claude-seo",
+      "matchedQuery": "subagent coding",
+      "_score": 38,
+      "readme_summary": "Claude SEO - SEO Audit Skill for Claude Code Comprehensive SEO analysis skill for Claude Code. Covers technical SEO, on-page analysis, content quality (E-E-A-T), schema markup, image optimization, sitemap architecture, A…",
+      "readme_error": ""
+    },
+    {
+      "description": "iOS client for coding agents via ACP or Codex app-server",
+      "fullName": "rebornix/Agmente",
+      "stargazersCount": 490,
+      "updatedAt": "2026-03-23T14:49:38Z",
+      "url": "https://github.com/rebornix/Agmente",
+      "matchedQuery": "ACP coding agent",
+      "_score": 24,
+      "readme_summary": "Agmente is an iOS client for coding agents. It connects to servers that speak ACP (Agent Client Protocol) or the Codex app-server protocol and shows tool calls, results, and conversation history on device. Agmente on the…",
+      "readme_error": ""
+    },
+    {
+      "description": "Mobile client for Claude Code and Codex — control coding agents from your phone via WebSocket bridge",
+      "fullName": "K9i-0/ccpocket",
+      "stargazersCount": 238,
+      "updatedAt": "2026-03-24T00:29:00Z",
+      "url": "https://github.com/K9i-0/ccpocket",
+      "matchedQuery": "coding agent",
+      "_score": 24,
+      "readme_summary": "CC Pocket lets you start and run Codex and Claude Code sessions entirely from your phone. No laptop needed — just open the app, pick a project, and code from anywhere. CC Pocket is not affiliated with, endorsed by, or as…",
+      "readme_error": ""
+    },
+    {
+      "description": "High-performance AI pipeline engine with a C++ core and 50+ Python-extensible nodes. Build, debug, and scale LLM workflows with 13+ model providers, 8+ vector databases, and agent orchestration, all from your IDE. Includes VS Code extension, TypeScript/Python SDKs, and Docker deployment.",
+      "fullName": "rocketride-org/rocketride-server",
+      "stargazersCount": 757,
+      "updatedAt": "2026-03-23T23:58:18Z",
+      "url": "https://github.com/rocketride-org/rocketride-server",
+      "matchedQuery": "MCP server coding",
+      "_score": 22,
+      "readme_summary": "RocketRide is a high-performance data processing engine built on a C++ core with a Python-extensible node system. With 50+ pipeline nodes, native AI/ML support, and SDKs for TypeScript, Python, and MCP, it lets you proce…",
+      "readme_error": ""
+    },
+    {
+      "description": "Stream Claude Code's hidden output (thinking, tool calls, subagents) to a separate terminal in real-time",
+      "fullName": "phiat/claude-esp",
+      "stargazersCount": 67,
+      "updatedAt": "2026-03-23T15:39:52Z",
+      "url": "https://github.com/phiat/claude-esp",
+      "matchedQuery": "subagent coding",
+      "_score": 21,
+      "readme_summary": "Stream Claude Code's hidden output (thinking, tool calls, subagents) to a separate terminal in real-time. Looking for the Rust port? See: claude-esp-rs The Problem When using Claude Code interactively, tool outputs and t…",
+      "readme_error": ""
+    },
+    {
+      "description": "Sync any terminal-based AI coding agent to your phone. Claude Code, Aider, Codex. Local network, zero cloud.",
+      "fullName": "shrijayan/itwillsync",
+      "stargazersCount": 59,
+      "updatedAt": "2026-03-24T00:14:40Z",
+      "url": "https://github.com/shrijayan/itwillsync",
+      "matchedQuery": "terminal coding agent",
+      "_score": 21,
+      "readme_summary": "Sync any terminal-based AI coding agent to your phone over local network. Sync any coding agent to your phone — one dashboard for all your sessions. Agent-agnostic, privacy-first, zero cloud. Website Docs Demo Video Quic…",
+      "readme_error": ""
+    },
+    {
+      "description": "The memory-first coding agent",
+      "fullName": "letta-ai/letta-code",
+      "stargazersCount": 1928,
+      "updatedAt": "2026-03-24T00:28:58Z",
+      "url": "https://github.com/letta-ai/letta-code",
+      "matchedQuery": "agentic coding",
+      "_score": 17,
+      "readme_summary": "Letta Code is a memory-first coding harness, built on top of the Letta API. Instead of working in independent sessions, you work with a persisted agent that learns over time and is portable across models (Claude Sonnet/O…",
+      "readme_error": ""
+    },
+    {
+      "description": "Wishes in, PRs out. CLI agent that interviews you, plans the work, dispatches parallel agents in isolated worktrees, and reviews code before you see it.",
+      "fullName": "automagik-dev/genie",
+      "stargazersCount": 260,
+      "updatedAt": "2026-03-23T20:44:12Z",
+      "url": "https://github.com/automagik-dev/genie",
+      "matchedQuery": "worktree coding agent",
+      "_score": 13,
+      "readme_summary": "What is Genie? Genie is a CLI that turns vague ideas into shipped PRs through a structured pipeline. Describe what you want — Genie interviews you to capture the full context, builds a plan with acceptance criteria, disp…",
+      "readme_error": ""
+    },
+    {
+      "description": "SDL-MCP (Symbol Delta Ledger MCP Server) is a cards-first context system for coding agents that saves tokens and improves context.",
+      "fullName": "GlitterKill/sdl-mcp",
+      "stargazersCount": 100,
+      "updatedAt": "2026-03-24T00:08:12Z",
+      "url": "https://github.com/GlitterKill/sdl-mcp",
+      "matchedQuery": "MCP server coding",
+      "_score": 13,
+      "readme_summary": "Cards-first code context for AI coding agents Stop feeding entire files into the context window. Start giving agents exactly the code intelligence they need. NOTE TO ALL USERS Please stick with using the v0.9.2 release f…",
+      "readme_error": ""
+    }
+  ]
+}

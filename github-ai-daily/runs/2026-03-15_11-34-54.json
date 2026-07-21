@@ -1,0 +1,144 @@
+{
+  "generatedAt": "2026-03-15_11-34-54",
+  "core": [
+    {
+      "repo": "anthropics/claude-code",
+      "tag": "v2.1.76",
+      "publishedAt": "2026-03-14T01:23:58Z",
+      "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.76",
+      "highlights": [
+        "Added MCP elicitation support — MCP servers can now request structured input mid-task via an interactive dialog (form fields or browser URL)",
+        "Added new `Elicitation` and `ElicitationResult` hooks to intercept and override responses before they're sent back",
+        "Added `-n` / `--name <name>` CLI flag to set a display name for the session at startup",
+        "Added `worktree.sparsePaths` setting for `claude --worktree` in large monorepos to check out only the directories you need via git sparse-checkout",
+        "Added `PostCompact` hook that fires after compaction completes"
+      ]
+    },
+    {
+      "repo": "openclaw/openclaw",
+      "tag": "v2026.3.13-1",
+      "publishedAt": "2026-03-14T18:04:28Z",
+      "url": "https://github.com/openclaw/openclaw/releases/tag/v2026.3.13-1",
+      "highlights": [
+        "This release exists to recover the broken `v2026.3.13` tag/release path.",
+        "The corresponding npm version is still `2026.3.13`, not `2026.3.13-1`.",
+        "The `-1` suffix is for the Git tag and GitHub Release only.",
+        "fix(compaction): use full-session token count for post-compaction sanity check by @efe-arv in https://github.com/openclaw/openclaw/pull/28347",
+        "fix(telegram): thread media transport policy into SSRF by @obviyus in https://github.com/openclaw/openclaw/pull/44639"
+      ]
+    },
+    {
+      "repo": "sst/opencode",
+      "tag": "v1.2.26",
+      "publishedAt": "2026-03-13T16:33:18Z",
+      "url": "https://github.com/anomalyco/opencode/releases/tag/v1.2.26",
+      "highlights": [
+        "Scaffold effect-to-zod bridge for schema conversion",
+        "Serialize configuration for Bun installations",
+        "Support text attachments in app",
+        "Paginate session history for improved server performance",
+        "Sessions lost after git init in existing project (@michaeldwan)"
+      ]
+    },
+    {
+      "repo": "zed-industries/zed",
+      "tag": "v0.227.1",
+      "publishedAt": "2026-03-11T15:41:38Z",
+      "url": "https://github.com/zed-industries/zed/releases/tag/v0.227.1",
+      "highlights": [
+        "Agent: Added a new `spawn_agent` tool which allows the Zed Agent to utilize subagents for doing tasks in parallel and better context management. ([#50493](https://github.com/zed-industries/zed/pull/50493))",
+        "Agent: Added support for GPT-5.3-Codex as a bring-your-own-key model in the OpenAI provider. ([#50122](https://github.com/zed-industries/zed/pull/50122))",
+        "Agent: Added Vercel AI Gateway as a new LLM provider in Zed. ([#50207](https://github.com/zed-industries/zed/pull/50207); thanks [dancer](https://github.com/dancer))",
+        "Agent: Added the ability to jump to a file from a diff inside the agent conversation with option-enter (`editor: Open excerpts`). ([#50292](https://github.com/zed-industries/zed/pull/50292))",
+        "Agent: Added persistence for draft prompts across Zed restarts. ([#49541](https://github.com/zed-industries/zed/pull/49541))"
+      ]
+    }
+  ],
+  "plugins": {
+    "added": [],
+    "removed": [],
+    "changed": []
+  },
+  "discovery": [
+    {
+      "description": "🤖 Generate secure, automated repo documentation and pull request checks with a safe-by-default toolchain for coding agents.",
+      "fullName": "Lilchris007/AGENTS.md_generator",
+      "stargazersCount": 0,
+      "updatedAt": "2026-03-15T03:34:28Z",
+      "url": "https://github.com/Lilchris007/AGENTS.md_generator",
+      "matchedQuery": "coding agent"
+    },
+    {
+      "description": "Nix packages for AI coding agents and development tools. Automatically updated daily.",
+      "fullName": "numtide/llm-agents.nix",
+      "stargazersCount": 807,
+      "updatedAt": "2026-03-15T03:33:48Z",
+      "url": "https://github.com/numtide/llm-agents.nix",
+      "matchedQuery": "coding agent"
+    },
+    {
+      "description": "🔧 Extend your pi-coding-agent with powerful tools for multi-vendor management, session context, and enhanced terminal functionality in one simple package.",
+      "fullName": "Skate499/pi-lab",
+      "stargazersCount": 0,
+      "updatedAt": "2026-03-15T03:33:12Z",
+      "url": "https://github.com/Skate499/pi-lab",
+      "matchedQuery": "coding agent"
+    },
+    {
+      "description": "🚀 Access your terminal remotely via Telegram, enabling seamless interactions with coding agents from your mobile device, anytime and anywhere.",
+      "fullName": "danGat14234/tgterm",
+      "stargazersCount": 0,
+      "updatedAt": "2026-03-15T03:32:26Z",
+      "url": "https://github.com/danGat14234/tgterm",
+      "matchedQuery": "coding agent"
+    },
+    {
+      "description": "MaxBot - AI Agent Code Repository | 多Agent协作代码管理中心",
+      "fullName": "anekin/maxbot",
+      "stargazersCount": 0,
+      "updatedAt": "2026-03-15T03:30:28Z",
+      "url": "https://github.com/anekin/maxbot",
+      "matchedQuery": "agentic coding"
+    },
+    {
+      "description": "Bootstraps a fresh Ubuntu VPS into a complete multi-agent AI development environment in 30 minutes: coding agents, session management, safety tools, and coordination infrastructure",
+      "fullName": "Dicklesworthstone/agentic_coding_flywheel_setup",
+      "stargazersCount": 1271,
+      "updatedAt": "2026-03-15T03:12:45Z",
+      "url": "https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup",
+      "matchedQuery": "agentic coding"
+    },
+    {
+      "description": "vim clone on Ruby with agentic coding",
+      "fullName": "ko1/ruvim",
+      "stargazersCount": 4,
+      "updatedAt": "2026-03-15T03:06:45Z",
+      "url": "https://github.com/ko1/ruvim",
+      "matchedQuery": "agentic coding"
+    },
+    {
+      "description": "Agentic coding assistant CLI app, implemented as a Rust + Ratatui application.",
+      "fullName": "aistar-au/vexcoder",
+      "stargazersCount": 0,
+      "updatedAt": "2026-03-15T03:03:34Z",
+      "url": "https://github.com/aistar-au/vexcoder",
+      "matchedQuery": "agentic coding"
+    },
+    {
+      "description": "Open-source terminal coding agent. Connect any LLM, code anywhere. 🎩",
+      "fullName": "MarcosV6/codemaxxing",
+      "stargazersCount": 0,
+      "updatedAt": "2026-03-15T02:26:23Z",
+      "url": "https://github.com/MarcosV6/codemaxxing",
+      "matchedQuery": "terminal coding agent"
+    },
+    {
+      "description": "a terminal coding agent, built in rust",
+      "fullName": "KAJdev/rum",
+      "stargazersCount": 1,
+      "updatedAt": "2026-03-15T00:36:45Z",
+      "url": "https://github.com/KAJdev/rum",
+      "matchedQuery": "terminal coding agent"
+    }
+  ]
+}

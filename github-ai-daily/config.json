@@ -1,0 +1,64 @@
+{
+  "language": "zh-CN",
+  "core_release_repos": [
+    "anthropics/claude-code",
+    "openclaw/openclaw",
+    "sst/opencode",
+    "openai/codex"
+  ],
+  "plugin_repo": "anthropics/claude-plugins-official",
+  "plugin_state_file": "state/claude_plugins_marketplace.json",
+  "discovery_count": 10,
+  "min_stars": 50,
+  "discovery_queries": [
+    "coding agent",
+    "agentic coding",
+    "terminal coding agent",
+    "repo memory agent",
+    "subagent coding",
+    "worktree coding agent",
+    "MCP server coding",
+    "ACP coding agent"
+  ],
+  "required_workflow": [
+    "修改后必须试跑",
+    "试跑后必须校验",
+    "校验通过后必须push",
+    "回复用户时必须带commit hash"
+  ],
+  "discovery_high_signal_keywords": [
+    "claude code",
+    "openclaw",
+    "codex",
+    "multi-agent",
+    "subagent",
+    "orchestr",
+    "worktree",
+    "repo memory",
+    "memory",
+    "hook",
+    "observability",
+    "mcp",
+    "acp",
+    "terminal coding agent",
+    "agent sdk",
+    "skills",
+    "workflow",
+    "sandbox"
+  ],
+  "discovery_low_signal_keywords": [
+    "awesome-",
+    "boilerplate",
+    "template",
+    "prompt",
+    "collection",
+    "practice",
+    "tutorial",
+    "hello-world",
+    "starter",
+    "demo"
+  ],
+  "dedupe_lookback_days": 7,
+  "dedupe_state_file": "state/recommended_recent.json",
+  "readme_min_length": 100
+}

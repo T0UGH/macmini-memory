@@ -1,0 +1,154 @@
+{
+  "generatedAt": "2026-03-15_12-33-18",
+  "language": "zh-CN",
+  "core": [
+    {
+      "repo": "anthropics/claude-code",
+      "tag": "v2.1.76",
+      "publishedAt": "2026-03-14 09:23",
+      "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.76",
+      "highlights": [
+        "新增 MCP 交互式补充输入能力：MCP 服务可以在任务进行中通过表单或网页让用户补充结构化信息。",
+        "新增 `Elicitation` / `ElicitationResult` hooks：可以在结果回传前拦截或改写这一步交互。",
+        "新增 `-n / --name` 参数：启动会话时可以直接设置显示名称。",
+        "`claude --worktree` 新增 `worktree.sparsePaths`：在大型 monorepo 里可以只检出需要的目录，减小 worktree 体积。",
+        "新增 `PostCompact` hook：上下文压缩完成后会触发新的后置 hook。"
+      ]
+    },
+    {
+      "repo": "openclaw/openclaw",
+      "tag": "v2026.3.13-1",
+      "publishedAt": "2026-03-15 02:04",
+      "url": "https://github.com/openclaw/openclaw/releases/tag/v2026.3.13-1",
+      "highlights": [
+        "这次发布主要是在修复上一版损坏的 tag / release 路径，属于发布链路补丁。",
+        "npm 版本号仍然是 `2026.3.13`，`-1` 只体现在 Git tag 和 GitHub Release 上。",
+        "修复 compaction 的后置校验：压缩后会按完整会话 token 数来做 sanity check。",
+        "修复 Telegram 媒体传输相关的安全策略问题，和 SSRF 防护链路有关。"
+      ]
+    },
+    {
+      "repo": "sst/opencode",
+      "tag": "v1.2.26",
+      "publishedAt": "2026-03-14 00:33",
+      "url": "https://github.com/anomalyco/opencode/releases/tag/v1.2.26",
+      "highlights": [
+        "补上 effect-to-zod 的 schema conversion 基础能力，偏底层类型/结构转换。",
+        "为 Bun 安装场景补了配置序列化处理，减少安装链路里的环境问题。",
+        "应用侧新增文本附件支持，输入材料的形态更丰富了。",
+        "会话历史改成分页加载，重点是提升服务端性能。",
+        "修复在已有项目里执行 `git init` 后会话丢失的问题。"
+      ]
+    },
+    {
+      "repo": "zed-industries/zed",
+      "tag": "v0.227.1",
+      "publishedAt": "2026-03-11 23:41",
+      "url": "https://github.com/zed-industries/zed/releases/tag/v0.227.1",
+      "highlights": [
+        "Zed Agent 新增 `spawn_agent`：可以并行调度子代理，提升多任务处理和上下文管理能力。",
+        "OpenAI provider 新增对 GPT-5.3-Codex 自带 Key 模式的支持。",
+        "Zed 新增 Vercel AI Gateway 作为 LLM 提供商。",
+        "在 agent 对话里，可以直接从 diff 跳回对应文件，减少来回切换。",
+        "Agent 线程体验继续加强：草稿提示词、思考模式等状态的持久化更完整了。"
+      ]
+    }
+  ],
+  "plugins": {
+    "added": [],
+    "removed": [],
+    "changed": []
+  },
+  "discovery": [
+    {
+      "description": "Build your Agent Team - Multi-agent coordination platform — parses intent to structured Spec, routes via MCP/ACP/A2A protocols, supports Claude Code/OpenCode/Gemini with unified context",
+      "fullName": "phodal/routa",
+      "stargazersCount": 128,
+      "updatedAt": "2026-03-15T04:02:57Z",
+      "url": "https://github.com/phodal/routa",
+      "matchedQuery": "ACP coding agent",
+      "_score": 34
+    },
+    {
+      "description": "Bring AI agents into Obsidian via Agent Client Protocol (ACP), such as Claude Code, Codex and Gemini CLI.",
+      "fullName": "RAIT-09/obsidian-agent-client",
+      "stargazersCount": 1193,
+      "updatedAt": "2026-03-15T03:27:11Z",
+      "url": "https://github.com/RAIT-09/obsidian-agent-client",
+      "matchedQuery": "ACP coding agent",
+      "_score": 33
+    },
+    {
+      "description": "A unified agent orchestration hub that lets you configure and manage multiple AI agents (native, ACP, AGUI, Claude Code) via YAML, and exposes them through standardized protocols (ACP/OpenCode Server).",
+      "fullName": "phil65/agentpool",
+      "stargazersCount": 107,
+      "updatedAt": "2026-03-15T03:22:58Z",
+      "url": "https://github.com/phil65/agentpool",
+      "matchedQuery": "ACP coding agent",
+      "_score": 29
+    },
+    {
+      "description": "Turn Gemini CLI into a multi-agent platform — 12 specialized subagents, parallel dispatch, 4-phase orchestration, and standalone dev tools for code review, debugging, security, and performance",
+      "fullName": "josstei/maestro-gemini",
+      "stargazersCount": 110,
+      "updatedAt": "2026-03-15T04:27:17Z",
+      "url": "https://github.com/josstei/maestro-gemini",
+      "matchedQuery": "subagent coding",
+      "_score": 23
+    },
+    {
+      "description": "Run agentic coding workflows in a fully native desktop app for Git worktrees, terminals, and diffs.",
+      "fullName": "penso/arbor",
+      "stargazersCount": 347,
+      "updatedAt": "2026-03-15T04:13:23Z",
+      "url": "https://github.com/penso/arbor",
+      "matchedQuery": "worktree coding agent",
+      "_score": 18
+    },
+    {
+      "description": "A universal git-native AI agent framework. Your agent lives inside a git repo — identity, rules, memory, tools, and skills are all version-controlled files.",
+      "fullName": "open-gitagent/gitclaw",
+      "stargazersCount": 139,
+      "updatedAt": "2026-03-15T04:26:26Z",
+      "url": "https://github.com/open-gitagent/gitclaw",
+      "matchedQuery": "repo memory agent",
+      "_score": 18
+    },
+    {
+      "description": "Lightweight coding agent that runs in your terminal",
+      "fullName": "openai/codex",
+      "stargazersCount": 65300,
+      "updatedAt": "2026-03-15T04:30:47Z",
+      "url": "https://github.com/openai/codex",
+      "matchedQuery": "terminal coding agent",
+      "_score": 17
+    },
+    {
+      "description": "Codeg (Code Generation) is an enterprise-grade multi-agent coding workspace.（面向多 Agent 的企业级代码生成工作台）",
+      "fullName": "xintaofei/codeg",
+      "stargazersCount": 240,
+      "updatedAt": "2026-03-15T03:52:24Z",
+      "url": "https://github.com/xintaofei/codeg",
+      "matchedQuery": "worktree coding agent",
+      "_score": 13
+    },
+    {
+      "description": "ACP adapter for pi coding agent",
+      "fullName": "svkozak/pi-acp",
+      "stargazersCount": 80,
+      "updatedAt": "2026-03-15T01:01:29Z",
+      "url": "https://github.com/svkozak/pi-acp",
+      "matchedQuery": "ACP coding agent",
+      "_score": 10
+    },
+    {
+      "description": "Open-Source Coding Agent in the terminal",
+      "fullName": "opendev-to/opendev",
+      "stargazersCount": 192,
+      "updatedAt": "2026-03-15T04:32:06Z",
+      "url": "https://github.com/opendev-to/opendev",
+      "matchedQuery": "coding agent",
+      "_score": 8
+    }
+  ]
+}

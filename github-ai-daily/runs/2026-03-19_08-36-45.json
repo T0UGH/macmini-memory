@@ -1,0 +1,223 @@
+{
+  "generatedAt": "2026-03-19_08-36-45",
+  "language": "zh-CN",
+  "config": {
+    "min_stars": 50,
+    "discovery_count": 10,
+    "core_release_repos": [
+      "anthropics/claude-code",
+      "openclaw/openclaw",
+      "sst/opencode",
+      "zed-industries/zed"
+    ],
+    "plugin_repo": "anthropics/claude-plugins-official"
+  },
+  "core": [
+    {
+      "repo": "anthropics/claude-code",
+      "tag": "v2.1.79",
+      "publishedAt": "2026-03-19 06:29",
+      "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.79",
+      "overview": "这版不是 flashy 新能力，而是在补 Claude Code 作为工程工具的执行链路：MCP 交互、hook 节点、会话命名和大仓库 worktree 都更完整了。",
+      "update_points": [
+        "本次 release 主要围绕 CLI、MCP、hook 和 worktree 的可编排性展开，方向是把 Claude Code 做得更像可控的工程系统。"
+      ],
+      "raw_focus": [
+        "Added --console flag to claude auth login for Anthropic Console (API billing) authentication",
+        "Added \"Show turn duration\" toggle to the /config menu",
+        "Fixed claude -p hanging when spawned as a subprocess without explicit stdin (e.g. Python subprocess.run)",
+        "Fixed Ctrl+C not working in -p (print) mode",
+        "Fixed /btw returning the main agent's output instead of answering the side question when triggered during streaming",
+        "Fixed voice mode not activating correctly on startup when voiceEnabled: true is set"
+      ],
+      "impacts": [
+        "如果你在用 Claude Code 跑多轮任务或大仓库，这版比“模型更聪明”更值得关注，因为它改的是工作流可用性。"
+      ]
+    },
+    {
+      "repo": "openclaw/openclaw",
+      "tag": "v2026.3.13-1",
+      "publishedAt": "2026-03-15 02:04",
+      "url": "https://github.com/openclaw/openclaw/releases/tag/v2026.3.13-1",
+      "overview": "这版更像“把系统做结实”的维护版本：修发布链路、补 compaction 校验、收紧 Telegram / SSRF 防护。",
+      "update_points": [
+        "这次首先是在修补上一版损坏的 tag / release 路径，属于发布链路补丁，不是大功能更新。",
+        "npm 版本号仍是 2026.3.13，-1 只体现在 Git tag / GitHub Release，等于是在修发布包装层。",
+        "compaction 后置校验被补上：压缩完成后会按完整会话 token 数做 sanity check。",
+        "Telegram 媒体传输相关的安全策略被修正，属于 SSRF 防护链路的一部分。"
+      ],
+      "raw_focus": [
+        "This release exists to recover the broken v2026.3.13 tag/release path.",
+        "The corresponding npm version is still 2026.3.13, not 2026.3.13-1.",
+        "fix(compaction): use full-session token count for post-compaction sanity check by @efe-arv in",
+        "fix(telegram): thread media transport policy into SSRF by @obviyus in"
+      ],
+      "impacts": [
+        "这类修复虽然不显眼，但会直接影响版本分发、自动升级和外部引用的可信度。",
+        "这会减少长会话压缩后状态异常却不自知的问题，对 always-on agent 很重要。",
+        "说明 OpenClaw 在补“平台接入层”的边界安全，不只是堆功能；这对消息渠道型 agent 是硬需求。"
+      ]
+    },
+    {
+      "repo": "sst/opencode",
+      "tag": "v1.2.27",
+      "publishedAt": "2026-03-16 10:34",
+      "url": "https://github.com/anomalyco/opencode/releases/tag/v1.2.27",
+      "overview": "OpenCode 这版重点不在宣传点，而在底层结构、历史性能和输入形态这些会影响长期使用体验的细节。",
+      "update_points": [
+        "这版 OpenCode 以底层能力补强和会话稳定性修复为主，同时补了输入能力。"
+      ],
+      "raw_focus": [
+        "Fixed VCS watcher if statement logic",
+        "Delete legacy permission module",
+        "Clean up pending entry when question is aborted",
+        "Remove SIGHUP exit handler",
+        "Effectify PermissionNext and fix InstanceState ALS bug",
+        "Inline branded ID schemas"
+      ],
+      "impacts": [
+        "整体看不是新叙事，而是在把 OpenCode 往“能长期用”的日常工具打磨。"
+      ]
+    },
+    {
+      "repo": "zed-industries/zed",
+      "tag": "v0.228.0",
+      "publishedAt": "2026-03-18 23:31",
+      "url": "https://github.com/zed-industries/zed/releases/tag/v0.228.0",
+      "overview": "Zed 这版的重点是 agent workflow 成熟化：子代理、提供商接入、diff 跳转和线程持久化都在补。",
+      "update_points": [
+        "这版 Zed 继续打磨 Agent 工作流、提供商接入和线程体验。"
+      ],
+      "raw_focus": [
+        "Agent: Added ability to @-mention your branch diff to include all changes since main as context.",
+        "Agent: Enabled thinking mode when using Anthropic models with Copilot.",
+        "Agent: Added Paste as Plain Text to the agent panel message editor right-click menu.",
+        "Agent: Added api_url and api_key settings for the LM Studio provider. (#48309; thanks SkyVence)",
+        "Added the ability to quickly resolve merge conflicts with the agent.",
+        "Added the ability to delete a git worktree from the worktree picker (cmd-shift-backspace on macOS, ctrl-shift-backspace on Linux/Windows). (#50015; thanks davidalecrim1)"
+      ],
+      "impacts": [
+        "整体方向很清楚：Zed 在把编辑器内 agent 做成更适合多线程、多提供商、多任务的工作台。"
+      ]
+    }
+  ],
+  "plugins": {
+    "added": [
+      {
+        "name": "discord",
+        "version": null,
+        "description": "Discord messaging bridge with built-in access control. Manage pairing, allowlists, and policy via /discord:access.",
+        "url": ""
+      },
+      {
+        "name": "fakechat",
+        "version": null,
+        "description": "Localhost web chat for testing the channel notification flow. No tokens, no access control, no third-party service.",
+        "url": ""
+      },
+      {
+        "name": "telegram",
+        "version": null,
+        "description": "Telegram messaging bridge with built-in access control. Manage pairing, allowlists, and policy via /telegram:access.",
+        "url": ""
+      }
+    ],
+    "removed": [],
+    "changed": [],
+    "implication": [
+      "插件仓库这次变化说明 Claude Code 官方生态还在继续向生产系统接入层扩展。"
+    ]
+  },
+  "discovery": [
+    {
+      "description": "Claude Code, OpenCode, Mistral Vibe, Codex CLI, Gemini CLI, Pi.dev, Copilot CLI Coding Agent Terminal Session manager via tmux and git Worktrees",
+      "fullName": "njbrake/agent-of-empires",
+      "stargazersCount": 1175,
+      "updatedAt": "2026-03-18T22:14:07Z",
+      "url": "https://github.com/njbrake/agent-of-empires",
+      "matchedQuery": "worktree coding agent",
+      "_score": 33
+    },
+    {
+      "description": "Codeg (Code Generation) is an enterprise-grade multi-agent coding workspace. It unifies local AI coding agents in one desktop app with session aggregation, parallel git worktree development, MCP/Skills management, and integrated Git/file/terminal workflows.（企业级多 Agent 编码工作台）",
+      "fullName": "xintaofei/codeg",
+      "stargazersCount": 302,
+      "updatedAt": "2026-03-19T00:36:49Z",
+      "url": "https://github.com/xintaofei/codeg",
+      "matchedQuery": "ACP coding agent",
+      "_score": 33
+    },
+    {
+      "description": "Manage all sessions in Claude Code and Codex. Easily create new worktrees, run multiple terminals in parallel, preview edits before accepting them, make inline changes directly from diffs, and more.",
+      "fullName": "jamesrochabrun/AgentHub",
+      "stargazersCount": 295,
+      "updatedAt": "2026-03-18T21:14:40Z",
+      "url": "https://github.com/jamesrochabrun/AgentHub",
+      "matchedQuery": "worktree coding agent",
+      "_score": 29
+    },
+    {
+      "description": "A unified agent orchestration hub that lets you configure and manage multiple AI agents (native, ACP, AGUI, Claude Code) via YAML, and exposes them through standardized protocols (ACP/OpenCode Server).",
+      "fullName": "phil65/agentpool",
+      "stargazersCount": 110,
+      "updatedAt": "2026-03-18T16:21:46Z",
+      "url": "https://github.com/phil65/agentpool",
+      "matchedQuery": "ACP coding agent",
+      "_score": 29
+    },
+    {
+      "description": "IDE for the AI Agents Era - Run an army of Claude Code, Codex, etc. on your machine",
+      "fullName": "superset-sh/superset",
+      "stargazersCount": 7389,
+      "updatedAt": "2026-03-19T00:32:38Z",
+      "url": "https://github.com/superset-sh/superset",
+      "matchedQuery": "terminal coding agent",
+      "_score": 28
+    },
+    {
+      "description": "Code, Build and Evaluate agents - excellent Model and Skills/MCP/ACP Support",
+      "fullName": "evalstate/fast-agent",
+      "stargazersCount": 3712,
+      "updatedAt": "2026-03-18T16:49:17Z",
+      "url": "https://github.com/evalstate/fast-agent",
+      "matchedQuery": "ACP coding agent",
+      "_score": 27
+    },
+    {
+      "description": "Lightweight coding agent that runs in your terminal",
+      "fullName": "openai/codex",
+      "stargazersCount": 66137,
+      "updatedAt": "2026-03-19T00:30:13Z",
+      "url": "https://github.com/openai/codex",
+      "matchedQuery": "terminal coding agent",
+      "_score": 23
+    },
+    {
+      "description": "Sub-agents for pi with Claude Code look and feel — parallel execution, live widget, custom agent types, mid-run steering and more ...",
+      "fullName": "tintinweb/pi-subagents",
+      "stargazersCount": 66,
+      "updatedAt": "2026-03-18T19:27:21Z",
+      "url": "https://github.com/tintinweb/pi-subagents",
+      "matchedQuery": "subagent coding",
+      "_score": 21
+    },
+    {
+      "description": "Curated directory of terminal-native AI coding agents and the harnesses that orchestrate them. Covers open-source tools (Pi, OpenCode, Aider, Goose), platform agents (Claude Code, Codex, Gemini CLI), parallel runners, autonomous loops, and agent infrastructure. ",
+      "fullName": "bradAGI/awesome-cli-coding-agents",
+      "stargazersCount": 52,
+      "updatedAt": "2026-03-19T00:30:06Z",
+      "url": "https://github.com/bradAGI/awesome-cli-coding-agents",
+      "matchedQuery": "terminal coding agent",
+      "_score": 20
+    },
+    {
+      "description": "High-performance AI pipeline engine with a C++ core and 50+ Python-extensible nodes. Build, debug, and scale LLM workflows with 13+ model providers, 8+ vector databases, and agent orchestration, all from your IDE. Includes VS Code extension, TypeScript/Python SDKs, and Docker deployment.",
+      "fullName": "rocketride-org/rocketride-server",
+      "stargazersCount": 171,
+      "updatedAt": "2026-03-19T00:22:52Z",
+      "url": "https://github.com/rocketride-org/rocketride-server",
+      "matchedQuery": "MCP server coding",
+      "_score": 18
+    }
+  ]
+}

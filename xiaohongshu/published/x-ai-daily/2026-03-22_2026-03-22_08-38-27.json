@@ -1,0 +1,37 @@
+{
+  "publishedAt": "2026-03-22T08:38:27.090082+08:00",
+  "payload": {
+    "date": "2026-03-22",
+    "title": "x ai日报 260322",
+    "content": "X AI 日报 260322 版。\n这次整理了 8 张图，重点看 coding agent、OpenClaw、Claude Code、评测工具和安全风险信号。\n这一版正文尽量把原文里真正发生了什么讲清楚，不只停留在摘要。",
+    "tags": [
+      "AI日报",
+      "AI情报",
+      "CodingAgent",
+      "ClaudeCode",
+      "OpenClaw"
+    ],
+    "variant": "square-9",
+    "visibility": "公开可见",
+    "images": [
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-22-square-9/01-claude-code-channels.png",
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-22-square-9/02-claude-code-web.png",
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-22-square-9/03-openai-agent-responses.png",
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-22-square-9/04-claude-code-desktop.png",
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-22-square-9/05-skills-slash-commands.png",
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-22-square-9/06-claude-code-2.png",
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-22-square-9/07-next-js-16.png",
+      "/Users/haha/workspace/memory/xiaohongshu/x-ai-daily/2026-03-22-square-9/08-codex-hotkey.png"
+    ]
+  },
+  "result": {
+    "status": "published",
+    "stdout": "内容发布成功: &{Title:x ai日报 260322 Content:X AI 日报 260322 版。\n这次整理了 8 张图，重点看 coding agent、OpenClaw、Claude Code、评测工具和安全风险信号。\n这一版正文尽量把原文里真正发生了什么讲清楚，不只停留在摘要。 Images:8 Status:发布完成 PostID:}",
+    "preflight": {
+      "server_pid": 72862,
+      "server_url": "http://127.0.0.1:18060/mcp",
+      "cookies_path": "/Users/haha/.local/share/xiaohongshu-mcp/cookies.json",
+      "login_status": "✅ 已登录\n用户名: xiaohongshu-mcp\n\n你可以使用其他功能了。"
+    }
+  }
+}
